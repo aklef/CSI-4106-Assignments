@@ -37,6 +37,7 @@ public class Robot
 				robotOrientation = Direction.NORTH;
 				break;
 		}
+		// TODO return a cost
 	}
 	
 	public void turnRight()
@@ -55,6 +56,7 @@ public class Robot
 				robotOrientation = Direction.SOUTH;
 				break;
 		}
+		// TODO return a cost
 	}
 	
 	public Boolean forwards()
@@ -65,7 +67,8 @@ public class Robot
 		// TODO: Check if there are obstacles - return false
 		
 		// TODO: Move - return true.
-		
+		// TODO return a cost
+
 		return false;
 	}
 	
@@ -73,6 +76,8 @@ public class Robot
 	{
 		// TODO: Clean at the current position - return true if it was dirty
 		// before, return false if it was already clean
+		// TODO return a cost
+		
 		return false;
 	}
 
