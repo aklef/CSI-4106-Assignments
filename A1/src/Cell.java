@@ -1,53 +1,90 @@
-
-public class Cell {
+﻿public class Cell
+{
 	private Boolean visited;
 	private Boolean closed;
-	private Boolean dirty;
-	private Boolean obstructed;
+	private Boolean isDirty;
+	private Boolean isObstructed;
 	
-	public Cell() {
+	public Cell()
+	{
 		visited = false;
 		closed = false;
-		dirty = false;
-		obstructed = false;
+		isDirty = false;
+		isObstructed = false;
 	}
 	
-	public Cell(Boolean isVisited, Boolean isClosed, Boolean isDirty, Boolean isObstructed) {
-		visited = isVisited;
-		closed = isClosed;
-		dirty = isDirty;
-		obstructed = isObstructed;
+	public Cell(Boolean isVisited,
+				Boolean isClosed,
+				Boolean isDirty,
+				Boolean isObstructed)
+	{
+		this.visited = isVisited;
+		this.closed = isClosed;
+		this.isDirty = isDirty;
+		this.isObstructed = isObstructed;
 	}
 	
-	public Boolean getVisited() {
+	public Boolean getVisited()
+	{
 		return visited;
 	}
-	public void setVisited(Boolean visited) {
+	
+	public void setVisited(Boolean visited)
+	{
 		this.visited = visited;
 	}
 	
-	
-	public Boolean getClosed() {
+	public Boolean getClosed()
+	{
 		return closed;
 	}
-	public void setClosed(Boolean closed) {
+	
+	public void setClosed(Boolean closed)
+	{
 		this.closed = closed;
 	}
 	
-	
-	public Boolean getDirty() {
-		return dirty;
-	}
-	public void setDirty(Boolean dirty) {
-		this.dirty = dirty;
+	public Boolean isDirty()
+	{
+		return this.isDirty;
 	}
 	
-	
-	public Boolean getObstructed() {
-		return obstructed;
-	}
-	public void setObstructed(Boolean obstructed) {
-		this.obstructed = obstructed;
+	public void setDirty()
+	{
+		this.isDirty = true;
 	}
 	
+	public Boolean isObstructed()
+	{
+		return this.isObstructed;
+	}
+	
+	public void setObstructed()
+	{
+		this.isObstructed = true;
+	}
+	
+	/*
+	 * Returns a string representation of this cell. 
+	 * Hopefully something ascii that looks alright.
+	 */
+	@Override
+	public String toString()
+	{
+		String cell = "";
+		
+		if (isDirty)
+		{
+			cell = "▒▒";
+		}
+		else if (isObstructed)
+		{
+			cell = "██";
+		}
+		else
+		{
+			cell = "░░";
+		}
+		return cell;
+	}
 }
