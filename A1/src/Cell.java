@@ -75,7 +75,8 @@
 		
 		if (isDirty)
 		{
-			cell = "▒▒";
+			cell = "¤¤";
+//			cell = "▒▒";
 		}
 		else if (isObstructed)
 		{
