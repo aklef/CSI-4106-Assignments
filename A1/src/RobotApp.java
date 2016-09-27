@@ -87,7 +87,8 @@ public class RobotApp
 	
 	private static Position generateStartPos( List<Position> obstacles, List<Position> dirt )
 	{
-		Position newStartPos = new Position(order/2);
+//		Position newStartPos = new Position(order/2);
+		Position newStartPos = new Position(rng.nextInt(order) + 1, rng.nextInt(order) + 1);
 		boolean obstructed = true;
 		int rndx, rndy;
 		
@@ -102,7 +103,7 @@ public class RobotApp
 			{
 				throw new RuntimeException("Andréas broke the start position generation and generated " + newStartPos);
 			}
-			else if (!obstacles.contains(newStartPos) && !dirt.contains(newStartPos) )
+			else if (!obstacles.contains(newStartPos) && !dirt.contains(newStartPos) ) // FIXME comparison is broken
 			{
 				obstructed = false;
 			}
