@@ -55,6 +55,7 @@ public class RobotApp
 				if (rng.nextInt(order*order) < (order) && amtObs != maxObs)
 				{
 					obstacles.add(new Position(i, j));
+					amtObs++;
 				}
 			}
 		}
@@ -78,6 +79,7 @@ public class RobotApp
 					if (!obstacles.contains(newDirtPos))
 					{
 						dirt.add(newDirtPos);
+						amtDirt++;
 					}
 				}
 			}
@@ -87,30 +89,33 @@ public class RobotApp
 	
 	private static Position generateStartPos( List<Position> obstacles, List<Position> dirt )
 	{
-//		Position newStartPos = new Position(order/2);
-		Position newStartPos = new Position(rng.nextInt(order) + 1, rng.nextInt(order) + 1);
 		boolean obstructed = true;
-		int rndx, rndy;
+		int rndx = rng.nextInt(order) + 1, rndy = rng.nextInt(order) + 1;
+//		Position newStartPos = new Position(order/2);
+		Position newStartPos = new Position(rndx, rndy);
 		
 		while (obstructed)
-		{
-//			rndx = order/2 + rng.nextInt(order/2) + 1;
-//			rndy = order/2 + rng.nextInt(order/2) + 1;
-			rndx = rng.nextInt(order) + 1;
-			rndy = rng.nextInt(order) + 1;
-			
+		{	
+			// Out of bounds
 			if (rndx < 0 || rndx > order || rndy < 0 || rndy > order)
 			{
 				throw new RuntimeException("Andréas broke the start position generation and generated " + newStartPos);
 			}
-			else if (!obstacles.contains(newStartPos) && !dirt.contains(newStartPos) ) // FIXME comparison is broken
+			// Invalid position
+			else if (!obstacles.contains(newStartPos) && !dirt.contains(newStartPos) ) // FIXME comparison is broken?
+			{
+//				rndx = order/2 + rng.nextInt(order/2) + 1;
+//				rndy = order/2 + rng.nextInt(order/2) + 1;
+				rndx = rng.nextInt(order) + 1;
+				rndy = rng.nextInt(order) + 1;
+				newStartPos = new Position(rndx, rndy);
+			}
+			// valid
+			else 
 			{
 				obstructed = false;
 			}
-			else
-			{
-				newStartPos = new Position(rndx, rndy);
-			}
+			
 		}
 		return newStartPos;
 	}
