@@ -24,7 +24,7 @@ public class RobotApp
 
 		// TEMP
 		// Gen search type
-		Integer searchType = rng.nextInt(4)+1;
+		Integer searchType = rng.nextInt(3)+1;
 		
 		List<Position> obstacles = generateObstacles();
 		List<Position> dirt = generateDirt(obstacles);
@@ -35,9 +35,9 @@ public class RobotApp
 		robot = new Robot(startPos, startDir);
 		grid = generateGrid(order, dirt, obstacles, robot.getPosition(), robot.getOrientation());
 	
-		search(searchType, grid);
+		List<Position> solution = search(searchType, grid);
 		
-		System.out.println(visualize());
+		printSolution(solution);
 	}
 
 	/************************************** LOGIC ****************************************/
@@ -93,15 +93,16 @@ public class RobotApp
 		
 		while (obstructed)
 		{
-			rndx = order/2 + rng.nextInt(order/2) + 1;
-			rndy = order/2 + rng.nextInt(order/2) + 1;
+//			rndx = order/2 + rng.nextInt(order/2) + 1;
+//			rndy = order/2 + rng.nextInt(order/2) + 1;
+			rndx = rng.nextInt(order) + 1;
+			rndy = rng.nextInt(order) + 1;
 			
 			if (rndx < 0 || rndx > order || rndy < 0 || rndy > order)
 			{
 				throw new RuntimeException("Andréas broke the start position generation and generated " + newStartPos);
 			}
-			
-			if (!obstacles.contains(newStartPos) && !dirt.contains(newStartPos) )
+			else if (!obstacles.contains(newStartPos) && !dirt.contains(newStartPos) )
 			{
 				obstructed = false;
 			}
@@ -146,9 +147,10 @@ public class RobotApp
 	}
 	
     /**
-     * @param searchType  1=DFS, 2=BFS, 3=A*
+     * @param searchType  1=DFS, 2=BFS, 3=A
+     * @return *
      */
-	private static void search (Integer searchType, Grid grid)
+	private static List<Position> search (Integer searchType, Grid grid)
 	{
 		Search search = null;
 		switch (searchType) {
@@ -161,11 +163,25 @@ public class RobotApp
 			case 3:
 				search = Search.Astar;
 				break;
+			default:
+				System.out.println("ERROR! Search value received was " + searchType);
+				break;
 		}
 		
 		System.out.format("%s %s...", "Search running. Using", search);
 		System.out.println();
 		
+		List<Position> solution = null;
+		boolean done = false;
+		
+		while (!done)
+		{
+			System.out.println(visualize());
+			break;
+		}
+		
+		// TODO Implement searches
+		return solution;
 	}
 	
 	/********************************* HELPER MEHTODS *************************************/
@@ -218,8 +234,11 @@ public class RobotApp
 		return vis += "╝";
 	}
 	
-	public void printSolution(List<Position> solution)
+	public static void printSolution(List<Position> solution)
 	{
+		if (solution == null)
+			return;
+		
 		for (Position pos : solution) {
 			System.out.println(grid.getCell(pos).toString());
 		}
