@@ -1,4 +1,3 @@
-import java.security.SecureRandom;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -19,8 +18,9 @@ public class RobotApp
 	
 	public static void main(String[] args)
 	{
+		System.out.print("Generating random states...");
 		// Roll that rng
-		rng = new SecureRandom();
+		rng = new Random();
 
 		// TEMP
 		// Gen search type
@@ -32,9 +32,17 @@ public class RobotApp
 		Position startPos = generateStartPos(obstacles, dirt);
 		Robot.Direction startDir = randomEnum(Robot.Direction.class);
 		
+		System.out.print(" Done.\n");
+		
 		robot = new Robot(startPos, startDir);
-		grid = generateGrid(order, dirt, obstacles, robot.getPosition(), robot.getOrientation());
-	
+		
+		boolean special = false;
+		while(!special)
+		{
+			grid = generateGrid(order, dirt, obstacles, robot);
+			
+		}
+		
 		List<Position> solution = search(searchType, grid);
 		
 		printSolution(solution);
@@ -91,7 +99,6 @@ public class RobotApp
 	{
 		boolean obstructed = true;
 		int rndx = rng.nextInt(order) + 1, rndy = rng.nextInt(order) + 1;
-//		Position newStartPos = new Position(order/2);
 		Position newStartPos = new Position(rndx, rndy);
 		
 		while (obstructed)
@@ -102,10 +109,8 @@ public class RobotApp
 				throw new RuntimeException("Andréas broke the start position generation and generated " + newStartPos);
 			}
 			// Invalid position
-			else if (!obstacles.contains(newStartPos) && !dirt.contains(newStartPos) ) // FIXME comparison is broken?
+			else if (!obstacles.contains(newStartPos) && !dirt.contains(newStartPos) )
 			{
-//				rndx = order/2 + rng.nextInt(order/2) + 1;
-//				rndy = order/2 + rng.nextInt(order/2) + 1;
 				rndx = rng.nextInt(order) + 1;
 				rndy = rng.nextInt(order) + 1;
 				newStartPos = new Position(rndx, rndy);
@@ -124,8 +129,7 @@ public class RobotApp
 			Integer gridSize,
 			List<Position> obstacles,
 			List<Position> dirt,
-			Position robotPosition,
-			Robot.Direction orientation)
+			Robot robot)
 	{
 		Grid newGrid = new Grid(gridSize);
 		
@@ -148,6 +152,8 @@ public class RobotApp
 			}
 			newGrid.getCell(d.x, d.y).setDirty();
 		}
+		
+		newGrid.setRobot(robot);
 		
 		return newGrid;
 	}
@@ -174,8 +180,7 @@ public class RobotApp
 				break;
 		}
 		
-		System.out.format("%s %s...", "Search running. Using", search);
-		System.out.println();
+		System.out.format("%s %s...\n", "Search running. Using", search);
 		
 		List<Position> solution = null;
 		boolean done = false;
