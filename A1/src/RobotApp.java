@@ -36,12 +36,7 @@ public class RobotApp
 		
 		robot = new Robot(startPos, startDir);
 		
-		boolean special = false;
-		while(!special)
-		{
-			grid = generateGrid(order, dirt, obstacles, robot);
-			
-		}
+		grid = generateGrid(order, dirt, obstacles, robot);
 		
 		List<Position> solution = search(searchType, grid);
 		
