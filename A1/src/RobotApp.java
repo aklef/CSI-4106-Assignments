@@ -182,6 +182,7 @@ public class RobotApp
 		
 		while (!done)
 		{
+			 System.out.println(visualize());
 			break;
 		}
 		
