@@ -4,6 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import main.Robot.Direction;
+import main.Search.SearchType;
+
 @SuppressWarnings("unused")
 public class RobotApp
 {
@@ -11,11 +14,6 @@ public class RobotApp
 	private static Robot robot;
 	private static Grid grid;
 	private static Random rng;
-	
-	public enum SearchType
-	{
-		DFS, BFS, Astar
-	};
 	
 	/************************************** MAIN *****************************************/
 	
@@ -32,7 +30,7 @@ public class RobotApp
 		List<Position> dirt = generateDirt(obstacles);
 		
 		Position startPos = generateStartPos(obstacles, dirt);
-		Robot.Direction startDir = randomEnum(Robot.Direction.class);
+		Direction startDir = randomEnum(Direction.class);
 		System.out.print(" Done.\n");
 		
 		robot = new Robot(startPos, startDir);
