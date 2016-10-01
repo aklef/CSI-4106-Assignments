@@ -2,8 +2,8 @@ package main;
 
 public class Position
 {
-	public final Integer row;
-	public final Integer column;
+	public Integer row;
+	public Integer column;
 	
 	public Position( Integer xy )
 	{

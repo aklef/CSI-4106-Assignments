@@ -2,5 +2,6 @@
 <classpath>
 	<classpathentry excluding="AStartAlgorithm.java|Board.java" kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="commons-collections4-4.1/commons-collections4-4.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
