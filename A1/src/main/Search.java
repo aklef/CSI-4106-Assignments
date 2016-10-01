@@ -1,6 +1,4 @@
-
-
-
+package main;
 import main.RobotApp.SearchType;
 
 public class Search {

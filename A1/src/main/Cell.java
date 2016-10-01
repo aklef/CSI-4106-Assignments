@@ -1,4 +1,5 @@
-﻿public class Cell
+﻿package main;
+public class Cell
 {
 	private boolean visited;
 	private boolean closed;

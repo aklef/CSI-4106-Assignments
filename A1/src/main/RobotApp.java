@@ -1,3 +1,5 @@
+package main;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -10,7 +12,7 @@ public class RobotApp
 	private static Grid grid;
 	private static Random rng;
 	
-	private enum Search
+	public enum SearchType
 	{
 		DFS, BFS, Astar
 	};
@@ -152,41 +154,36 @@ public class RobotApp
 	}
 	
 	/**
-	 * @param searchType
+	 * @param type
 	 *            1=DFS, 2=BFS, 3=A
 	 * @return *
 	 */
-	private static List<Position> search(Integer searchType, Grid grid)
+	private static List<Position> search(Integer type, Grid grid)
 	{
-		Search search = null;
-		switch (searchType) {
+		SearchType searchType = null;
+		switch (type) {
 			case 1:
-				search = Search.DFS;
+				searchType = SearchType.DFS;
 				break;
 			case 2:
-				search = Search.BFS;
+				searchType = SearchType.BFS;
 				break;
 			case 3:
-				search = Search.Astar;
+				searchType = SearchType.Astar;
 				break;
 			default:
-				System.out.println("ERROR! Search value received was "
-						+ searchType);
+				System.out.println("ERROR! SearchType value received was "
+						+ type);
 				break;
 		}
 		
-		System.out.format("%s %s...\n", "Search running. Using", search);
+		System.out.format("%s %s...\n", "SearchType running. Using", searchType);
+		System.out.println(visualize());
+		
 		
 		List<Position> solution = null;
-		boolean done = false;
-		
-		while (!done)
-		{
-			 System.out.println(visualize());
-			break;
-		}
-		
-		// TODO Implement searches
+			 
+		//TODO implement searches
 		return solution;
 	}
 	

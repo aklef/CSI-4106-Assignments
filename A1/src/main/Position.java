@@ -1,3 +1,5 @@
+package main;
+
 public class Position
 {
 	public final Integer row;
