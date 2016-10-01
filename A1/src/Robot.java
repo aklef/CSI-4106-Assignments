@@ -1,9 +1,34 @@
 public class Robot
 {
-	
+	// Useful enums
 	public enum Direction
 	{
 		NORTH, WEST, SOUTH, EAST
+	};
+
+	/**
+	 * Returns an associated action cost.
+	 * @return The cost of this action
+	 */
+	public enum Action {
+		SUCK, FORWARDS, TURNLEFT, TURNRIGHT;
+		
+		public int suck()
+		{
+			return 10;
+		}
+		public int forwards()
+		{
+			return 50;
+		}
+		public int turnLeft()
+		{
+			return this.turnRight();
+		}
+		public int turnRight()
+		{
+			return 20;
+		}
 	};
 	
 	// robot variables
@@ -37,9 +62,11 @@ public class Robot
 				robotOrientation = Direction.NORTH;
 				break;
 		}
+		
+		
 		// TODO return a cost
 	}
-	
+		
 	public void turnRight()
 	{
 		switch (robotOrientation) {

@@ -24,7 +24,7 @@ public class Board
 	}
 	
 	/**
-	 * Returns cell (x,y) of the board.
+	 * Returns cell (row,column) of the board.
 	 */
 	public Cell getCell(int x, int y)
 	{

@@ -1,9 +1,9 @@
 ﻿public class Cell
 {
-	private Boolean visited;
-	private Boolean closed;
-	private Boolean isDirty;
-	private Boolean isObstructed;
+	private boolean visited;
+	private boolean closed;
+	private boolean isDirty;
+	private boolean isObstructed;
 	
 	public Cell()
 	{
@@ -13,10 +13,10 @@
 		isObstructed = false;
 	}
 	
-	public Cell(Boolean isVisited,
-				Boolean isClosed,
-				Boolean isDirty,
-				Boolean isObstructed)
+	public Cell(boolean isVisited,
+				boolean isClosed,
+				boolean isDirty,
+				boolean isObstructed)
 	{
 		this.visited = isVisited;
 		this.closed = isClosed;
@@ -24,27 +24,27 @@
 		this.isObstructed = isObstructed;
 	}
 	
-	public Boolean getVisited()
+	public boolean getVisited()
 	{
 		return visited;
 	}
 	
-	public void setVisited(Boolean visited)
+	public void setVisited(boolean visited)
 	{
 		this.visited = visited;
 	}
 	
-	public Boolean getClosed()
+	public boolean getClosed()
 	{
 		return closed;
 	}
 	
-	public void setClosed(Boolean closed)
+	public void setClosed(boolean closed)
 	{
 		this.closed = closed;
 	}
 	
-	public Boolean isDirty()
+	public boolean isDirty()
 	{
 		return this.isDirty;
 	}
@@ -54,7 +54,7 @@
 		this.isDirty = true;
 	}
 	
-	public Boolean isObstructed()
+	public boolean isObstructed()
 	{
 		return this.isObstructed;
 	}
@@ -76,7 +76,6 @@
 		if (isDirty)
 		{
 			cell = "¤¤";
-//			cell = "▒▒";
 		}
 		else if (isObstructed)
 		{

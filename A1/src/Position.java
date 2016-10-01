@@ -1,34 +1,38 @@
 public class Position
 {
-	public final Integer x;
-	public final Integer y;
+	public final Integer row;
+	public final Integer column;
 	
 	public Position( Integer xy )
 	{
 		this(xy, xy);
 	}
 	
-	public Position(Integer x, Integer y)
+	public Position(Integer row, Integer column)
 	{
-		this.x = x;
-		this.y = y;
+		this.row = row;
+		this.column = column;
 	}
 	
 	@Override
 	public String toString()
 	{
-		return "P(" + this.x + ", " + this.y + ")";
+		return "P(" + this.row + ", " + this.column + ")";
 	}
 	
 	@Override
-	public boolean equals(Object p) {
-        boolean equal = false;
-        
-        if (p instanceof Position)
-        {
-        	Position pos = (Position) p;
-            equal = ((this.x == pos.x) && (this.y == pos.y));
-        }
-        return equal;
+	public boolean equals(Object obj) {
+	    if (obj == null) {
+	        return false;
+	    }
+	    if (!Position.class.isAssignableFrom(obj.getClass())) {
+	        return false;
+	    }
+	    
+	    final Position pos = (Position) obj;
+	    if (!((this.row == pos.row) && (this.column == pos.column))) {
+	        return false;
+	    }
+	    return true;
 	}
 }

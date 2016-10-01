@@ -9,6 +9,7 @@ public class RobotApp
 	private static Robot robot;
 	private static Grid grid;
 	private static Random rng;
+	
 	private enum Search
 	{
 		DFS, BFS, Astar
@@ -21,41 +22,41 @@ public class RobotApp
 		System.out.print("Generating random states...");
 		// Roll that rng
 		rng = new Random();
-
 		// TEMP
 		// Gen search type
-		Integer searchType = rng.nextInt(3)+1;
+		Integer searchType = rng.nextInt(3) + 1;
 		
 		List<Position> obstacles = generateObstacles();
 		List<Position> dirt = generateDirt(obstacles);
 		
 		Position startPos = generateStartPos(obstacles, dirt);
 		Robot.Direction startDir = randomEnum(Robot.Direction.class);
-		
 		System.out.print(" Done.\n");
 		
 		robot = new Robot(startPos, startDir);
 		
 		grid = generateGrid(order, dirt, obstacles, robot);
 		
+		System.out.format("Robot is at %s\n", robot.getPosition());
+		
 		List<Position> solution = search(searchType, grid);
 		
 		printSolution(solution);
 	}
-
+	
 	/************************************** LOGIC ****************************************/
-
+	
 	private static List<Position> generateObstacles()
 	{
 		int amtObs = 0;
-		int maxObs = rng.nextInt(order)+order;
+		int maxObs = rng.nextInt(order) + order;
 		List<Position> obstacles = new LinkedList<Position>();
 		
 		for (int i = 0; i < order; i++)
 		{
 			for (int j = 0; j < order; j++)
 			{
-				if (rng.nextInt(order*order) < (order) && amtObs != maxObs)
+				if (rng.nextInt(order * order) < (order) && amtObs != maxObs)
 				{
 					obstacles.add(new Position(i, j));
 					amtObs++;
@@ -64,18 +65,18 @@ public class RobotApp
 		}
 		return obstacles;
 	}
-
-	private static List<Position> generateDirt( List<Position> obstacles )
+	
+	private static List<Position> generateDirt(List<Position> obstacles)
 	{
 		int amtDirt = 0;
-		int maxDirt = rng.nextInt(order) + order/2;
+		int maxDirt = rng.nextInt(order) + order / 2;
 		List<Position> dirt = new LinkedList<Position>();
 		
 		for (int i = 0; i < order; i++)
 		{
 			for (int j = 0; j < order; j++)
 			{
-				if (rng.nextInt(order*order) < (order) && amtDirt != maxDirt)
+				if (rng.nextInt(order * order) < (order) && amtDirt != maxDirt)
 				{
 					Position newDirtPos = new Position(i, j);
 					
@@ -90,28 +91,32 @@ public class RobotApp
 		return dirt;
 	}
 	
-	private static Position generateStartPos( List<Position> obstacles, List<Position> dirt )
+	private static Position generateStartPos(List<Position> obstacles,
+			List<Position> dirt)
 	{
 		boolean obstructed = true;
-		int rndx = rng.nextInt(order) + 1, rndy = rng.nextInt(order) + 1;
-		Position newStartPos = new Position(rndx, rndy);
+		int rndRow = rng.nextInt(order) + 1, rndcol = rng.nextInt(order) + 1;
+		Position newStartPos = new Position(rndRow, rndcol);
 		
 		while (obstructed)
-		{	
+		{
 			// Out of bounds
-			if (rndx < 0 || rndx > order || rndy < 0 || rndy > order)
+			if (rndRow < 0 || rndRow > order || rndcol < 0 || rndcol > order)
 			{
-				throw new RuntimeException("Andréas broke the start position generation and generated " + newStartPos);
+				throw new RuntimeException(
+						"Andréas broke the start position generation and generated "
+								+ newStartPos);
 			}
 			// Invalid position
-			else if (!obstacles.contains(newStartPos) && !dirt.contains(newStartPos) )
+			else if (!obstacles.contains(newStartPos)
+					&& !dirt.contains(newStartPos))
 			{
-				rndx = rng.nextInt(order) + 1;
-				rndy = rng.nextInt(order) + 1;
-				newStartPos = new Position(rndx, rndy);
+				rndRow = rng.nextInt(order) + 1;
+				rndcol = rng.nextInt(order) + 1;
+				newStartPos = new Position(rndRow, rndcol);
 			}
 			// valid
-			else 
+			else
 			{
 				obstructed = false;
 			}
@@ -120,32 +125,25 @@ public class RobotApp
 		return newStartPos;
 	}
 	
-	public static Grid generateGrid(
-			Integer gridSize,
-			List<Position> obstacles,
-			List<Position> dirt,
-			Robot robot)
+	public static Grid generateGrid(Integer gridSize, List<Position> obstacles,
+			List<Position> dirt, Robot robot)
 	{
 		Grid newGrid = new Grid(gridSize);
 		
 		for (Position o : obstacles)
 		{
-			if (o.x < 0 || o.x >= gridSize || o.y < 0 || o.y >= gridSize)
-			{
-				throw new RuntimeException(
-					"One of your obstacles is out of bounds");
-			}
-			newGrid.getCell(o.x, o.y).setObstructed();
+			if (o.row < 0 || o.row >= gridSize || o.column < 0
+					|| o.column >= gridSize) { throw new RuntimeException(
+					"One of your obstacles is out of bounds"); }
+			newGrid.getCell(o.row, o.column).setObstructed();
 		}
 		
 		for (Position d : dirt)
 		{
-			if (d.x < 0 || d.x >= gridSize || d.y < 0 || d.y >= gridSize) 
-			{
-				throw new RuntimeException(
-					"One of your dirt piles is out of bounds"); 
-			}
-			newGrid.getCell(d.x, d.y).setDirty();
+			if (d.row < 0 || d.row >= gridSize || d.column < 0
+					|| d.column >= gridSize) { throw new RuntimeException(
+					"One of your dirt piles is out of bounds"); }
+			newGrid.getCell(d.row, d.column).setDirty();
 		}
 		
 		newGrid.setRobot(robot);
@@ -153,11 +151,12 @@ public class RobotApp
 		return newGrid;
 	}
 	
-    /**
-     * @param searchType  1=DFS, 2=BFS, 3=A
-     * @return *
-     */
-	private static List<Position> search (Integer searchType, Grid grid)
+	/**
+	 * @param searchType
+	 *            1=DFS, 2=BFS, 3=A
+	 * @return *
+	 */
+	private static List<Position> search(Integer searchType, Grid grid)
 	{
 		Search search = null;
 		switch (searchType) {
@@ -171,7 +170,8 @@ public class RobotApp
 				search = Search.Astar;
 				break;
 			default:
-				System.out.println("ERROR! Search value received was " + searchType);
+				System.out.println("ERROR! Search value received was "
+						+ searchType);
 				break;
 		}
 		
@@ -182,7 +182,6 @@ public class RobotApp
 		
 		while (!done)
 		{
-			System.out.println(visualize());
 			break;
 		}
 		
@@ -194,20 +193,21 @@ public class RobotApp
 	
 	public static String visualize()
 	{
-		int width = RobotApp.grid.getWidth();
-		int height = RobotApp.grid.getHeight();
+		int columns = grid.getWidth();
+		int rows = grid.getHeight();
+		Position roboPos = robot.getPosition();
 		String vis = "╔";
-		for (int j = 0; j < width; j++)
+		for (int j = 0; j < columns; j++)
 		{
 			vis += "══";
 		}
 		vis += "╗" + System.lineSeparator();
-		for (int i = 0; i < height; i++)
+		for (int row = 0; row < rows; row++)
 		{
 			vis += "║";
-			for (int j = 0; j < width; j++)
+			for (int column = 0; column < columns; column++)
 			{
-				if (robot.getPosition().x == j && robot.getPosition().y == i)
+				if (roboPos.row == row && roboPos.column == column)
 				{
 					switch (robot.getOrientation()) {
 						case NORTH:
@@ -226,14 +226,14 @@ public class RobotApp
 				}
 				else
 				{
-					vis += RobotApp.grid.getCell(i,j);
+					vis += grid.getCell(row, column);
 				}
 				
 			}
 			vis += "║" + System.lineSeparator();
 		}
 		vis += "╚";
-		for (int j = 0; j < width; j++)
+		for (int j = 0; j < columns; j++)
 		{
 			vis += "══";
 		}
@@ -245,13 +245,15 @@ public class RobotApp
 		if (solution == null)
 			return;
 		
-		for (Position pos : solution) {
+		for (Position pos : solution)
+		{
 			System.out.println(grid.getCell(pos).toString());
 		}
 	}
 	
-	public static <T extends Enum<?>> T randomEnum(Class<T> clazz){
-        int x = rng.nextInt(clazz.getEnumConstants().length);
-        return clazz.getEnumConstants()[x];
-    }
+	public static <T extends Enum<?>> T randomEnum(Class<T> clazz)
+	{
+		int x = rng.nextInt(clazz.getEnumConstants().length);
+		return clazz.getEnumConstants()[x];
+	}
 }
