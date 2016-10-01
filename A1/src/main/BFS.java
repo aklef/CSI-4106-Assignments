@@ -1,10 +1,9 @@
 package main;
 
-public class BFS extends Search {
+public class BFS implements Algorithm {
 
 	public BFS()
 	{
-		super(null);
-		// TODO Auto-generated constructor stub
+		
 	}
 }

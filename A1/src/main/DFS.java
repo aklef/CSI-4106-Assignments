@@ -1,10 +1,9 @@
 package main;
 
-public class DFS extends Search {
+public class DFS implements Algorithm {
 
 	public DFS()
 	{
-		super(null);
-		// TODO Auto-generated constructor stub
+		
 	}
 }

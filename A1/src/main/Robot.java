@@ -42,6 +42,12 @@ public class Robot
 		this.robotOrientation = orientation;
 	}
 	
+	public Robot(Robot existingRobot) {
+		position = new Position(existingRobot.position.row, existingRobot.position.column);
+		robotOrientation = existingRobot.robotOrientation;
+		
+	}
+	
 	public Direction getOrientation()
 	{
 		return robotOrientation;

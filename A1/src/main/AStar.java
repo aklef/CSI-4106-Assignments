@@ -1,10 +1,9 @@
 package main;
 
-public class AStar extends Search {
+public class AStar implements Algorithm {
 
 	public AStar()
 	{
-		super(null);
-		// TODO Auto-generated constructor stub
+	
 	}
 }

@@ -14,6 +14,13 @@ public class Cell
 		isObstructed = false;
 	}
 	
+	public Cell(Cell existingCell) {
+		visited = existingCell.visited;
+		closed = existingCell.closed;
+		isDirty = existingCell.isDirty;
+		isObstructed = existingCell.isObstructed;
+	}
+	
 	public Cell(boolean isVisited,
 				boolean isClosed,
 				boolean isDirty,
