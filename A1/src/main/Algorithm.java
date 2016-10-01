@@ -6,7 +6,7 @@ public interface Algorithm {
 		
 	public List<State> nextSuccessors(State currentState);
 	
-	public State getFinalState();
+	public State computeSolution();
 	
 	public State getInitialState();
 }
