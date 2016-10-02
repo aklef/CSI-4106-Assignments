@@ -1,5 +1,6 @@
 package main;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -8,7 +9,7 @@ import main.Robot.Orientation;
 
 public class RobotApp
 {
-	private final static int order = 3;
+	private final static int order = 4;
 	private static Robot robot;
 	private static Grid grid;
 	private static Random rng;
@@ -41,6 +42,34 @@ public class RobotApp
 		
 		grid = generateGrid(order, dirt, obstacles, robot);
 		System.out.format("Robot is at %s facing %s\n", robot.getPosition(), robot.getOrientation());
+		
+		
+		//SPECIAL TEST CASE - PLEASE DELETE
+		
+//				Position teststartPos = new Position(1,0);
+				
+//				grid = null;
+//				grid = new Grid(2);
+//				Cell testcell = null;
+//				Cell testcell2 = null;
+//				Cell testcell3 = null;
+//				try {
+//					testcell = grid.getCell(new Position(1,1));
+//					testcell2 = grid.getCell(new Position(0,1));
+//					testcell3 = grid.getCell(new Position(0,0));
+//				} catch (OutOfBoundsException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//					return;
+//				}
+//				testcell.setDirty(true);
+//				testcell2.setObstructed(true);
+//				testcell3.setObstructed(true);
+//				robot = new Robot(teststartPos, Orientation.WEST);
+//				grid.setRobot(robot);
+//				grid.setDirt(new LinkedList<Position>(Arrays.asList(new Position(1,1))));
+				
+				//SPECIAL TEST CASE - PLEASE DELETE
 		
 		
 		long startTime = System.currentTimeMillis();

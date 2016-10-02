@@ -16,7 +16,7 @@ public class DFS extends Algorithm {
 	{
 		this.grid = grid;
 		this.openStates = new Stack<Path>();
-		this.closedStates = new HashSet<Path>();
+		this.closedStates = new LinkedList<Path>();
 	}
 
 	@Override
@@ -33,6 +33,12 @@ public class DFS extends Algorithm {
 			this.closedStates.add(node);
 			Robot tempBot;
 			Path newPath;
+			
+			if(node.remainingDirtyCells.isEmpty() )
+			{
+				finalNode = node;
+				break;
+			}
 			
 			for (Action action : Action.values())
 			{
@@ -95,15 +101,9 @@ public class DFS extends Algorithm {
 							&& firstNode.roboClone.getOrientation() == newPath.roboClone.getOrientation()  //FIRST NODE SPECIAL EQUALITY CHECK, CANNOT CHECK ACTION
 							&& firstNode.remainingDirtyCells.equals(newPath.remainingDirtyCells)) ) //FIRST NODE SPECIAL EQUALITY CHECK, CANNOT CHECK ACTION
 					{
-						if(newPath.remainingDirtyCells.isEmpty() )
-						{
-							finalNode = newPath;
-							
-						}
-						else
-						{
-							openStates.add(newPath);
-						}
+						
+						openStates.add(newPath);
+						
 					}
 				}
 			}

@@ -22,7 +22,7 @@ public class BFS extends Algorithm
 	{
 		this.grid = grid;
 		this.openStates = new LinkedList<Path>();
-		this.closedStates = new HashSet<Path>();
+		this.closedStates = new LinkedList<Path>();
 	}
 	
 	@Override
@@ -98,10 +98,10 @@ public class BFS extends Algorithm
 				if(!openStates.contains(newPath)
 						|| !closedStates.contains(newPath)	)
 				{
-					if(!( firstNode.roboClone.getPosition().equals(newPath.roboClone.getPosition()) //FIRST NODE SPECIAL EQUALITY CHECK, CANNOT CHECK ACTION
-							&& firstNode.roboClone.getOrientation().equals(newPath.roboClone.getOrientation())  //FIRST NODE SPECIAL EQUALITY CHECK, CANNOT CHECK ACTION
-							&& firstNode.remainingDirtyCells.equals(newPath.remainingDirtyCells)) ) //FIRST NODE SPECIAL EQUALITY CHECK, CANNOT CHECK ACTION
-					{
+//					if(!( firstNode.roboClone.getPosition().equals(newPath.roboClone.getPosition()) //FIRST NODE SPECIAL EQUALITY CHECK, CANNOT CHECK ACTION
+//							&& firstNode.roboClone.getOrientation().equals(newPath.roboClone.getOrientation())  //FIRST NODE SPECIAL EQUALITY CHECK, CANNOT CHECK ACTION
+//							&& firstNode.remainingDirtyCells.equals(newPath.remainingDirtyCells)) ) //FIRST NODE SPECIAL EQUALITY CHECK, CANNOT CHECK ACTION
+//					{
 						if(newPath.remainingDirtyCells.isEmpty() )
 						{
 							finalNode = newPath;
@@ -111,7 +111,7 @@ public class BFS extends Algorithm
 						{
 							openStates.add(newPath);
 						}
-					}
+//					}
 				}
 			}
 		}

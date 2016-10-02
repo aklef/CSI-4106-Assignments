@@ -9,7 +9,7 @@ import java.util.List;
 abstract class Algorithm
 {
 	protected Grid grid;
-	protected HashSet<Path> closedStates;
+	protected List<Path> closedStates;
 	
 	protected abstract List<Path> computeSolution();
 }

@@ -66,7 +66,7 @@ public class Path
         boolean equal = false;
     	Path otherPath = (Path) obj;
     	
-    	if( this.action == otherPath.action &&
+    	if( /*this.action == otherPath.action && */
 			this.roboClone.getPosition().equals(otherPath.roboClone.getPosition()) &&
 			this.roboClone.getOrientation() == otherPath.roboClone.getOrientation() &&
 			this.remainingDirtyCells.equals(otherPath.remainingDirtyCells)
