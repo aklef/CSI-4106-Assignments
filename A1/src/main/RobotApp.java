@@ -19,7 +19,7 @@ public class RobotApp
 		DFS, BFS, Astar
 	};
 	
-	/************************************** MAIN *****************************************/
+	//************************************** MAIN *****************************************//
 	
 	public static void main(String[] args)
 	{
@@ -39,15 +39,7 @@ public class RobotApp
 		
 		robot = new Robot(startPos, startDir);
 		
-		try
-		{
-			grid = generateGrid(order, dirt, obstacles, robot);
-		}
-		catch (OutOfBoundsException e)
-		{
-			e.printStackTrace();
-		}
-		
+		grid = generateGrid(order, dirt, obstacles, robot);
 		System.out.format("Robot is at %s\n", robot.getPosition());
 		
 		long startTime = System.currentTimeMillis();
@@ -58,7 +50,7 @@ public class RobotApp
 		printSolution(solution, elapsedTime);
 	}
 	
-	/************************************** LOGIC ****************************************/
+	//************************************** LOGIC ****************************************//
 	
 	private static List<Position> generateObstacles()
 	{
@@ -201,8 +193,7 @@ public class RobotApp
 		return solution;
 	}
 	
-	/********************************* HELPER MEHTODS 
-	 * @throws OutOfBoundsException *************************************/
+	//********************************* HELPER MEHTODS **************************************//
 	
 	public static String visualize()
 	{
