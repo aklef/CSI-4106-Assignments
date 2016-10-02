@@ -159,7 +159,7 @@ public class RobotApp
 	 *            1=DFS, 2=BFS, 3=A
 	 * @return *
 	 */
-	private static List<Position> search(Integer type, Grid grid)
+	private static List<Position> search(Integer type)
 	{
 		SearchType searchType = null;
 		switch (type) {
