@@ -2,15 +2,15 @@ package main;
 
 public class Position
 {
-	public Integer row;
-	public Integer column;
+	public int row;
+	public int column;
 	
-	public Position( Integer xy )
+	public Position( int xy )
 	{
 		this(xy, xy);
 	}
 	
-	public Position(Integer row, Integer column)
+	public Position(int row, int column)
 	{
 		this.row = row;
 		this.column = column;

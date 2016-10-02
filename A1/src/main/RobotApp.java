@@ -1,5 +1,6 @@
 package main;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -8,7 +9,7 @@ import main.Robot.Orientation;
 
 public class RobotApp
 {
-	private final static Integer order = 2;
+	private final static int order = 3;
 	private static Robot robot;
 	private static Grid grid;
 	private static Random rng;
@@ -41,6 +42,7 @@ public class RobotApp
 		
 		grid = generateGrid(order, dirt, obstacles, robot);
 		System.out.format("Robot is at %s facing %s\n", robot.getPosition(), robot.getOrientation());
+		
 		
 		long startTime = System.currentTimeMillis();
 		List<Path> solution = search(searchType);
@@ -134,7 +136,7 @@ public class RobotApp
 		return newStartPos;
 	}
 	
-	public static Grid generateGrid(Integer gridSize, List<Position> obstacles,
+	public static Grid generateGrid(int gridSize, List<Position> obstacles,
 			List<Position> dirt, Robot robot)
 	{
 		Grid newGrid = new Grid(gridSize);
@@ -147,7 +149,7 @@ public class RobotApp
     				throw new OutOfBoundsException("One of your obstacles is out of bounds");
     			}
     			
-    				newGrid.getCell(o.row, o.column).setObstructed();
+    				newGrid.getCell(o.row, o.column).setObstructed(true);
 			}
     		for (Position d : dirt)
     		{
@@ -155,7 +157,7 @@ public class RobotApp
     			{
     				throw new OutOfBoundsException("One of your dirt piles is out of bounds");
     			}
-    			newGrid.getCell(d.row, d.column).setDirty();
+    			newGrid.getCell(d.row, d.column).setDirty(true);
     		}
 		}
 		catch (OutOfBoundsException e)

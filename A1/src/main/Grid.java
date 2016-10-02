@@ -11,16 +11,16 @@ public class Grid
 	 */
 	private Cell	cells[][];
 	private Robot   robot;
-	private Integer width;
-	private Integer height;
+	private int width;
+	private int height;
 	private List<Position> dirt;
 	
-	public Grid(Integer size)
+	public Grid(int size)
 	{
 		this(size, size);
 	}
 	
-	private Grid(Integer rows, Integer columns)
+	private Grid(int rows, int columns)
 	{
 		if (rows < 1 || columns < 1)
 			throw new RuntimeException("Cannot create a grid with a dimension less than 1");
@@ -46,7 +46,7 @@ public class Grid
 		return this.getCell(pos.row, pos.column);
 	}
 	
-	public Cell getCell(Integer row, Integer column) throws OutOfBoundsException
+	public Cell getCell(int row, int column) throws OutOfBoundsException
 	{
 		if (row < 0 || row >= getWidth() || column < 0 || column >= height)
 		{
@@ -74,22 +74,22 @@ public class Grid
 		return pos;
 	}
 	
-	public Integer getWidth()
+	public int getWidth()
 	{
 		return width;
 	}
 	
-	public void setWidth(Integer width)
+	public void setWidth(int width)
 	{
 		this.width = width;
 	}
 	
-	public Integer getHeight()
+	public int getHeight()
 	{
 		return height;
 	}
 	
-	private void setHeight(Integer height)
+	private void setHeight(int height)
 	{
 		this.height = height;
 	}

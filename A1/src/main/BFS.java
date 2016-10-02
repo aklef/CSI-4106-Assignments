@@ -30,7 +30,7 @@ public class BFS extends Algorithm
 		
 		this.openStates.add(firstNode);
 		
-		while (!this.openStates.isEmpty())
+		while (!this.openStates.isEmpty() && finalNode == null)
 		{
 			Path node = this.openStates.poll();
 			this.closedStates.add(node);
@@ -39,7 +39,7 @@ public class BFS extends Algorithm
 			
 			for (Action action : Action.values())
 			{
-				tempBot = new Robot(robot);
+				tempBot = new Robot(node.roboClone);
 				newPath = null;
 				
 				switch (action)
@@ -91,16 +91,22 @@ public class BFS extends Algorithm
 						break;
 				}
 				
-				if(!openStates.contains(newPath) 
-						|| !closedStates.contains(newPath))
+				if(!openStates.contains(newPath)
+						|| !closedStates.contains(newPath)	)
 				{
-					if(newPath.remainingDirtyCells.isEmpty())
+					if(!( firstNode.roboClone.getPosition().equals(newPath.roboClone.getPosition()) //FIRST NODE SPECIAL EQUALITY CHECK, CANNOT CHECK ACTION
+							&& firstNode.roboClone.getOrientation().equals(newPath.roboClone.getOrientation())  //FIRST NODE SPECIAL EQUALITY CHECK, CANNOT CHECK ACTION
+							&& firstNode.remainingDirtyCells.equals(newPath.remainingDirtyCells)) ) //FIRST NODE SPECIAL EQUALITY CHECK, CANNOT CHECK ACTION
 					{
-						finalNode = newPath;
-					}
-					else
-					{
-						openStates.add(newPath);
+						if(newPath.remainingDirtyCells.isEmpty() )
+						{
+							finalNode = newPath;
+							
+						}
+						else
+						{
+							openStates.add(newPath);
+						}
 					}
 				}
 			}

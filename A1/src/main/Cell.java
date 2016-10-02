@@ -57,9 +57,9 @@ public class Cell
 		return this.isDirty;
 	}
 	
-	public void setDirty()
+	public void setDirty(boolean isDirty)
 	{
-		this.isDirty = true;
+		this.isDirty = isDirty;
 	}
 	
 	public boolean isObstructed()
@@ -67,9 +67,9 @@ public class Cell
 		return this.isObstructed;
 	}
 	
-	public void setObstructed()
+	public void setObstructed(boolean isObstructed)
 	{
-		this.isObstructed = true;
+		this.isObstructed = isObstructed;
 	}
 	
 	/*
