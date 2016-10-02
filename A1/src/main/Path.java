@@ -46,17 +46,17 @@ public class Path
 	 * position, and dirty cell list
 	 */
 	@Override
-    public boolean equals(Object object) // Compares one path with another only regarding robot action, robot position, and dirty cell list
+    public boolean equals(Object obj) // Compares one path with another only regarding robot action, robot position, and dirty cell list
     {
         boolean isEqual = false;
 
-        if (object != null && object instanceof Path)
+        if (obj != null && obj instanceof Path)
         {
-        	Path that = ((Path) object);
+        	Path path = ((Path) obj);
         	
-        	if(		this.action.equals(that.action) &&
-        			this.robotClone.getPosition().equals(that.robotClone.getPosition()) &&
-        			this.remainingDirtyCells.equals(that.remainingDirtyCells)
+        	if(		this.action.equals(path.action) &&
+        			this.roboClone.getPosition().equals(path.roboClone.getPosition()) &&
+        			this.remainingDirtyCells.equals(path.remainingDirtyCells)
         			) {
         		isEqual = true;
         	}
