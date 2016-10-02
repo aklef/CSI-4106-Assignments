@@ -40,7 +40,7 @@ public class RobotApp
 		robot = new Robot(startPos, startDir);
 		
 		grid = generateGrid(order, dirt, obstacles, robot);
-		System.out.format("Robot is at %s\n", robot.getPosition());
+		System.out.format("Robot is at %s facing %s\n", robot.getPosition(), robot.getOrientation());
 		
 		long startTime = System.currentTimeMillis();
 		List<Path> solution = search(searchType);
