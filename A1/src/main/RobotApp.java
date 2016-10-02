@@ -259,7 +259,7 @@ public class RobotApp
 		{
 			robot = node.roboClone;
 			pos = robot.getPosition();
-			System.out.format("%s, %s, %s\n", pos, robot.getOrientation(), node.action);
+			System.out.format("%s, %s, %s\n", pos, robot.getOrientation(), depth == 0? "start": node.action);
 			totalCost += node.cost;
 			depth++;
 		}
