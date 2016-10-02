@@ -16,7 +16,8 @@ public class Position
 		this.column = column;
 	}
 	
-	public Position(Position position){
+	public Position(Position position)
+	{
 		this.row = position.row;
 		this.column = position.column;
 	}
@@ -24,20 +25,22 @@ public class Position
 	@Override
 	public String toString()
 	{
-		return "P(" + this.row + ", " + this.column + ")";
+		return "pos(" + this.row + ", " + this.column + ")";
 	}
 	
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(Object obj)
+	{
 	    if (obj == null) {
 	        return false;
 	    }
-	    if (!Position.class.isAssignableFrom(obj.getClass())) {
+	    if (!Position.class.isAssignableFrom(obj.getClass()))
+	    {
 	        return false;
 	    }
-	    
 	    final Position pos = (Position) obj;
-	    if (!((this.row == pos.row) && (this.column == pos.column))) {
+	    if (!((this.row == pos.row) && (this.column == pos.column)))
+	    {
 	        return false;
 	    }
 	    return true;
