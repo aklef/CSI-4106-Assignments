@@ -1,6 +1,5 @@
 package main;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -268,18 +267,20 @@ public class RobotApp
 		
 		Position pos;
 		Robot robot;
-		int totalCost = 0;
+		int cost = solution.get(solution.size()-1).cost;
 		int depth = 0;
+		
+		System.out.println("pos(row, col), DIR, Action");
+		
 		for (Path node : solution)
 		{
 			robot = node.roboClone;
 			pos = robot.getPosition();
 			System.out.format("%s, %s, %s\n", pos, robot.getOrientation(), depth == 0? "start": node.action);
-			totalCost += node.cost;
 			depth++;
 		}
 		
-		System.out.format("total cost: %s\n", totalCost);
+		System.out.format("total cost: %s\n", cost);
 		System.out.format("Depth: %s\n", depth);
 		System.out.format("Time : %s ms", elapsedTime);
 	}
