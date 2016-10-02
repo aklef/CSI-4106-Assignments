@@ -96,7 +96,7 @@ public class BFS extends Algorithm
 					break;
 				}
 				
-				if(!openStates.contains(newPath) && !closedStates.contains(newPath)){
+				if(!openStates.contains(newPath) || !closedStates.contains(newPath)){
 					if(newPath.remainingDirtyCells.isEmpty()){
 						finalNode = newPath;
 					} else {
