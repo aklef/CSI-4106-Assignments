@@ -48,6 +48,8 @@ public class RobotApp
 		long elapsedTime = stopTime - startTime;
 		
 		printSolution(solution, elapsedTime);
+		
+		System.exit(0);
 	}
 	
 	//************************************** LOGIC ****************************************//
