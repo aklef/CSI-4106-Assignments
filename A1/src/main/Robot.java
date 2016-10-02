@@ -12,7 +12,7 @@ public class Robot
 	 * @return The cost of this action
 	 */
 	public enum Action {
-		SUCK, FORWARDS, TURNLEFT, TURNRIGHT;
+		SUCK, MOVE, LEFT, RIGHT;
 		
 		/**
 		 * Returns the cost of this Action.

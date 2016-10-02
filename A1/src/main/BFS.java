@@ -24,9 +24,8 @@ public class BFS extends Algorithm
 	@Override
 	protected List<Path> computeSolution()
 	{
-		Robot robot = grid.getRobot();
-		Path firstNode = new Path(null, robot, null, 0,
-				grid.getDirt());
+		Robot robot = this.grid.getRobot();
+		Path firstNode = new Path(null, robot, null, 0, grid.getDirt());
 		Path finalNode = null;
 		
 		openStates.add(firstNode);
@@ -43,21 +42,21 @@ public class BFS extends Algorithm
 				
 				switch (action)
 				{
-					case TURNLEFT:
+					case LEFT:
 						Robot leftBot = new Robot(tempRobot);
 						leftBot.turnLeft();
 						newPath = new Path(node, leftBot, action, node.cost
 								+ action.turnLeft(), node.remainingDirtyCells);
 						break;
 					
-					case TURNRIGHT:
+					case RIGHT:
 						Robot rightBot = new Robot(tempRobot);
 						rightBot.turnRight();
 						newPath = new Path(node, rightBot, action, node.cost
 								+ action.turnRight(), node.remainingDirtyCells);
 						break;
 					
-					case FORWARDS:
+					case MOVE:
 						Robot forwardBot = new Robot(tempRobot);
 						Position newPosition = forwardBot
 								.getCellInFrontOfRobot();
