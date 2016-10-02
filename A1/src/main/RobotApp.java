@@ -189,7 +189,7 @@ public class RobotApp
 		}
 		
 		System.out.format("%s %s...\n", "Search running. Using", searchType);
-		System.out.println(visualize());
+//		System.out.println(visualize());
 		
 		List<Path> solution = null;
 		if(search != null)
@@ -269,8 +269,8 @@ public class RobotApp
 		Robot robot;
 		int cost = solution.get(solution.size()-1).cost;
 		int depth = 0;
-		
 		System.out.println("pos(row, col), Dir, action");
+		System.out.println(visualize());
 		
 		for (Path node : solution)
 		{
