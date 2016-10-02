@@ -58,8 +58,7 @@ public class BFS extends Algorithm
 					
 					case MOVE:
 						Robot forwardBot = new Robot(tempRobot);
-						Position newPosition = forwardBot
-								.getCellInFrontOfRobot();
+						Position newPosition = forwardBot.getCellInFrontOfRobot();
 						Cell cellInFront;
 						
 						try
@@ -74,8 +73,9 @@ public class BFS extends Algorithm
 						if (cellInFront.isObstructed())
 							continue;
 						
-						newPath = new Path(node, forwardBot, action, node.cost
-								+ action.forwards(), node.remainingDirtyCells);
+						forwardBot.setPosition(newPosition);
+						
+						newPath = new Path(node, forwardBot, action, node.cost + action.forwards(), node.remainingDirtyCells);
 						break;
 					
 					case SUCK:
