@@ -8,12 +8,19 @@ import main.Robot.Direction;
 import main.Search.SearchType;
 
 @SuppressWarnings("unused")
+
 public class RobotApp
 {
 	private final static Integer order = 6;
 	private static Robot robot;
 	private static Grid grid;
 	private static Random rng;
+	
+	
+	public enum SearchType
+	{
+		DFS, BFS, Astar
+	};
 	
 	/************************************** MAIN *****************************************/
 	
