@@ -179,17 +179,14 @@ public class RobotApp
 				break;
 		}
 		
-		List<Path> result = null;
-		
-		if(algo != null){
-			result = algo.computeSolution();
-		}
-		
 		System.out.format("%s %s...\n", "SearchType running. Using", searchType);
 		System.out.println(visualize());
 		
-		
 		List<Path> solution = null;
+		if(algo != null)
+		{
+			solution = algo.computeSolution();
+		}
 			 
 		//TODO implement searches
 		return solution;
