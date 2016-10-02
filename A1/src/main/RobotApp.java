@@ -262,9 +262,9 @@ public class RobotApp
 			depth++;
 		}
 		
-		System.out.format("total cost: %n\n", totalCost);
-		System.out.format("Depth: %n\n", depth);
-		System.out.format("Time : %s ms\n", elapsedTime);
+		System.out.format("total cost: %s\n", totalCost);
+		System.out.format("Depth: %s\n", depth);
+		System.out.format("Time : %s ms", elapsedTime);
 	}
 	
 	public static <T extends Enum<?>> T randomEnum(Class<T> clazz)
