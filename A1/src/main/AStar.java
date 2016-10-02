@@ -1,8 +1,11 @@
 package main;
 
 import java.util.List;
+import java.util.Queue;
 
 public class AStar extends Algorithm {
+
+	protected Queue<Path> openStates;
 
 	public AStar()
 	{

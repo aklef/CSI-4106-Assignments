@@ -183,6 +183,7 @@ public class RobotApp
 				search = new BFS(grid);
 				break;
 			case DFS:
+				search = new DFS(grid);
 				break;
 			case Astar:
 				break;

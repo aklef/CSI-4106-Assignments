@@ -1,7 +1,7 @@
 package main;
 
+import java.util.HashSet;
 import java.util.List;
-import java.util.Queue;
 
 /**
  * This abstract class gives some structure that actual searches will implement.
@@ -9,8 +9,7 @@ import java.util.Queue;
 abstract class Algorithm
 {
 	protected Grid grid;
-	protected Queue<Path> openStates;
-	protected List<Path> closedStates;
+	protected HashSet<Path> closedStates;
 	
 	protected abstract List<Path> computeSolution();
 }

@@ -1,8 +1,10 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 import main.Robot.Action;
 
@@ -14,11 +16,13 @@ public class BFS extends Algorithm
 	// private MultiKeyMap stateMap = new MultiKeyMap(); // posx, posy,
 	// robotorientation,
 	
+	protected Queue<Path> openStates;
+
 	public BFS(Grid grid)
 	{
 		this.grid = grid;
 		this.openStates = new LinkedList<Path>();
-		this.closedStates = new ArrayList<Path>();
+		this.closedStates = new HashSet<Path>();
 	}
 	
 	@Override
