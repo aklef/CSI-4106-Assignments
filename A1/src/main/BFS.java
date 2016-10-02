@@ -3,29 +3,27 @@ package main;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
+
+import main.Robot.Action;
+import main.Robot.Direction;
 /**
  * Our implementation of the Breadth-First Search.
- * 
- * @author Andreas, David
  */
-public class BFS implements Algorithm {
-
-	private Grid grid;
-	//private MultiKeyMap stateMap = new MultiKeyMap(); // posx, posy, robotorientation, 
-	private Queue<Path> openStates;
-	private List<Path> closedStates;
+@SuppressWarnings("unused")
+public class BFS extends Algorithm
+{
+	//private MultiKeyMap stateMap = new MultiKeyMap(); // posx, posy, robotorientation,
 	
 	public BFS(Grid grid)
 	{
 		this.grid = grid;
-		openStates = new LinkedList<Path>();
-		closedStates = new ArrayList<Path>();
+		this.openStates = new LinkedList<Path>();
+		this.closedStates = new ArrayList<Path>();
 	}
 
 	@Override
-	public List<Path> computeSolution() {
-		
+	protected List<Path> computeSolution()
+	{
 		Robot robot = grid.getRobot();
 		Position position = robot.getPosition();
 		Cell startCell = grid.getCell(position);
@@ -41,9 +39,9 @@ public class BFS implements Algorithm {
 			
 			closedStates.add(node);
 			
-			for(Robot.Action action : Robot.Action.values()){
+			for(Action action : Action.values()){
 				Robot tempRobot = new Robot(robot);
-				Robot.Direction currentDirection = tempRobot.getOrientation();
+				Direction currentDirection = tempRobot.getOrientation();
 				
 				Path newPath = null;
 				

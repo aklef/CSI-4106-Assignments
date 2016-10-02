@@ -2,7 +2,7 @@ package main;
 
 import java.util.List;
 
-public class AStar implements Algorithm {
+public class AStar extends Algorithm {
 
 	public AStar()
 	{
@@ -10,7 +10,7 @@ public class AStar implements Algorithm {
 	}
 
 	@Override
-	public List<Path> computeSolution() {
+	protected List<Path> computeSolution() {
 		// TODO Auto-generated method stub
 		return null;
 	}

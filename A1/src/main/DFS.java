@@ -2,7 +2,7 @@ package main;
 
 import java.util.List;
 
-public class DFS implements Algorithm {
+public class DFS extends Algorithm {
 
 	public DFS()
 	{
@@ -10,7 +10,7 @@ public class DFS implements Algorithm {
 	}
 
 	@Override
-	public List<Path> computeSolution() {
+	protected List<Path> computeSolution() {
 		// TODO Auto-generated method stub
 		return null;
 	}
