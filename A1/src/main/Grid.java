@@ -13,7 +13,7 @@ public class Grid
 	private Robot   robot;
 	private Integer width;
 	private Integer height;
-	private List<Position> initialDirtyCells;
+	private List<Position> dirt;
 	
 	public Grid(Integer size)
 	{
@@ -39,19 +39,20 @@ public class Grid
 			}
 		}
 		
-		initialDirtyCells = new LinkedList<Position>();
+		dirt = new LinkedList<Position>();
 	}
 	
-	public Cell getCell(Position pos)
+	public Cell getCell(Position pos) throws OutOfBoundsException
 	{
 		return this.getCell(pos.row, pos.column);
 	}
 	
-	public Cell getCell(Integer row, Integer column)
+	public Cell getCell(Integer row, Integer column) throws OutOfBoundsException
 	{
-		if (row < 0 || row >= getWidth() || column < 0 || column >= height) { throw new RuntimeException(
-				"Cannot get a cell from out of bounds!"); }
-		
+		if (row < 0 || row >= getWidth() || column < 0 || column >= height)
+		{
+			throw new OutOfBoundsException("Cannot get a cell from out of bounds!");
+		}
 		return cells[row][column];
 	}
 	
@@ -103,11 +104,12 @@ public class Grid
 		return robot;
 	}
 
-	public List<Position> getInitialDirtyCellList() {
-		return initialDirtyCells;
+	public List<Position> getDirt() {
+		return dirt;
 	}
 
-	public void addInitialDirtyCell(Position initialDirtyCells) {
-		this.initialDirtyCells.add(initialDirtyCells);
+	public void setDirt(List<Position> dirt)
+	{
+		this.dirt = dirt;
 	}
 }

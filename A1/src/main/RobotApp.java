@@ -39,7 +39,14 @@ public class RobotApp
 		
 		robot = new Robot(startPos, startDir);
 		
-		grid = generateGrid(order, dirt, obstacles, robot);
+		try
+		{
+			grid = generateGrid(order, dirt, obstacles, robot);
+		}
+		catch (OutOfBoundsException e)
+		{
+			e.printStackTrace();
+		}
 		
 		System.out.format("Robot is at %s\n", robot.getPosition());
 		
@@ -134,31 +141,31 @@ public class RobotApp
 	}
 	
 	public static Grid generateGrid(Integer gridSize, List<Position> obstacles,
-			List<Position> dirt, Robot robot)
+			List<Position> dirt, Robot robot) throws OutOfBoundsException
 	{
 		Grid newGrid = new Grid(gridSize);
 		
 		for (Position o : obstacles)
 		{
 			if (o.row < 0 || o.row >= gridSize || o.column < 0
-					|| o.column >= gridSize) { throw new RuntimeException(
-					"One of your obstacles is out of bounds"); }
+					|| o.column >= gridSize) 
+			{
+				throw new OutOfBoundsException("One of your obstacles is out of bounds");
+			}
 			newGrid.getCell(o.row, o.column).setObstructed();
 		}
 		
 		for (Position d : dirt)
 		{
 			if (d.row < 0 || d.row >= gridSize || d.column < 0
-					|| d.column >= gridSize) { throw new RuntimeException(
-					"One of your dirt piles is out of bounds"); }
+					|| d.column >= gridSize)
+			{
+				throw new RuntimeException("One of your dirt piles is out of bounds");
+			}
 			newGrid.getCell(d.row, d.column).setDirty();
-			
-			//This will be used by each algorithm's statemap. This behavior of setting cells (dirty and obstructed) is Grid behavior and should be in the Grid class.
-			newGrid.addInitialDirtyCell(new Position(d.row, d.column));
 		}
-		
+		newGrid.setDirt(dirt);
 		newGrid.setRobot(robot);
-		
 		return newGrid;
 	}
 	
@@ -194,7 +201,8 @@ public class RobotApp
 		return solution;
 	}
 	
-	/********************************* HELPER MEHTODS *************************************/
+	/********************************* HELPER MEHTODS 
+	 * @throws OutOfBoundsException *************************************/
 	
 	public static String visualize()
 	{
@@ -231,7 +239,14 @@ public class RobotApp
 				}
 				else
 				{
-					vis += grid.getCell(row, column);
+					try
+					{
+						vis += grid.getCell(row, column);
+					}
+					catch (OutOfBoundsException e)
+					{
+						e.printStackTrace();
+					}
 				}
 				
 			}

@@ -25,9 +25,8 @@ public class BFS extends Algorithm
 	protected List<Path> computeSolution()
 	{
 		Robot robot = grid.getRobot();
-		
 		Path firstNode = new Path(null, robot, null, 0,
-				grid.getInitialDirtyCellList());
+				grid.getDirt());
 		Path finalNode = null;
 		
 		openStates.add(firstNode);
@@ -35,16 +34,15 @@ public class BFS extends Algorithm
 		while (!openStates.isEmpty())
 		{
 			Path node = openStates.poll();
-			
 			closedStates.add(node);
 			
 			for (Action action : Action.values())
 			{
 				Robot tempRobot = new Robot(robot);
-				
 				Path newPath = null;
 				
-				switch (action) {
+				switch (action)
+				{
 					case TURNLEFT:
 						Robot leftBot = new Robot(tempRobot);
 						leftBot.turnLeft();
@@ -69,15 +67,13 @@ public class BFS extends Algorithm
 						{
 							cellInFront = grid.getCell(newPosition);
 						}
-						catch (RuntimeException e)
+						catch (OutOfBoundsException e)
 						{
 							continue;
 						}
 						
 						if (cellInFront.isObstructed())
-						{
 							continue;
-						}
 						
 						newPath = new Path(node, forwardBot, action, node.cost
 								+ action.forwards(), node.remainingDirtyCells);
