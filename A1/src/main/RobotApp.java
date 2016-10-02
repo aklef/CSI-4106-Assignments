@@ -159,18 +159,14 @@ public class RobotApp
 	 *            1=DFS, 2=BFS, 3=A
 	 * @return *
 	 */
-	private static List<Position> search(Integer type)
+	private static List<Path> search(SearchType searchType)
 	{
-		SearchType searchType = null;
-		switch (type) {
-			case 1:
-				searchType = SearchType.DFS;
+		switch (searchType) {
+			case BFS:
 				break;
-			case 2:
-				searchType = SearchType.BFS;
+			case DFS:
 				break;
-			case 3:
-				searchType = SearchType.Astar;
+			case Astar:
 				break;
 			default:
 				System.out.println("ERROR! SearchType value received was "
@@ -182,7 +178,7 @@ public class RobotApp
 		System.out.println(visualize());
 		
 		
-		List<Position> solution = null;
+		List<Path> solution = null;
 			 
 		//TODO implement searches
 		return solution;
