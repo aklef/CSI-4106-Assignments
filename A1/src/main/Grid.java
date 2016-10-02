@@ -13,8 +13,6 @@ public class Grid
 	private Robot   robot;
 	private Integer width;
 	private Integer height;
-	private int	 maxRow;
-	private int	 maxCol;
 	private List<Position> initialDirtyCells;
 	
 	public Grid(Integer size)
@@ -30,8 +28,6 @@ public class Grid
 
 		this.setHeight(rows);
 		this.setWidth(columns);
-		this.maxRow = getWidth() - 1;
-		this.maxCol = getHeight() - 1;
 		
 		this.cells = new Cell[rows][columns];
 		
@@ -97,111 +93,6 @@ public class Grid
 	{
 		this.height = height;
 	}
-	
-//	public Cell getCellInFrontOfRobot()
-//	{
-//		Cell cellInFrontOfRobot = null;
-//		Position robotPos = robot.getPosition();
-//		int row = robotPos.row, column = robotPos.column;
-//		
-//		switch (robot.getOrientation()) {
-//			case EAST:
-//				if (column != maxCol)
-//				{
-//					cellInFrontOfRobot = getCell(row, column + 1);
-//				}
-//				break;
-//			case SOUTH:
-//				if (row != maxRow)
-//				{
-//					cellInFrontOfRobot = getCell(row + 1, column);
-//				}
-//				break;
-//			case WEST:
-//				if (column != 0)
-//				{
-//					cellInFrontOfRobot = getCell(row, column - 1);
-//				}
-//				break;
-//			case NORTH:
-//				if (row != 0)
-//				{
-//					cellInFrontOfRobot = getCell(row - 1, column);
-//				}
-//				break;
-//		}
-//		return cellInFrontOfRobot;
-//	}
-	
-//	public Cell getCellLeftOfRobot()
-//	{
-//		Cell cellLeftOfRobot = null;
-//		Position robotPos = robot.getPosition();
-//		int row = robotPos.row, column = robotPos.column;
-//		
-//		switch (robot.getOrientation()) {
-//			case EAST:
-//				if (row != 0)
-//				{
-//					cellLeftOfRobot = getCell(row - 1, column);
-//				}
-//				break;
-//			case SOUTH:
-//				if (column != maxCol)
-//				{
-//					cellLeftOfRobot = getCell(row, column + 1);
-//				}
-//				break;
-//			case WEST:
-//				if (row != maxRow)
-//				{
-//					cellLeftOfRobot = getCell(row + 1, column);
-//				}
-//				break;
-//			case NORTH:
-//				if (column != 0)
-//				{
-//					cellLeftOfRobot = getCell(row, column - 1);
-//				}
-//				break;
-//		}
-//		return cellLeftOfRobot;
-//	}
-	
-//	public Cell getCellRightOfRobot()
-//	{
-//		Cell cellRightOfRobot = null;
-//		Position robotPos = robot.getPosition();
-//		int row = robotPos.row, column = robotPos.column;
-//		
-//		switch (robot.getOrientation()) {
-//			case EAST:
-//				if (row != maxRow)
-//				{
-//					cellRightOfRobot = getCell(row + 1, column);
-//				}
-//				break;
-//			case SOUTH:
-//				if (column != 0)
-//				{
-//					cellRightOfRobot = getCell(row, column - 1);
-//				}
-//				break;
-//			case WEST:
-//				if (row != 0)
-//				{
-//					cellRightOfRobot = getCell(row - 1, column);
-//				}
-//				break;
-//			case NORTH:
-//				if (column != maxCol)
-//				{
-//					cellRightOfRobot = getCell(row, column + 1);
-//				}
-//				break;
-//		}
-//		return cellRightOfRobot;
-//	}
 	
 	public void setRobot(Robot robot)
 	{
