@@ -35,17 +35,17 @@ public class Path
 	{
 		this.parent = parentState;
 		this.action = action;
-		this.roboClone = new Robot(robot);
+		this.roboClone = robot;
 		this.cost = cost;
 		this.remainingDirtyCells = new LinkedList<Position>(remainingDirtyCells);
 		
 	}
 	/**
-	 * This is intended to be used mainly to create the initial state.
+	 * This is intended to be used to create the initial Path state.
 	 */
-	public Path(Robot robot, int i, List<Position> dirt)
+	public Path(Robot robot, Integer cost, List<Position> dirt)
 	{
-		this(null, robot, null,  i, dirt);
+		this(null, robot, null, cost, dirt);
 	}
 	/**
 	 * Compares one path with another only
@@ -55,21 +55,25 @@ public class Path
 	@Override
     public boolean equals(Object obj) // Compares one path with another only regarding robot action, robot position, and dirty cell list
     {
-        boolean isEqual = false;
-
-        if (obj != null && obj instanceof Path)
-        {
-        	Path that = (Path) obj;
-        	
-        	if(		this.action.equals(that.action) &&
-        			this.roboClone.getPosition().equals(that.roboClone.getPosition()) &&
-        			this.roboClone.getOrientation().equals(that.roboClone.getOrientation()) &&
-        			this.remainingDirtyCells.equals(that.remainingDirtyCells)
-        			) {
-        		isEqual = true;
-        	}
-        }
-
-        return isEqual;
+	    if (obj == null) {
+	        return false;
+	    }
+	    else if (!Path.class.isAssignableFrom(obj.getClass()))
+	    {
+	        return false;
+	    }
+		
+        boolean equal = false;
+    	Path otherPath = (Path) obj;
+    	
+    	if( this.action.equals(otherPath.action) &&
+			this.roboClone.getPosition().equals(otherPath.roboClone.getPosition()) &&
+			this.roboClone.getOrientation().equals(otherPath.roboClone.getOrientation()) &&
+			this.remainingDirtyCells.equals(otherPath.remainingDirtyCells)
+			)
+    	{
+    		equal = true;
+    	}
+        return equal;
     }
 }

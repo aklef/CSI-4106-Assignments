@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-import main.Robot.Direction;
+import main.Robot.Orientation;
 
 public class RobotApp
 {
@@ -34,7 +34,7 @@ public class RobotApp
 		List<Position> dirt = generateDirt(obstacles);
 		
 		Position startPos = generateStartPos(obstacles, dirt);
-		Direction startDir = randomEnum(Direction.class);
+		Orientation startDir = randomEnum(Orientation.class);
 		System.out.print(" Done.\n");
 		
 		robot = new Robot(startPos, startDir);
@@ -204,31 +204,31 @@ public class RobotApp
 		int columns = grid.getWidth();
 		int rows = grid.getHeight();
 		Position roboPos = robot.getPosition();
-		String vis = "╔";
-		for (int j = 0; j < columns; j++)
+		String out = "╔";
+		for (int col = 0; col < columns; col++)
 		{
-			vis += "══";
+			out += "══";
 		}
-		vis += "╗" + System.lineSeparator();
+		out += "╗" + System.lineSeparator();
 		for (int row = 0; row < rows; row++)
 		{
-			vis += "║";
+			out += "║";
 			for (int column = 0; column < columns; column++)
 			{
 				if (roboPos.row == row && roboPos.column == column)
 				{
 					switch (robot.getOrientation()) {
 						case NORTH:
-							vis += "↑↑";
+							out += "↑↑";
 							break;
 						case EAST:
-							vis += "→→";
+							out += "→→";
 							break;
 						case SOUTH:
-							vis += "↓↓";
+							out += "↓↓";
 							break;
 						case WEST:
-							vis += "←←";
+							out += "←←";
 							break;
 					}
 				}
@@ -236,7 +236,7 @@ public class RobotApp
 				{
 					try
 					{
-						vis += grid.getCell(row, column);
+						out += grid.getCell(row, column);
 					}
 					catch (OutOfBoundsException e)
 					{
@@ -245,14 +245,14 @@ public class RobotApp
 				}
 				
 			}
-			vis += "║" + System.lineSeparator();
+			out += "║" + System.lineSeparator();
 		}
-		vis += "╚";
+		out += "╚";
 		for (int j = 0; j < columns; j++)
 		{
-			vis += "══";
+			out += "══";
 		}
-		return vis += "╝";
+		return out += "╝";
 	}
 	
 	public static void printSolution(List<Path> solution, long elapsedTime)

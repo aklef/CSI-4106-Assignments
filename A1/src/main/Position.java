@@ -34,7 +34,7 @@ public class Position
 	    if (obj == null) {
 	        return false;
 	    }
-	    if (!Position.class.isAssignableFrom(obj.getClass()))
+	    else if (!Position.class.isAssignableFrom(obj.getClass()))
 	    {
 	        return false;
 	    }

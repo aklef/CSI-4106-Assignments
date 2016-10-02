@@ -28,81 +28,74 @@ public class BFS extends Algorithm
 		Path firstNode = new Path(robot, 0, grid.getDirt());
 		Path finalNode = null;
 		
-		openStates.add(firstNode);
+		this.openStates.add(firstNode);
 		
-		while (!openStates.isEmpty())
+		while (!this.openStates.isEmpty())
 		{
-			Path node = openStates.poll();
-			closedStates.add(node);
+			Path node = this.openStates.poll();
+			this.closedStates.add(node);
+			Robot tempBot;
+			Path newPath;
 			
 			for (Action action : Action.values())
 			{
-				Robot tempRobot = new Robot(robot);
-				Path newPath = null;
+				tempBot = new Robot(robot);
+				newPath = null;
 				
 				switch (action)
 				{
-					case LEFT:
-						Robot leftBot = new Robot(tempRobot);
-						leftBot.turnLeft();
-						newPath = new Path(node, leftBot, action, node.cost
-								+ action.turnLeft(), node.remainingDirtyCells);
-						break;
-					
-					case RIGHT:
-						Robot rightBot = new Robot(tempRobot);
-						rightBot.turnRight();
-						newPath = new Path(node, rightBot, action, node.cost
-								+ action.turnRight(), node.remainingDirtyCells);
+					case LEFT: case RIGHT:
+						tempBot.turn(action);
+						newPath = new Path(node, tempBot, action, node.cost
+								+ Action.cost(action), node.remainingDirtyCells);
 						break;
 					
 					case MOVE:
-						Robot forwardBot = new Robot(tempRobot);
-						Position newPosition = forwardBot.getCellInFrontOfRobot();
+						Position newPosition = tempBot.getCellInFrontOfRobot();
 						Cell cellInFront;
-						
 						try
 						{
 							cellInFront = grid.getCell(newPosition);
+							if (cellInFront.isObstructed())
+								continue;
 						}
 						catch (OutOfBoundsException e)
 						{
 							continue;
 						}
 						
-						if (cellInFront.isObstructed())
-							continue;
-						
-						forwardBot.setPosition(newPosition);
-						
-						newPath = new Path(node, forwardBot, action, node.cost + action.forwards(), node.remainingDirtyCells);
+						tempBot.setPosition(newPosition);
+						newPath = new Path(node, tempBot, action, node.cost + Action.cost(action), node.remainingDirtyCells);
 						break;
 					
 					case SUCK:
-						Robot cleanBot = new Robot(tempRobot);
 						// WE ARE NOT ACTUALLY IMPACTING THE GRID DURING A
 						// SEARCH // leftBot.robotClean();
+
+						Position cleanBotPosition = tempBot.getPosition();
 						
-						if (!node.remainingDirtyCells.contains(cleanBot
-								.getPosition()))
+						if (!node.remainingDirtyCells.contains(cleanBotPosition))
 						{
 							continue;
 						}
 						
-						LinkedList<Position> newDirtyList = new LinkedList<Position>(
-								node.remainingDirtyCells);
+						LinkedList<Position> newDirtyList = new LinkedList<Position>(node.remainingDirtyCells);
 						
-						Position cleanBotPosition = cleanBot.getPosition();
-						if (!newDirtyList.remove(cleanBotPosition)) { throw new RuntimeException(
-								"Tried to create a path in BFS.computeSolution() which had one less dirty tiles, but the tile to be removed was not in the dirty list"); }
+						if (!newDirtyList.remove(cleanBotPosition))
+						{
+							throw new RuntimeException("Tried to create a path in BFS.computeSolution() which had one less dirty tiles, but the tile to be removed was not in the dirty list");
+						}
 						
-						newPath = new Path(node, cleanBot, action, node.cost
-								+ action.suck(), newDirtyList);
+						newPath = new Path(node, tempBot, action, node.cost
+								+ Action.cost(action), newDirtyList);
 						break;
 				}
 				
-				if(!openStates.contains(newPath) || !closedStates.contains(newPath)){
-					if(newPath.remainingDirtyCells.isEmpty()){
+				if(!openStates.contains(newPath) 
+						|| !closedStates.contains(newPath))
+				{
+					if(newPath.remainingDirtyCells.isEmpty())
+					{
 						finalNode = newPath;
 					}
 					else
@@ -111,7 +104,6 @@ public class BFS extends Algorithm
 					}
 				}
 			}
-			
 		}
 		
 		LinkedList<Path> finalPathList = new LinkedList<Path>();

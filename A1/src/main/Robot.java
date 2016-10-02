@@ -1,10 +1,29 @@
 package main;
+
+
+
 public class Robot
 {
 	// Useful enums
-	public enum Direction
+	public enum Orientation
 	{
-		NORTH, WEST, SOUTH, EAST
+		NORTH, EAST, SOUTH, WEST;
+
+		public static Orientation valueOf(int n)
+		{
+			switch (n)
+			{
+				case 0:
+					return NORTH;
+				case 1:
+					return EAST;
+				case 2:
+					return SOUTH;
+				case 3:
+					return WEST;
+			}
+			return null;
+		}
 	};
 
 	/**
@@ -13,97 +32,69 @@ public class Robot
 	 */
 	public enum Action {
 		SUCK, MOVE, LEFT, RIGHT;
-		
 		/**
 		 * Returns the cost of this Action.
-		 * @return 10 energy units.
 		 */
-		public int suck()
+		public static int cost(Action action)
 		{
-			return 10;
-		}
-		/**
-		 * Returns the cost of this Action.
-		 * @return 50 energy units.
-		 */
-		public int forwards()
-		{
-			return 50;
-		}
-		/**
-		 * Returns the cost of this Action.
-		 * @return 20 energy units.
-		 */
-		public int turnLeft()
-		{
-			return 20;
-		}
-		/**
-		 * Returns the cost of this Action.
-		 * @return 20 energy units.
-		 */
-		public int turnRight()
-		{
-			return this.turnLeft();
+			int cost = 0;
+			switch (action)
+			{
+				case LEFT: case RIGHT:
+					cost = 20;
+				case SUCK:
+					cost = 10;
+				case MOVE:
+					cost = 50;
+			}
+			return cost;
 		}
 	};
 	
 	// robot variables
 	private Position  position;
-	private Direction robotOrientation;
+	private Orientation robotOrientation;
 	
-	public Robot(Position position, Direction orientation)
+	public Robot(Position position, Orientation orientation)
 	{
 		this.position = position;
 		this.robotOrientation = orientation;
 	}
 	
-	public Robot(Robot existingRobot)
+	public Robot(Robot robot)
 	{
-		this.position = new Position(existingRobot.position);
-		this.robotOrientation = existingRobot.robotOrientation;
+		if (robot == null)
+			throw new NullPointerException();
+		
+		this.position = new Position(robot.position);
+		this.robotOrientation = robot.robotOrientation;
 	}
 	
-	public Direction getOrientation()
+	public Orientation getOrientation()
 	{
 		return robotOrientation;
 	}
 	
-	public void turnLeft()
+	/**
+	 * Changes this Robot's Orientation.
+	 */
+	public void turn(Action dir)
 	{
-		switch (robotOrientation) {
-			case NORTH:
-				robotOrientation = Direction.WEST;
+		switch (dir)
+		{
+			case LEFT:
+				this.robotOrientation = Orientation.valueOf((robotOrientation.ordinal() + 3) % 4);
 				break;
-			case WEST:
-				robotOrientation = Direction.SOUTH;
+			case RIGHT:
+				this.robotOrientation = Orientation.valueOf((robotOrientation.ordinal() + 1) % 4);
 				break;
-			case SOUTH:
-				robotOrientation = Direction.EAST;
-				break;
-			case EAST:
-				robotOrientation = Direction.NORTH;
-				break;
+			
+			default:
+				throw new RuntimeException("Invalid turn Action");
 		}
+		return;
 	}
-		
-	public void turnRight()
-	{
-		switch (robotOrientation) {
-			case NORTH:
-				robotOrientation = Direction.EAST;
-				break;
-			case WEST:
-				robotOrientation = Direction.NORTH;
-				break;
-			case SOUTH:
-				robotOrientation = Direction.WEST;
-				break;
-			case EAST:
-				robotOrientation = Direction.SOUTH;
-				break;
-		}
-	}
+
 	public Position getPosition()
 	{
 		return position;
