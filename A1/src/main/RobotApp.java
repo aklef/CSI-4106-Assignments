@@ -8,7 +8,7 @@ import main.Robot.Direction;
 
 public class RobotApp
 {
-	private final static Integer order = 6;
+	private final static Integer order = 2;
 	private static Robot robot;
 	private static Grid grid;
 	private static Random rng;
@@ -76,7 +76,8 @@ public class RobotApp
 	private static List<Position> generateDirt(List<Position> obstacles)
 	{
 		int amtDirt = 0;
-		int maxDirt = rng.nextInt(order) + order / 2;
+		// the values below are critical, DO NOT CHANGE.
+		int maxDirt = rng.nextInt(order-1) + order / 2;
 		List<Position> dirt = new LinkedList<Position>();
 		
 		for (int row = 0; row < order; row++)
@@ -102,24 +103,24 @@ public class RobotApp
 			List<Position> dirt)
 	{
 		boolean obstructed = true;
-		int rndRow = rng.nextInt(order) + 1, rndcol = rng.nextInt(order) + 1;
+		int rndRow = rng.nextInt(order), rndcol = rng.nextInt(order);
 		Position newStartPos = new Position(rndRow, rndcol);
 		
 		while (obstructed)
 		{
 			// Out of bounds
-			if (rndRow < 0 || rndRow > order || rndcol < 0 || rndcol > order)
+			if (rndRow < 0 || rndRow >= order || rndcol < 0 || rndcol >= order)
 			{
 				throw new RuntimeException(
-						"Andréas broke the start position generation and generated "
+						"\nAndréas broke the start position generation and generated "
 								+ newStartPos);
 			}
 			// Invalid position
-			else if (!obstacles.contains(newStartPos)
-					&& !dirt.contains(newStartPos))
+			// Re-generate
+			else if (obstacles.contains(newStartPos))
 			{
-				rndRow = rng.nextInt(order) + 1;
-				rndcol = rng.nextInt(order) + 1;
+				rndRow = rng.nextInt(order);
+				rndcol = rng.nextInt(order);
 				newStartPos = new Position(rndRow, rndcol);
 			}
 			// valid
