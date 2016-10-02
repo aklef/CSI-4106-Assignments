@@ -144,6 +144,9 @@ public class RobotApp
 					|| d.column >= gridSize) { throw new RuntimeException(
 					"One of your dirt piles is out of bounds"); }
 			newGrid.getCell(d.row, d.column).setDirty();
+			
+			//This will be used by each algorithm's statemap. This behavior of setting cells (dirty and obstructed) is Grid behavior and should be in the Grid class.
+			newGrid.addInitialDirtyCell(new Position(d.row, d.column));
 		}
 		
 		newGrid.setRobot(robot);

@@ -16,6 +16,11 @@ public class Position
 		this.column = column;
 	}
 	
+	public Position(Position position){
+		this.row = new Integer(position.row);
+		this.column = new Integer(position.column);
+	}
+	
 	@Override
 	public String toString()
 	{

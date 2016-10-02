@@ -69,9 +69,6 @@ public class Robot
 				robotOrientation = Direction.NORTH;
 				break;
 		}
-		
-		
-		// TODO return a cost
 	}
 		
 	public void turnRight()
@@ -90,7 +87,6 @@ public class Robot
 				robotOrientation = Direction.SOUTH;
 				break;
 		}
-		// TODO return a cost
 	}
 	
 	public Boolean forwards()
@@ -123,5 +119,26 @@ public class Robot
 	public void setPosition(Position position)
 	{
 		this.position = position;
+	}
+	
+	public Position getCellRightOfRobot()
+	{
+		Position robotPos = new Position(position);
+		
+		switch (this.getOrientation()) {
+			case EAST:
+					robotPos.row += 1;
+				break;
+			case SOUTH:
+					robotPos.column -= 1;
+				break;
+			case WEST:
+					robotPos.row -= 1;
+				break;
+			case NORTH:
+					robotPos.column += 1;
+				break;
+		}
+		return robotPos;
 	}
 }

@@ -1,5 +1,8 @@
 package main;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class Grid
 {
 	/**
@@ -12,6 +15,7 @@ public class Grid
 	private Integer height;
 	private int	 maxRow;
 	private int	 maxCol;
+	private List<Position> initialDirtyCells;
 	
 	public Grid(Integer size)
 	{
@@ -38,6 +42,8 @@ public class Grid
 				this.cells[row][column] = new Cell();
 			}
 		}
+		
+		initialDirtyCells = new LinkedList<Position>();
 	}
 	
 	public Cell getCell(Position pos)
@@ -162,43 +168,55 @@ public class Grid
 		return cellLeftOfRobot;
 	}
 	
-	public Cell getCellRightOfRobot()
-	{
-		Cell cellRightOfRobot = null;
-		Position robotPos = robot.getPosition();
-		int row = robotPos.row, column = robotPos.column;
-		
-		switch (robot.getOrientation()) {
-			case EAST:
-				if (row != maxRow)
-				{
-					cellRightOfRobot = getCell(row + 1, column);
-				}
-				break;
-			case SOUTH:
-				if (column != 0)
-				{
-					cellRightOfRobot = getCell(row, column - 1);
-				}
-				break;
-			case WEST:
-				if (row != 0)
-				{
-					cellRightOfRobot = getCell(row - 1, column);
-				}
-				break;
-			case NORTH:
-				if (column != maxCol)
-				{
-					cellRightOfRobot = getCell(row, column + 1);
-				}
-				break;
-		}
-		return cellRightOfRobot;
-	}
+//	public Cell getCellRightOfRobot()
+//	{
+//		Cell cellRightOfRobot = null;
+//		Position robotPos = robot.getPosition();
+//		int row = robotPos.row, column = robotPos.column;
+//		
+//		switch (robot.getOrientation()) {
+//			case EAST:
+//				if (row != maxRow)
+//				{
+//					cellRightOfRobot = getCell(row + 1, column);
+//				}
+//				break;
+//			case SOUTH:
+//				if (column != 0)
+//				{
+//					cellRightOfRobot = getCell(row, column - 1);
+//				}
+//				break;
+//			case WEST:
+//				if (row != 0)
+//				{
+//					cellRightOfRobot = getCell(row - 1, column);
+//				}
+//				break;
+//			case NORTH:
+//				if (column != maxCol)
+//				{
+//					cellRightOfRobot = getCell(row, column + 1);
+//				}
+//				break;
+//		}
+//		return cellRightOfRobot;
+//	}
 	
 	public void setRobot(Robot robot)
 	{
 		this.robot = robot;
+	}
+
+	public Robot getRobot() {
+		return robot;
+	}
+
+	public List<Position> getInitialDirtyCellList() {
+		return initialDirtyCells;
+	}
+
+	public void addInitialDirtyCell(Position initialDirtyCells) {
+		this.initialDirtyCells.add(initialDirtyCells);
 	}
 }
