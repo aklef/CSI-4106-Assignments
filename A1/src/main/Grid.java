@@ -23,8 +23,7 @@ public class Grid
 	private Grid(Integer rows, Integer columns)
 	{
 		if (rows < 1 || columns < 1)
-			throw new RuntimeException(
-					"Cannot create a grid with a dimension less than 1");
+			throw new RuntimeException("Cannot create a grid with a dimension less than 1");
 
 		this.setHeight(rows);
 		this.setWidth(columns);
@@ -100,11 +99,13 @@ public class Grid
 		this.robot = robot;
 	}
 
-	public Robot getRobot() {
+	public Robot getRobot()
+	{
 		return robot;
 	}
 
-	public List<Position> getDirt() {
+	public List<Position> getDirt()
+	{
 		return dirt;
 	}
 
