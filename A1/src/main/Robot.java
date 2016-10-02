@@ -141,4 +141,46 @@ public class Robot
 		}
 		return robotPos;
 	}
+	
+	public Position getCellLeftOfRobot()
+	{
+		Position robotPos = new Position(position);
+		
+		switch (this.getOrientation()) {
+			case EAST:
+				robotPos.row -= 1;
+				break;
+			case SOUTH:
+				robotPos.column += 1;
+				break;
+			case WEST:
+				robotPos.row += 1;
+				break;
+			case NORTH:
+				robotPos.column -= 1;
+				break;
+		}
+		return robotPos;
+	}
+	
+	public Position getCellInFrontOfRobot()
+	{
+		Position robotPos = new Position(position);
+		
+		switch (this.getOrientation()) {
+			case EAST:
+				robotPos.column += 1;
+				break;
+			case SOUTH:
+				robotPos.row += 1;
+				break;
+			case WEST:
+				robotPos.column -= 1;
+				break;
+			case NORTH:
+				robotPos.row -= 1;
+				break;
+		}
+		return robotPos;
+	}
 }
