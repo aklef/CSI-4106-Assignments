@@ -58,13 +58,13 @@ public class RobotApp
 		int maxObs = rng.nextInt(order) + order;
 		List<Position> obstacles = new LinkedList<Position>();
 		
-		for (int i = 0; i < order; i++)
+		for (int row = 0; row < order; row++)
 		{
-			for (int j = 0; j < order; j++)
+			for (int column = 0; column < order; column++)
 			{
 				if (rng.nextInt(order * order) < (order) && amtObs != maxObs)
 				{
-					obstacles.add(new Position(i, j));
+					obstacles.add(new Position(row, column));
 					amtObs++;
 				}
 			}
@@ -78,13 +78,13 @@ public class RobotApp
 		int maxDirt = rng.nextInt(order) + order / 2;
 		List<Position> dirt = new LinkedList<Position>();
 		
-		for (int i = 0; i < order; i++)
+		for (int row = 0; row < order; row++)
 		{
-			for (int j = 0; j < order; j++)
+			for (int column = 0; column < order; column++)
 			{
 				if (rng.nextInt(order * order) < (order) && amtDirt != maxDirt)
 				{
-					Position newDirtPos = new Position(i, j);
+					Position newDirtPos = new Position(row, column);
 					
 					if (!obstacles.contains(newDirtPos))
 					{
