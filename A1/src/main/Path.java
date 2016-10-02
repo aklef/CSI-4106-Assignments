@@ -50,7 +50,7 @@ public class Path
     {
         boolean isEqual = false;
 
-        if (object != null && object instanceof Path)
+        if (obj != null && obj instanceof Path)
         {
         	Path that = (Path) obj;
         	
