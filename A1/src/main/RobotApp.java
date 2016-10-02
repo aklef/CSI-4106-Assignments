@@ -182,7 +182,7 @@ public class RobotApp
 				break;
 		}
 		
-		System.out.format("%s %s...\n", "SearchType running. Using", searchType);
+		System.out.format("%s %s...\n", "Search running. Using", searchType);
 		System.out.println(visualize());
 		
 		List<Path> solution = null;
