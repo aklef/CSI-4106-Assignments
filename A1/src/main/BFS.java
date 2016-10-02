@@ -25,7 +25,7 @@ public class BFS extends Algorithm
 	protected List<Path> computeSolution()
 	{
 		Robot robot = this.grid.getRobot();
-		Path firstNode = new Path(null, robot, null, 0, grid.getDirt());
+		Path firstNode = new Path(robot, 0, grid.getDirt());
 		Path finalNode = null;
 		
 		openStates.add(firstNode);

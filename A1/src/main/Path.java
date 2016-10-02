@@ -41,6 +41,13 @@ public class Path
 		
 	}
 	/**
+	 * This is intended to be used mainly to create the initial state.
+	 */
+	public Path(Robot robot, int i, List<Position> dirt)
+	{
+		this(null, robot, null,  i, dirt);
+	}
+	/**
 	 * Compares one path with another only
 	 * regarding robot action, robot
 	 * position, and dirty cell list
