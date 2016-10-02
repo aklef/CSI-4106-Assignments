@@ -10,7 +10,7 @@ public class AStar implements Algorithm {
 	}
 
 	@Override
-	public Path computeSolution() {
+	public List<Path> computeSolution() {
 		// TODO Auto-generated method stub
 		return null;
 	}

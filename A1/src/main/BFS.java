@@ -5,8 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import org.apache.commons.collections4.map.MultiKeyMap;
-
 public class BFS implements Algorithm {
 
 	private Grid grid;
@@ -22,7 +20,7 @@ public class BFS implements Algorithm {
 	}
 
 	@Override
-	public Path computeSolution() {
+	public List<Path> computeSolution() {
 		
 		Robot robot = grid.getRobot();
 		Position position = robot.getPosition();
@@ -59,10 +57,46 @@ public class BFS implements Algorithm {
 					break;
 					
 				case FORWARDS:
+					Robot forwardBot = new Robot(tempRobot);
+					Position newPosition = forwardBot.getCellInFrontOfRobot();
+					Cell cellInFront;
 					
+					try{
+						cellInFront = grid.getCell(newPosition);
+					} catch (RuntimeException e) {
+						break;
+					}
 					
+					if(cellInFront.isObstructed()) {
+						break;
+					}
+					
+					newPath = new Path(node, forwardBot, action, node.cost + action.forwards(), node.remainingDirtyCells);
 					break;
+					
 				case SUCK:
+					Robot cleanBot = new Robot(tempRobot);
+					//WE ARE NOT ACTUALLY IMPACTING THE GRID DURING A SEARCH // leftBot.robotClean();
+					Cell currentCell;
+					
+					try{
+						currentCell = grid.getCell(cleanBot.getPosition());
+					} catch (RuntimeException e) {
+						break;
+					}
+					
+					if(!currentCell.isDirty()) {
+						break;
+					}
+					
+					LinkedList<Position> newDirtyList = new LinkedList<Position>(node.remainingDirtyCells);
+					
+					
+					if(!newDirtyList.remove(currentCell)){
+						throw new RuntimeException("Tried to create a path in BFS.computeSolution() which had one less dirty tiles, but the tile to be removed was not in the dirty list");
+					}
+					
+					newPath = new Path(node, cleanBot, action, node.cost + action.suck(), newDirtyList);
 					break;
 				}
 				
@@ -77,12 +111,15 @@ public class BFS implements Algorithm {
 			
 		}		
 		
-		//return null if no solution was found
-		return finalNode;
-	}
-	
-	public Path getNextNode(){
+		LinkedList<Path> finalPathList = new LinkedList<Path>();
+		Path finalPath = finalNode;
+		while(finalPath != null) {
+			finalPathList.addFirst(finalPath);
+			finalPath = finalPath.parent;
+		}
 		
-		return null;
+		
+		//return null if no solution was found
+		return finalPathList;
 	}
 }
