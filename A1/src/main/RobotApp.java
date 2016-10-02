@@ -6,8 +6,6 @@ import java.util.Random;
 
 import main.Robot.Direction;
 
-@SuppressWarnings("unused")
-
 public class RobotApp
 {
 	private final static Integer order = 6;
@@ -45,9 +43,12 @@ public class RobotApp
 		
 		System.out.format("Robot is at %s\n", robot.getPosition());
 		
+		long startTime = System.currentTimeMillis();
 		List<Path> solution = search(searchType);
+		long stopTime = System.currentTimeMillis();
+		long elapsedTime = stopTime - startTime;
 		
-		printSolution(solution);
+		printSolution(solution, elapsedTime);
 	}
 	
 	/************************************** LOGIC ****************************************/
@@ -243,20 +244,27 @@ public class RobotApp
 		return vis += "╝";
 	}
 	
-	public static void printSolution(List<Path> solution)
+	public static void printSolution(List<Path> solution, long elapsedTime)
 	{
 		if (solution == null)
 			return;
 		
 		Position pos;
 		Robot robot;
-		
+		int totalCost = 0;
+		int depth = 0;
 		for (Path node : solution)
 		{
 			robot = node.roboClone;
 			pos = robot.getPosition();
 			System.out.format("%s, %s, %s\n", pos, robot.getOrientation(), node.action);
+			totalCost += node.cost;
+			depth++;
 		}
+		
+		System.out.format("total cost: %n\n", totalCost);
+		System.out.format("Depth: %n\n", depth);
+		System.out.format("Time : %s ms\n", elapsedTime);
 	}
 	
 	public static <T extends Enum<?>> T randomEnum(Class<T> clazz)
