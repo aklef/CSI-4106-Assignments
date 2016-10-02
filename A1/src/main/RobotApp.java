@@ -1,6 +1,5 @@
 package main;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -40,11 +39,10 @@ public class RobotApp
 		
 		robot = new Robot(startPos, startDir);
 		
-		grid = generateGrid(order, dirt, obstacles, robot);
+		grid = generateGrid(order, obstacles, dirt, robot);
 		System.out.format("Robot is at %s facing %s\n", robot.getPosition(), robot.getOrientation());
 		
-		
-		//SPECIAL TEST CASE - PLEASE DELETE
+		//SPECIAL TEST CASE 1 - PLEASE DELETE
 		
 //				Position teststartPos = new Position(1,0);
 				
@@ -70,7 +68,6 @@ public class RobotApp
 //				grid.setDirt(new LinkedList<Position>(Arrays.asList(new Position(1,1))));
 				
 				//SPECIAL TEST CASE - PLEASE DELETE
-		
 		
 		long startTime = System.currentTimeMillis();
 		List<Path> solution = search(searchType, startTime);
