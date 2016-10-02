@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Random;
 
 import main.Robot.Direction;
-import main.Search.SearchType;
 
 @SuppressWarnings("unused")
 
@@ -31,7 +30,7 @@ public class RobotApp
 		rng = new Random();
 		// TEMP
 		// Gen search type
-		Integer searchType = rng.nextInt(3) + 1;
+		SearchType searchType = SearchType.BFS;
 		
 		List<Position> obstacles = generateObstacles();
 		List<Position> dirt = generateDirt(obstacles);
@@ -46,7 +45,7 @@ public class RobotApp
 		
 		System.out.format("Robot is at %s\n", robot.getPosition());
 		
-		List<Position> solution = search(searchType, grid);
+		List<Path> solution = search(searchType);
 		
 		printSolution(solution);
 	}
@@ -238,14 +237,14 @@ public class RobotApp
 		return vis += "╝";
 	}
 	
-	public static void printSolution(List<Position> solution)
+	public static void printSolution(List<Path> solution)
 	{
 		if (solution == null)
 			return;
 		
-		for (Position pos : solution)
+		for (Path pos : solution)
 		{
-			System.out.println(grid.getCell(pos).toString());
+			System.out.println(grid.getCell(pos.robotClone.getPosition()).toString());
 		}
 	}
 	
