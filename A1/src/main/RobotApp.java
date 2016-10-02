@@ -270,7 +270,7 @@ public class RobotApp
 		int cost = solution.get(solution.size()-1).cost;
 		int depth = 0;
 		
-		System.out.println("pos(row, col), DIR, Action");
+		System.out.println("pos(row, col), Dir, action");
 		
 		for (Path node : solution)
 		{

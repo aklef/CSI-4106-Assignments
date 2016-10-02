@@ -1,7 +1,5 @@
 package main;
 
-
-
 public class Robot
 {
 	// Useful enums
@@ -18,6 +16,13 @@ public class Robot
 			}
 			return null;
 		}
+		
+		@Override
+	    public String toString()
+		{
+			String s = this.name();
+			return s.substring(0, 1) + s.substring(1).toLowerCase();
+	    }
 	};
 
 	/**
@@ -43,6 +48,13 @@ public class Robot
 			}
 			return cost;
 		}
+		
+
+		@Override
+	    public String toString()
+		{
+			return this.name().toLowerCase();
+	    }
 	};
 	
 	// robot variables
