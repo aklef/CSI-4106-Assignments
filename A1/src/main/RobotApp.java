@@ -168,10 +168,6 @@ public class RobotApp
 				break;
 			case Astar:
 				break;
-			default:
-				System.out.println("ERROR! SearchType value received was "
-						+ type);
-				break;
 		}
 		
 		System.out.format("%s %s...\n", "SearchType running. Using", searchType);
