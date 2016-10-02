@@ -167,13 +167,22 @@ public class RobotApp
 	 */
 	private static List<Path> search(SearchType searchType)
 	{
+		Algorithm algo = null;
+		
 		switch (searchType) {
 			case BFS:
+				algo = new BFS(grid);
 				break;
 			case DFS:
 				break;
 			case Astar:
 				break;
+		}
+		
+		List<Path> result = null;
+		
+		if(algo != null){
+			result = algo.computeSolution();
 		}
 		
 		System.out.format("%s %s...\n", "SearchType running. Using", searchType);
