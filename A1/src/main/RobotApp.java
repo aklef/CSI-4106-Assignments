@@ -167,12 +167,12 @@ public class RobotApp
 	 */
 	private static List<Path> search(SearchType searchType)
 	{
-		Algorithm algo = null;
+		Algorithm search = null;
 		
 		switch (searchType)
 		{
 			case BFS:
-				algo = new BFS(grid);
+				search = new BFS(grid);
 				break;
 			case DFS:
 				break;
@@ -184,12 +184,11 @@ public class RobotApp
 		System.out.println(visualize());
 		
 		List<Path> solution = null;
-		if(algo != null)
+		if(search != null)
 		{
-			solution = algo.computeSolution();
+			solution = search.computeSolution();
 		}
-			 
-		//TODO implement searches
+		
 		return solution;
 	}
 	
