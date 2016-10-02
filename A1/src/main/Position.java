@@ -16,7 +16,8 @@ public class Position
 		this.column = column;
 	}
 	
-	public Position(Position position){
+	public Position(Position position)
+	{
 		this.row = new Integer(position.row);
 		this.column = new Integer(position.column);
 	}
@@ -28,16 +29,18 @@ public class Position
 	}
 	
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(Object obj)
+	{
 	    if (obj == null) {
 	        return false;
 	    }
-	    if (!Position.class.isAssignableFrom(obj.getClass())) {
+	    if (!Position.class.isAssignableFrom(obj.getClass()))
+	    {
 	        return false;
 	    }
-	    
 	    final Position pos = (Position) obj;
-	    if (!((this.row == pos.row) && (this.column == pos.column))) {
+	    if (!((this.row == pos.row) && (this.column == pos.column)))
+	    {
 	        return false;
 	    }
 	    return true;

@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-
+/**
+ * Our implementation of the Breadth-First Search.
+ * 
+ * @author Andreas, David
+ */
 public class BFS implements Algorithm {
 
 	private Grid grid;

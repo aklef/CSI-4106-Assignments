@@ -14,21 +14,37 @@ public class Robot
 	public enum Action {
 		SUCK, FORWARDS, TURNLEFT, TURNRIGHT;
 		
+		/**
+		 * Returns the cost of this Action.
+		 * @return 10 energy units.
+		 */
 		public int suck()
 		{
 			return 10;
 		}
+		/**
+		 * Returns the cost of this Action.
+		 * @return 50 energy units.
+		 */
 		public int forwards()
 		{
 			return 50;
 		}
+		/**
+		 * Returns the cost of this Action.
+		 * @return 20 energy units.
+		 */
 		public int turnLeft()
 		{
-			return this.turnRight();
+			return 20;
 		}
+		/**
+		 * Returns the cost of this Action.
+		 * @return 20 energy units.
+		 */
 		public int turnRight()
 		{
-			return 20;
+			return this.turnLeft();
 		}
 	};
 	
@@ -42,10 +58,10 @@ public class Robot
 		this.robotOrientation = orientation;
 	}
 	
-	public Robot(Robot existingRobot) {
-		position = new Position(existingRobot.position.row, existingRobot.position.column);
-		robotOrientation = existingRobot.robotOrientation;
-		
+	public Robot(Robot existingRobot)
+	{
+		this.position = new Position(existingRobot.position);
+		this.robotOrientation = existingRobot.robotOrientation;
 	}
 	
 	public Direction getOrientation()
@@ -88,29 +104,6 @@ public class Robot
 				break;
 		}
 	}
-	
-	public Boolean forwards()
-	{
-		
-		// TODO: Check if moving out of bounds - return false
-		
-		// TODO: Check if there are obstacles - return false
-		
-		// TODO: Move - return true.
-		// TODO return a cost
-
-		return false;
-	}
-	
-	public Boolean robotClean()
-	{
-		// TODO: Clean at the current position - return true if it was dirty
-		// before, return false if it was already clean
-		// TODO return a cost
-		
-		return false;
-	}
-
 	public Position getPosition()
 	{
 		return position;
@@ -121,22 +114,22 @@ public class Robot
 		this.position = position;
 	}
 	
-	public Position getCellRightOfRobot()
+	public Position getCellInFrontOfRobot()
 	{
 		Position robotPos = new Position(position);
 		
 		switch (this.getOrientation()) {
 			case EAST:
-					robotPos.row += 1;
+				robotPos.column += 1;
 				break;
 			case SOUTH:
-					robotPos.column -= 1;
+				robotPos.row += 1;
 				break;
 			case WEST:
-					robotPos.row -= 1;
+				robotPos.column -= 1;
 				break;
 			case NORTH:
-					robotPos.column += 1;
+				robotPos.row -= 1;
 				break;
 		}
 		return robotPos;
@@ -163,22 +156,22 @@ public class Robot
 		return robotPos;
 	}
 	
-	public Position getCellInFrontOfRobot()
+	public Position getCellRightOfRobot()
 	{
 		Position robotPos = new Position(position);
 		
 		switch (this.getOrientation()) {
 			case EAST:
-				robotPos.column += 1;
+					robotPos.row += 1;
 				break;
 			case SOUTH:
-				robotPos.row += 1;
+					robotPos.column -= 1;
 				break;
 			case WEST:
-				robotPos.column -= 1;
+					robotPos.row -= 1;
 				break;
 			case NORTH:
-				robotPos.row -= 1;
+					robotPos.column += 1;
 				break;
 		}
 		return robotPos;
