@@ -133,38 +133,42 @@ public class RobotApp
 	}
 	
 	public static Grid generateGrid(Integer gridSize, List<Position> obstacles,
-			List<Position> dirt, Robot robot) throws OutOfBoundsException
+			List<Position> dirt, Robot robot)
 	{
 		Grid newGrid = new Grid(gridSize);
-		
-		for (Position o : obstacles)
+		try
 		{
-			if (o.row < 0 || o.row >= gridSize || o.column < 0
-					|| o.column >= gridSize) 
-			{
-				throw new OutOfBoundsException("One of your obstacles is out of bounds");
+    		for (Position o : obstacles)
+    		{
+    			if (o.row < 0 || o.row >= gridSize || o.column < 0 || o.column >= gridSize) 
+    			{
+    				throw new OutOfBoundsException("One of your obstacles is out of bounds");
+    			}
+    			
+    				newGrid.getCell(o.row, o.column).setObstructed();
 			}
-			newGrid.getCell(o.row, o.column).setObstructed();
+    		for (Position d : dirt)
+    		{
+    			if (d.row < 0 || d.row >= gridSize || d.column < 0 || d.column >= gridSize)
+    			{
+    				throw new OutOfBoundsException("One of your dirt piles is out of bounds");
+    			}
+    			newGrid.getCell(d.row, d.column).setDirty();
+    		}
+		}
+		catch (OutOfBoundsException e)
+		{
+			e.printStackTrace();
+			throw new RuntimeException("Grid generation failed :(");
 		}
 		
-		for (Position d : dirt)
-		{
-			if (d.row < 0 || d.row >= gridSize || d.column < 0
-					|| d.column >= gridSize)
-			{
-				throw new RuntimeException("One of your dirt piles is out of bounds");
-			}
-			newGrid.getCell(d.row, d.column).setDirty();
-		}
 		newGrid.setDirt(dirt);
 		newGrid.setRobot(robot);
 		return newGrid;
 	}
 	
 	/**
-	 * @param type
-	 *            1=DFS, 2=BFS, 3=A
-	 * @return *
+	 * @param type 1=DFS, 2=BFS, 3=A
 	 */
 	private static List<Path> search(SearchType searchType)
 	{
