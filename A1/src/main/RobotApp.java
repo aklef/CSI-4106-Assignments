@@ -311,7 +311,13 @@ public class RobotApp
 		
 		System.out.format("total cost: %s\n", cost);
 		System.out.format("Depth: %s\n", depth);
-		System.out.format("Time : %s ms", elapsedTime);
+		String alt = "";
+		double time = elapsedTime/1000.0;
+		if (time > 1.5)
+		{
+			alt = String.format(" -> %.2f s", time);
+		}
+		System.out.format("Time : %s ms%s", elapsedTime, alt);
 	}
 	
 	public static <T extends Enum<?>> T randomEnum(Class<T> clazz)
