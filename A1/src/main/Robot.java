@@ -11,16 +11,10 @@ public class Robot
 
 		public static Orientation valueOf(int n)
 		{
-			switch (n)
+			for (Orientation dir : Orientation.values())
 			{
-				case 0:
-					return NORTH;
-				case 1:
-					return EAST;
-				case 2:
-					return SOUTH;
-				case 3:
-					return WEST;
+				if (dir.ordinal() == n)
+					return dir;
 			}
 			return null;
 		}
