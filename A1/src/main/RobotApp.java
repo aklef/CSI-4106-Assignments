@@ -169,7 +169,8 @@ public class RobotApp
 	{
 		Algorithm algo = null;
 		
-		switch (searchType) {
+		switch (searchType)
+		{
 			case BFS:
 				algo = new BFS(grid);
 				break;
