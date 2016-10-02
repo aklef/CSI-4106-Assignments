@@ -66,11 +66,11 @@ public class BFS extends Algorithm
 					try{
 						cellInFront = grid.getCell(newPosition);
 					} catch (RuntimeException e) {
-						break;
+						continue;
 					}
 					
 					if(cellInFront.isObstructed()) {
-						break;
+						continue;
 					}
 					
 					newPath = new Path(node, forwardBot, action, node.cost + action.forwards(), node.remainingDirtyCells);
@@ -79,22 +79,16 @@ public class BFS extends Algorithm
 				case SUCK:
 					Robot cleanBot = new Robot(tempRobot);
 					//WE ARE NOT ACTUALLY IMPACTING THE GRID DURING A SEARCH // leftBot.robotClean();
-					Cell currentCell;
 					
-					try{
-						currentCell = grid.getCell(cleanBot.getPosition());
-					} catch (RuntimeException e) {
-						break;
+					
+					if(!node.remainingDirtyCells.contains(cleanBot.getPosition())) {
+						continue;
 					}
-					
-					if(!currentCell.isDirty()) {
-						break;
-					}
-					
+										
 					LinkedList<Position> newDirtyList = new LinkedList<Position>(node.remainingDirtyCells);
 					
-					
-					if(!newDirtyList.remove(currentCell)){
+					Position cleanBotPosition = cleanBot.getPosition();
+					if(!newDirtyList.remove(cleanBotPosition)){
 						throw new RuntimeException("Tried to create a path in BFS.computeSolution() which had one less dirty tiles, but the tile to be removed was not in the dirty list");
 					}
 					
