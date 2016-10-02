@@ -247,7 +247,9 @@ public class RobotApp
 	public static void printSolution(List<Path> solution, long elapsedTime)
 	{
 		if (solution == null)
-			return;
+		{
+			throw new NullPointerException("Solution cannot be null.");
+		}
 		
 		Position pos;
 		Robot robot;
