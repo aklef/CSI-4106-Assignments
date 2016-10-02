@@ -44,7 +44,7 @@ public class RobotApp
 		
 		
 		long startTime = System.currentTimeMillis();
-		List<Path> solution = search(searchType);
+		List<Path> solution = search(searchType, startTime);
 		long stopTime = System.currentTimeMillis();
 		long elapsedTime = stopTime - startTime;
 		
@@ -173,7 +173,7 @@ public class RobotApp
 	/**
 	 * @param type 1=DFS, 2=BFS, 3=A
 	 */
-	private static List<Path> search(SearchType searchType)
+	private static List<Path> search(SearchType searchType, Long startTime)
 	{
 		Algorithm search = null;
 		
