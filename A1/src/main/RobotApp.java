@@ -251,9 +251,14 @@ public class RobotApp
 		if (solution == null)
 			return;
 		
-		for (Path pos : solution)
+		Position pos;
+		Robot robot;
+		
+		for (Path node : solution)
 		{
-			System.out.println(grid.getCell(pos.robotClone.getPosition()).toString());
+			robot = node.roboClone;
+			pos = robot.getPosition();
+			System.out.format("%s, %s, %s\n", pos, robot.getOrientation(), node.action);
 		}
 	}
 	

@@ -35,10 +35,10 @@ public class Path
 	{
 		this.parent = parentState;
 		this.action = action;
-		this.robotClone = new Robot(robot);
+		this.roboClone = new Robot(robot);
 		this.cost = cost;
 		this.remainingDirtyCells = new LinkedList<Position>(remainingDirtyCells);
-				
+		
 	}
 	/**
 	 * Compares one path with another only

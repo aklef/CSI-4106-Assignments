@@ -25,7 +25,7 @@ public class Position
 	@Override
 	public String toString()
 	{
-		return "P(" + this.row + ", " + this.column + ")";
+		return "pos(" + this.row + ", " + this.column + ")";
 	}
 	
 	@Override
