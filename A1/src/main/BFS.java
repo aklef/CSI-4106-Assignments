@@ -77,7 +77,7 @@ public class BFS extends Algorithm
 					
 					case SUCK:
 						// WE ARE NOT ACTUALLY IMPACTING THE GRID DURING A
-						// SEARCH // leftBot.robotClean();
+						// SEARCH
 
 						Position cleanBotPosition = tempBot.getPosition();
 						
@@ -130,10 +130,17 @@ public class BFS extends Algorithm
 			}
 		});
 		
-		finalNode = nodesWhichSucked.get(0);
+		Path finalPath = null;
+		if (nodesWhichSucked.isEmpty())
+		{
+			finalPath = firstNode;
+		}
+		else
+		{
+			finalPath = nodesWhichSucked.get(0);
+		}
 				
 		LinkedList<Path> finalPathList = new LinkedList<Path>();
-		Path finalPath = finalNode;
 		while (finalPath != null)
 		{
 			finalPathList.addFirst(finalPath);
