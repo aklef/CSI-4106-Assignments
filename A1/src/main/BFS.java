@@ -126,9 +126,6 @@ public class BFS extends Algorithm
 			}
 		}
 		
-		int indexOfMostCleanedPath = 0;
-		Path refToMostCleanedPath = null;
-		
 		Collections.sort(nodesWhichSucked, new Comparator<Path>()
 		{
 			public int compare(Path p1, Path p2)
