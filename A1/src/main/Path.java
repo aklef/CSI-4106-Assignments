@@ -48,9 +48,9 @@ public class Path
 	/**
 	 * This is intended to be used to create the initial Path state.
 	 */
-	public Path(Robot robot, int cost, int cleaned)
+	public Path(Robot robot, int cleaned)
 	{
-		this(null, robot, null, cost, cleaned);
+		this(null, robot, null, 0, cleaned);
 	}
 	/**
 	 * Compares one path with another only
