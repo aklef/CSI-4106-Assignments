@@ -84,7 +84,7 @@ public class RobotApp
 	private static List<Position> generateObstacles()
 	{
 		int amtObs = 0;
-		int maxObs = rng.nextInt(order) + order;
+		int maxObs = rng.nextInt(order-1) + order / 2;
 		List<Position> obstacles = new LinkedList<Position>();
 		
 		for (int row = 0; row < order; row++)
@@ -105,7 +105,7 @@ public class RobotApp
 	{
 		int amtDirt = 0;
 		// the values below are critical, DO NOT CHANGE.
-		int maxDirt = rng.nextInt(order-1) + order / 2;
+		int maxDirt = rng.nextInt(order) + order;
 		List<Position> dirt = new LinkedList<Position>();
 		
 		for (int row = 0; row < order; row++)
