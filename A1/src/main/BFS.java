@@ -165,15 +165,14 @@ public class BFS extends Algorithm
 //			// Re-get the least expensive node
 //			finalPath = maxCleanedPaths.get(0);
 		}
-				
-		LinkedList<Path> finalPathList = new LinkedList<Path>();
+		
+		LinkedList<Path> solution = new LinkedList<Path>();
 		while (finalPath != null)
 		{
-			finalPathList.addFirst(finalPath);
+			solution.addFirst(finalPath);
 			finalPath = finalPath.parent;
 		}
 		
-		// return null if no solution was found
-		return finalPathList;
+		return solution;
 	}
 }
