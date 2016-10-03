@@ -3,7 +3,6 @@ package main;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -100,21 +99,20 @@ public class BFS extends Algorithm
 							continue;
 						}
 						
-						if(!cell.isDirty() || cellsAlreadyCleaned.contains(cell)){
+						if(!cell.isDirty() || cellsAlreadyCleaned.contains(cell))
+						{
 							continue;
-						} else {
-							newPath = new Path(node, tempBot, action, node.cost
-									+ Action.cost(action), node.totalCleaned + 1);
+						}
+						else
+						{
+							newPath = new Path(node, tempBot, action, node.cost + Action.cost(action), node.totalCleaned + 1);
 							nodesWhichSucked.add(newPath);
 							cellsAlreadyCleaned.add(cell);
 						}
-						
-						
 						break;
 				}
 				
-				if(!openStates.contains(newPath)
-						&& !closedStates.contains(newPath)	)
+				if(!(openStates.contains(newPath) || closedStates.contains(newPath)))
 				{
 					openStates.add(newPath);
 				}
@@ -124,15 +122,16 @@ public class BFS extends Algorithm
 		int indexOfMostCleanedPath = 0;
 		Path refToMostCleanedPath = null;
 		
-		Collections.sort(nodesWhichSucked, new Comparator<Path>() {
-			public int compare(Path p1, Path p2) {
+		Collections.sort(nodesWhichSucked, new Comparator<Path>()
+				{
+			public int compare(Path p1, Path p2)
+			{
 				return Integer.compare(p1.totalCleaned, p2.totalCleaned);
 			}
 		});
 		
 		finalNode = nodesWhichSucked.get(0);
 				
-		
 		LinkedList<Path> finalPathList = new LinkedList<Path>();
 		Path finalPath = finalNode;
 		while (finalPath != null)
