@@ -134,9 +134,7 @@ public class BFS extends Algorithm
 			}
 		});
 		
-		
-		
-		int highestCleanCount = 0;
+//		int highestCleanCount = 0;
 		
 		Path finalPath = null;
 		if (nodesWhichSucked.isEmpty())
@@ -146,25 +144,26 @@ public class BFS extends Algorithm
 		else
 		{
 			finalPath = nodesWhichSucked.get(0);
-			highestCleanCount = finalPath.getCellsAlreadyCleaned().size();
-			
-			List<Path> maxCleanedPaths = new ArrayList<Path>();
-			
-			for(int i = 0; i < nodesWhichSucked.size(); i++) {
-				Path iPath = nodesWhichSucked.get(i);
-				if(iPath.getCellsAlreadyCleaned().size() == highestCleanCount) {
-					maxCleanedPaths.add(iPath);
-				}
-			}
-			
-			Collections.sort(maxCleanedPaths, new Comparator<Path>() {
-				public int compare(Path p1, Path p2) {
-					return Integer.compare(p1.cost, p2.cost);
-				}
-			});
-			
-			finalPath = maxCleanedPaths.get(0);
-			
+//			highestCleanCount = finalPath.getCellsAlreadyCleaned().size();
+//			
+//			List<Path> maxCleanedPaths = new ArrayList<Path>();
+//			
+//			for (Path sucker : nodesWhichSucked)
+//			{
+//				if (sucker.getCellsAlreadyCleaned().size() == highestCleanCount)
+//					maxCleanedPaths.add(sucker);
+//			}
+//			
+//			Collections.sort(maxCleanedPaths, new Comparator<Path>()
+//			{
+//				public int compare(Path p1, Path p2)
+//				{
+//					return Integer.compare(p1.cost, p2.cost);
+//				}
+//			});
+//			
+//			// Re-get the least expensive node
+//			finalPath = maxCleanedPaths.get(0);
 		}
 				
 		LinkedList<Path> finalPathList = new LinkedList<Path>();
