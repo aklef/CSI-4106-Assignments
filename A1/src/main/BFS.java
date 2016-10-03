@@ -18,7 +18,7 @@ public class BFS extends Algorithm
 	// robotorientation,
 	
 	protected Queue<Path> openStates;
-
+	
 	public BFS(Grid grid)
 	{
 		this.grid = grid;
@@ -71,47 +71,55 @@ public class BFS extends Algorithm
 						}
 						
 						tempBot.setPosition(newPosition);
-						newPath = new Path(node, tempBot, action, node.cost + Action.cost(action), node.getCellsAlreadyCleaned());
+						newPath = new Path(node, tempBot, action, node.cost 
+								+ Action.cost(action), node.getCellsAlreadyCleaned());
 						break;
 					
 					case SUCK:
 						// WE ARE NOT ACTUALLY IMPACTING THE GRID DURING A
 						// SEARCH
-
+						
 						Position cleanBotPosition = tempBot.getPosition();
 						
-//						if (!node.remainingDirtyCells.contains(cleanBotPosition))
-//						{
-//							continue;
-//						}
-//						
-//						LinkedList<Position> newDirtyList = new LinkedList<Position>(node.remainingDirtyCells);
-//						
-//						if (!newDirtyList.remove(cleanBotPosition))
-//						{
-//							throw new RuntimeException("Tried to create a path in BFS.computeSolution() which had one less dirty tiles, but the tile to be removed was not in the dirty list");
-//						}
+						// if
+						// (!node.remainingDirtyCells.contains(cleanBotPosition))
+						// {
+						// continue;
+						// }
+						//
+						// LinkedList<Position> newDirtyList = new
+						// LinkedList<Position>(node.remainingDirtyCells);
+						//
+						// if (!newDirtyList.remove(cleanBotPosition))
+						// {
+						// throw new
+						// RuntimeException("Tried to create a path in BFS.computeSolution() which had one less dirty tiles, but the tile to be removed was not in the dirty list");
+						// }
 						Cell cell = null;
-						try {
+						try
+						{
 							cell = grid.getCell(cleanBotPosition);
-						} catch (OutOfBoundsException e) {
+						}
+						catch (OutOfBoundsException e)
+						{
 							continue;
 						}
 						
-						if(!cell.isDirty() || node.getCellsAlreadyCleaned().contains(cell))
+						if (!cell.isDirty() || node.getCellsAlreadyCleaned().contains(cell))
 						{
 							continue;
 						}
 						else
 						{
-							newPath = new Path(node, tempBot, action, node.cost + Action.cost(action), node.getCellsAlreadyCleaned());
+							newPath = new Path(node, tempBot, action, node.cost
+									+ Action.cost(action), node.getCellsAlreadyCleaned());
 							nodesWhichSucked.add(newPath);
 							newPath.addCleanedCell(cell);
 						}
 						break;
 				}
 				
-				if(!(openStates.contains(newPath) || closedStates.contains(newPath)))
+				if (!(openStates.contains(newPath) || closedStates.contains(newPath)))
 				{
 					openStates.add(newPath);
 				}
@@ -122,7 +130,7 @@ public class BFS extends Algorithm
 		Path refToMostCleanedPath = null;
 		
 		Collections.sort(nodesWhichSucked, new Comparator<Path>()
-				{
+		{
 			public int compare(Path p1, Path p2)
 			{
 				return Integer.compare(p2.getCellsAlreadyCleaned().size(), p1.getCellsAlreadyCleaned().size());

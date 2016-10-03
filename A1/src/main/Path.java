@@ -1,10 +1,6 @@
 package main;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
 
 import main.Robot.Action;
 
@@ -19,7 +15,7 @@ public class Path
 	/**
 	 * The parent Node of this Path.
 	 */
-	public Path		   	  parent;
+	public Path		parent;
 	/**
 	 * What action was done at this Node of the Path.
 	 */
@@ -27,9 +23,9 @@ public class Path
 	/**
 	 * What action was done at this Node of the Path.
 	 */
-	public Robot		  roboClone;
+	public Robot	roboClone;
 	
-	public int		  cost;
+	public int		cost;
 	
 	private HashSet<Cell> cellsAlreadyCleaned = new HashSet<Cell>();
 	
@@ -44,22 +40,21 @@ public class Path
 	public Path(Path parentState,
 				Robot robot,
 				Action action,
-				int cost, HashSet<Cell> currentSet)
+				int cost,
+				HashSet<Cell> currentSet)
 	{
 		this.parent = parentState;
 		this.action = action;
 		this.roboClone = robot;
 		this.cost = cost;
-		if(currentSet == null){
+		if(currentSet == null)
+		{
 			cellsAlreadyCleaned = new HashSet<Cell>();
-		} else {
+		}
+		else
+		{
 			this.cellsAlreadyCleaned = (HashSet<Cell>) currentSet.clone();			
 		}
-		
-		
-		
-		
-		
 	}
 	/**
 	 * This is intended to be used to create the initial Path state.
@@ -99,7 +94,12 @@ public class Path
         return equal;
     }
 	
-	public boolean equalsStartNode(Object obj) // Compares one path with another only regarding robot action, robot position, and dirty cell list
+	/**
+	 * Compares one path with another only regarding robot action, robot position, and dirty cell list
+	 * @param obj
+	 * @return
+	 */
+	public boolean equalsStartNode(Object obj)
     {
 	    if (obj == null) {
 	        return false;
@@ -109,23 +109,21 @@ public class Path
 	        return false;
 	    }
 		
-        boolean equal = false;
     	Path otherPath = (Path) obj;
-    	
-    	if( 
-   			this.roboClone.getPosition().equals(otherPath.roboClone.getPosition()) &&
-			this.roboClone.getOrientation().name().equals(otherPath.roboClone.getOrientation().name()) &&
-			this.cellsAlreadyCleaned.equals(otherPath.cellsAlreadyCleaned)
-			)
+    	if( this.roboClone.getPosition().equals(otherPath.roboClone.getPosition()) &&
+			this.roboClone.getOrientation() == otherPath.roboClone.getOrientation() &&
+			this.cellsAlreadyCleaned.equals(otherPath.cellsAlreadyCleaned))
     	{
-    		equal = true;
+    		return true;
     	}
-        return equal;
+        return false;
     }
-	public HashSet<Cell> getCellsAlreadyCleaned() {
+	public HashSet<Cell> getCellsAlreadyCleaned()
+	{
 		return cellsAlreadyCleaned;
 	}
-	public void addCleanedCell(Cell cellAlreadyCleaned) {
+	public void addCleanedCell(Cell cellAlreadyCleaned)
+	{
 		this.cellsAlreadyCleaned.add(cellAlreadyCleaned);
 	}
 }
