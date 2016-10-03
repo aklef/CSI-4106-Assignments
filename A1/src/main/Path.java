@@ -1,8 +1,5 @@
 package main;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import main.Robot.Action;
 
 /**
@@ -14,20 +11,28 @@ public class Path
 	/**
 	 * The parent Node of this Path.
 	 */
-	public Path		   	  parent;
+	public Path		parent;
 	/**
 	 * What action was done at this Node of the Path.
 	 */
 	public Action   action;
 	/**
-	 * What action was done at this Node of the Path.
+	 * This state's instance of our robot.
 	 */
-	public Robot		  roboClone;
-	
-	public int		  cost;
-	
+	public Robot	roboClone;
+	/**
+	 * The cummulative cost of the Actions taken to reach this state.
+	 */
+	public int		cost;
 	public int totalCleaned;
 	
+	/**
+	 * The normal State contructor.
+	 * @param parentState This state's parent state.
+	 * @param robot This state's instance of our robot.
+	 * @param action The Action taken here.
+	 * @param cost The cost of reaching this state.
+	 */
 	public Path(Path parentState,
 				Robot robot,
 				Action action,
@@ -39,9 +44,6 @@ public class Path
 		this.roboClone = robot;
 		this.cost = cost;
 		this.totalCleaned = cleaned;
-		
-		
-		
 	}
 	/**
 	 * This is intended to be used to create the initial Path state.
