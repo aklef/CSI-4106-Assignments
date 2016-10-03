@@ -153,7 +153,11 @@ public class RobotApp
 			}
 			// valid
 			else
-			{
+			{	
+				if (dirt.contains(newStartPos))
+				{
+					dirt.remove(newStartPos);
+				}
 				obstructed = false;
 			}
 			
@@ -302,14 +306,7 @@ public class RobotApp
 		{
 			robot = node.roboClone;
 			pos = robot.getPosition();
-			if (depth == 0)
-			{
-				System.out.format("%s, %s, %s\n", pos, robot.getOrientation(), "start");
-			}
-			else if (node.action != null)
-			{
-				System.out.format("%s, %s, %s\n", pos, robot.getOrientation(), node.action);
-			}
+			System.out.format("%s, %s, %s\n", pos, robot.getOrientation(), depth == 0? "start": node.action);
 			depth++;
 		}
 		
