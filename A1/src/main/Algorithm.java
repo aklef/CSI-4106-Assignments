@@ -1,6 +1,5 @@
 package main;
 
-import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -9,6 +8,9 @@ import java.util.List;
 abstract class Algorithm
 {
 	protected Grid grid;
+	/**
+	 * Represents a configuration (or set of configurations) of the world.
+	 */
 	protected List<Path> closedStates;
 	
 	protected abstract List<Path> computeSolution();
