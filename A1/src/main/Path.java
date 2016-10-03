@@ -25,27 +25,30 @@ public class Path
 	public Robot		  roboClone;
 	
 	public int		  cost;
-	public List<Position> remainingDirtyCells;
+	
+	public int totalCleaned;
 	
 	public Path(Path parentState,
 				Robot robot,
 				Action action,
 				int cost,
-				List<Position> remainingDirtyCells)
+				int cleaned)
 	{
 		this.parent = parentState;
 		this.action = action;
 		this.roboClone = robot;
 		this.cost = cost;
-		this.remainingDirtyCells = new LinkedList<Position>(remainingDirtyCells);
+		this.totalCleaned = cleaned;
+		
+		
 		
 	}
 	/**
 	 * This is intended to be used to create the initial Path state.
 	 */
-	public Path(Robot robot, int cost, List<Position> dirt)
+	public Path(Robot robot, int cost, int cleaned)
 	{
-		this(null, robot, null, cost, dirt);
+		this(null, robot, null, cost, cleaned);
 	}
 	/**
 	 * Compares one path with another only
@@ -66,10 +69,8 @@ public class Path
         boolean equal = false;
     	Path otherPath = (Path) obj;
     	
-    	if( /*this.action == otherPath.action && */
-			this.roboClone.getPosition().equals(otherPath.roboClone.getPosition()) &&
-			this.roboClone.getOrientation() == otherPath.roboClone.getOrientation() &&
-			this.remainingDirtyCells.equals(otherPath.remainingDirtyCells)
+    	if( this.roboClone.getPosition().equals(otherPath.roboClone.getPosition()) &&
+			this.roboClone.getOrientation().name().equals(otherPath.roboClone.getOrientation().name())
 			)
     	{
     		equal = true;

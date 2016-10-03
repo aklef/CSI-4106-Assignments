@@ -1,6 +1,8 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,8 +31,10 @@ public class BFS extends Algorithm
 	protected List<Path> computeSolution()
 	{
 		Robot robot = this.grid.getRobot();
-		Path firstNode = new Path(robot, 0, grid.getDirt());
+		Path firstNode = new Path(robot, 0, 0);
 		Path finalNode = null;
+		List<Path> nodesWhichSucked = new ArrayList<Path>();
+		List<Cell> cellsAlreadyCleaned = new ArrayList<Cell>();
 		
 		this.openStates.add(firstNode);
 		
@@ -51,7 +55,7 @@ public class BFS extends Algorithm
 					case LEFT: case RIGHT:
 						tempBot.turn(action);
 						newPath = new Path(node, tempBot, action, node.cost
-								+ Action.cost(action), node.remainingDirtyCells);
+								+ Action.cost(action), node.totalCleaned);
 						break;
 					
 					case MOVE:
@@ -69,7 +73,7 @@ public class BFS extends Algorithm
 						}
 						
 						tempBot.setPosition(newPosition);
-						newPath = new Path(node, tempBot, action, node.cost + Action.cost(action), node.remainingDirtyCells);
+						newPath = new Path(node, tempBot, action, node.cost + Action.cost(action), node.totalCleaned);
 						break;
 					
 					case SUCK:
@@ -78,43 +82,56 @@ public class BFS extends Algorithm
 
 						Position cleanBotPosition = tempBot.getPosition();
 						
-						if (!node.remainingDirtyCells.contains(cleanBotPosition))
-						{
+//						if (!node.remainingDirtyCells.contains(cleanBotPosition))
+//						{
+//							continue;
+//						}
+//						
+//						LinkedList<Position> newDirtyList = new LinkedList<Position>(node.remainingDirtyCells);
+//						
+//						if (!newDirtyList.remove(cleanBotPosition))
+//						{
+//							throw new RuntimeException("Tried to create a path in BFS.computeSolution() which had one less dirty tiles, but the tile to be removed was not in the dirty list");
+//						}
+						Cell cell = null;
+						try {
+							cell = grid.getCell(cleanBotPosition);
+						} catch (OutOfBoundsException e) {
 							continue;
 						}
 						
-						LinkedList<Position> newDirtyList = new LinkedList<Position>(node.remainingDirtyCells);
-						
-						if (!newDirtyList.remove(cleanBotPosition))
-						{
-							throw new RuntimeException("Tried to create a path in BFS.computeSolution() which had one less dirty tiles, but the tile to be removed was not in the dirty list");
+						if(!cell.isDirty() || cellsAlreadyCleaned.contains(cell)){
+							continue;
+						} else {
+							newPath = new Path(node, tempBot, action, node.cost
+									+ Action.cost(action), node.totalCleaned + 1);
+							nodesWhichSucked.add(newPath);
+							cellsAlreadyCleaned.add(cell);
 						}
 						
-						newPath = new Path(node, tempBot, action, node.cost
-								+ Action.cost(action), newDirtyList);
+						
 						break;
 				}
 				
 				if(!openStates.contains(newPath)
-						|| !closedStates.contains(newPath)	)
+						&& !closedStates.contains(newPath)	)
 				{
-//					if(!( firstNode.roboClone.getPosition().equals(newPath.roboClone.getPosition()) //FIRST NODE SPECIAL EQUALITY CHECK, CANNOT CHECK ACTION
-//							&& firstNode.roboClone.getOrientation().equals(newPath.roboClone.getOrientation())  //FIRST NODE SPECIAL EQUALITY CHECK, CANNOT CHECK ACTION
-//							&& firstNode.remainingDirtyCells.equals(newPath.remainingDirtyCells)) ) //FIRST NODE SPECIAL EQUALITY CHECK, CANNOT CHECK ACTION
-//					{
-						if(newPath.remainingDirtyCells.isEmpty() )
-						{
-							finalNode = newPath;
-							
-						}
-						else
-						{
-							openStates.add(newPath);
-						}
-//					}
+					openStates.add(newPath);
 				}
 			}
 		}
+		
+		int indexOfMostCleanedPath = 0;
+		Path refToMostCleanedPath = null;
+		
+		Collections.sort(nodesWhichSucked, new Comparator<Path>() {
+			public int compare(Path p1, Path p2) {
+				return Integer.compare(p1.totalCleaned, p2.totalCleaned);
+			}
+		});
+		
+		finalNode = nodesWhichSucked.get(0);
+				
 		
 		LinkedList<Path> finalPathList = new LinkedList<Path>();
 		Path finalPath = finalNode;
