@@ -33,7 +33,6 @@ public class BFS extends Algorithm
 		Path firstNode = new Path(robot, 0);
 		Path finalNode = null;
 		List<Path> nodesWhichSucked = new ArrayList<Path>();
-		List<Cell> cellsAlreadyCleaned = new ArrayList<Cell>();
 		
 		this.openStates.add(firstNode);
 		
@@ -54,7 +53,7 @@ public class BFS extends Algorithm
 					case LEFT: case RIGHT:
 						tempBot.turn(action);
 						newPath = new Path(node, tempBot, action, node.cost
-								+ Action.cost(action), node.totalCleaned);
+								+ Action.cost(action), node.getCellsAlreadyCleaned());
 						break;
 					
 					case MOVE:
@@ -72,7 +71,7 @@ public class BFS extends Algorithm
 						}
 						
 						tempBot.setPosition(newPosition);
-						newPath = new Path(node, tempBot, action, node.cost + Action.cost(action), node.totalCleaned);
+						newPath = new Path(node, tempBot, action, node.cost + Action.cost(action), node.getCellsAlreadyCleaned());
 						break;
 					
 					case SUCK:
@@ -99,15 +98,15 @@ public class BFS extends Algorithm
 							continue;
 						}
 						
-						if(!cell.isDirty() || cellsAlreadyCleaned.contains(cell))
+						if(!cell.isDirty() || node.getCellsAlreadyCleaned().contains(cell))
 						{
 							continue;
 						}
 						else
 						{
-							newPath = new Path(node, tempBot, action, node.cost + Action.cost(action), node.totalCleaned + 1);
+							newPath = new Path(node, tempBot, action, node.cost + Action.cost(action), node.getCellsAlreadyCleaned());
 							nodesWhichSucked.add(newPath);
-							cellsAlreadyCleaned.add(cell);
+							newPath.addCleanedCell(cell);
 						}
 						break;
 				}
@@ -126,9 +125,13 @@ public class BFS extends Algorithm
 				{
 			public int compare(Path p1, Path p2)
 			{
-				return Integer.compare(p1.totalCleaned, p2.totalCleaned);
+				return Integer.compare(p2.getCellsAlreadyCleaned().size(), p1.getCellsAlreadyCleaned().size());
 			}
 		});
+		
+		
+		
+		int highestCleanCount = 0;
 		
 		Path finalPath = null;
 		if (nodesWhichSucked.isEmpty())
@@ -138,6 +141,25 @@ public class BFS extends Algorithm
 		else
 		{
 			finalPath = nodesWhichSucked.get(0);
+			highestCleanCount = finalPath.getCellsAlreadyCleaned().size();
+			
+			List<Path> maxCleanedPaths = new ArrayList<Path>();
+			
+			for(int i = 0; i < nodesWhichSucked.size(); i++) {
+				Path iPath = nodesWhichSucked.get(i);
+				if(iPath.getCellsAlreadyCleaned().size() == highestCleanCount) {
+					maxCleanedPaths.add(iPath);
+				}
+			}
+			
+			Collections.sort(maxCleanedPaths, new Comparator<Path>() {
+				public int compare(Path p1, Path p2) {
+					return Integer.compare(p1.cost, p2.cost);
+				}
+			});
+			
+			finalPath = maxCleanedPaths.get(0);
+			
 		}
 				
 		LinkedList<Path> finalPathList = new LinkedList<Path>();
