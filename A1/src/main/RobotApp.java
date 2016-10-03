@@ -302,7 +302,14 @@ public class RobotApp
 		{
 			robot = node.roboClone;
 			pos = robot.getPosition();
-			System.out.format("%s, %s, %s\n", pos, robot.getOrientation(), depth == 0? "start": node.action);
+			if (depth == 0)
+			{
+				System.out.format("%s, %s, %s\n", pos, robot.getOrientation(), "start");
+			}
+			else if (node.action != null)
+			{
+				System.out.format("%s, %s, %s\n", pos, robot.getOrientation(), node.action);
+			}
 			depth++;
 		}
 		
