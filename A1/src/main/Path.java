@@ -3,8 +3,10 @@ package main;
 import main.Robot.Action;
 
 /**
+ * 
  * The path represents a Node in our Search.
- * It had 
+ * It is quite possible for two different nodes to contain the same state, if that state is generated via two different sequences
+of actions.
  */
 public class Path
 {
@@ -58,7 +60,7 @@ public class Path
 	 * position, and dirty cell list
 	 */
 	@Override
-    public boolean equals(Object obj) // Compares one path with another only regarding robot action, robot position, and dirty cell list
+    public boolean equals(Object obj)
     {
 	    if (obj == null) {
 	        return false;
@@ -68,15 +70,12 @@ public class Path
 	        return false;
 	    }
 		
-        boolean equal = false;
     	Path otherPath = (Path) obj;
-    	
     	if( this.roboClone.getPosition().equals(otherPath.roboClone.getPosition()) &&
-			this.roboClone.getOrientation().name().equals(otherPath.roboClone.getOrientation().name())
-			)
+			this.roboClone.getOrientation() == otherPath.roboClone.getOrientation())
     	{
-    		equal = true;
+    		return true;
     	}
-        return equal;
-    }
+		return false;
+	}
 }
