@@ -36,17 +36,17 @@ public class Robot
 		 */
 		public static int cost(Action action)
 		{
-			int cost = 0;
 			switch (action)
 			{
 				case LEFT: case RIGHT:
-					cost = 20;
+					return 20;
 				case SUCK:
-					cost = 10;
+					return 10;
 				case MOVE:
-					cost = 50;
+					return 50;
+				default:
+					return 0;
 			}
-			return cost;
 		}
 		
 
