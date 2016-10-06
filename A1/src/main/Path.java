@@ -21,7 +21,7 @@ public class Path
 	 */
 	public Action   action;
 	/**
-	 * What action was done at this Node of the Path.
+	 * The robot as it was at this point in the Path.
 	 */
 	public Robot	roboClone;
 	
