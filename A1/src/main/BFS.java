@@ -29,8 +29,8 @@ public class BFS extends Algorithm
 	@Override
 	protected List<Path> computeSolution()
 	{
-		Robot robot = this.grid.getRobot();
-		Path firstNode = new Path(robot, 0);
+		Robot firstRobot = this.grid.getRobot();
+		Path firstNode = new Path(firstRobot, 0);
 		Path finalNode = null;
 		List<Path> nodesWhichSucked = new ArrayList<Path>();
 		
