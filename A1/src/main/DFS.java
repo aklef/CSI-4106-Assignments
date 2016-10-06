@@ -39,8 +39,9 @@ public class DFS extends Algorithm {
 			
 			
 			
-			for (Action action : Action.values())
+			for (int i = Action.values().length - 1; i >= 0 ; i--)
 			{
+				Action action = (Action.values())[i];
 				tempBot = new Robot(node.roboClone);
 				newPath = null;
 				
@@ -130,8 +131,6 @@ public class DFS extends Algorithm {
 			}
 		});
 		
-		int highestCleanCount = 0;
-		
 		Path finalPath = null;
 		if (nodesWhichSucked.isEmpty())
 		{
@@ -140,26 +139,6 @@ public class DFS extends Algorithm {
 		else
 		{
 			finalPath = nodesWhichSucked.get(0);
-			highestCleanCount = finalPath.getCellsAlreadyCleaned().size();
-			
-			List<Path> maxCleanedPaths = new ArrayList<Path>();
-			
-			for (Path sucker : nodesWhichSucked)
-			{
-				if (sucker.getCellsAlreadyCleaned().size() == highestCleanCount)
-					maxCleanedPaths.add(sucker);
-			}
-			
-			Collections.sort(maxCleanedPaths, new Comparator<Path>()
-			{
-				public int compare(Path p1, Path p2)
-				{
-					return Integer.compare(p1.cost, p2.cost);
-				}
-			});
-			
-			// Re-get the least expensive node
-			finalPath = maxCleanedPaths.get(0);
 		}
 		
 		LinkedList<Path> solution = new LinkedList<Path>();
