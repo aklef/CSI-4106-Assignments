@@ -1,10 +1,12 @@
 package main;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.SortedMap;
 
 import main.Robot.Action;
 
@@ -55,6 +57,31 @@ public class AStar extends Algorithm
 		int cost = h(start, goal);
 		
 		return cost;
+	}
+	
+	private int heuristic(List<Position> goalPositions, Path nextPath)
+	{
+//		Position start = startPath.roboClone.getPosition();
+//		Position goal = goalPath.roboClone.getPosition();
+//		
+		Integer cost = Integer.MAX_VALUE;
+		
+		//Get estimated number of "steps" to get from nextPath to all goalPositions		
+		ArrayList<Integer> costs = new ArrayList<Integer>();
+		
+		for(Position i : goalPositions){
+			costs.add(h(nextPath.roboClone.getPosition(), i));
+		}
+		
+		//Find the lowest cost among the results
+		for(Integer i : costs) {
+			if(i < cost) {
+				cost = i;
+			}
+		}
+		
+		//Convert the resulting steps into a "plausible" set of actions (n moves + 1 suck) and return it
+		return (cost * Action.cost(Action.MOVE)) + Action.cost(Action.SUCK);
 	}
 	
 	@Override
