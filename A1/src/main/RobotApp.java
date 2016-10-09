@@ -28,7 +28,7 @@ public class RobotApp
 		rng = new Random();
 		// TEMP
 		// Gen search type
-		SearchType searchType = SearchType.BFS;
+		SearchType searchType = SearchType.Astar;
 		
 		List<Position> obstacles = generateObstacles();
 		List<Position> dirt = generateDirt(obstacles);
@@ -216,6 +216,7 @@ public class RobotApp
 				search = new DFS(grid);
 				break;
 			case Astar:
+				search = new AStar(grid);
 				break;
 		}
 		
