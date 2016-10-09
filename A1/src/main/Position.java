@@ -2,7 +2,13 @@ package main;
 
 public class Position
 {
+	/**
+	 * The x coordinate of this Position
+	 */
 	public int row;
+	/**
+	 * The y coordinate of this Position
+	 */
 	public int column;
 	
 	public Position( int xy )
