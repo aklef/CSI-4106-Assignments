@@ -33,8 +33,7 @@ public class AStar extends Algorithm
 	 */
 	private int manhattanDistance(Position p1, Position p2)
 	{
-		int manhattan = Math.abs(p1.row-p2.row) + Math.abs(p1.column-p2.column);
-		return manhattan;
+		return Math.abs(p1.row - p2.row) + Math.abs(p1.column - p2.column);
 	}
 	
 	private int heuristic(List<Position> goalPositions, Path nextPath)
@@ -200,9 +199,7 @@ public class AStar extends Algorithm
 					continue;
 				}
 				
-				int tentativeRealCost = Integer.MAX_VALUE;
-				
-					tentativeRealCost = current.cost + Action.cost(action);
+				int tentativeRealCost = current.cost + Action.cost(action);
 				
 				if (!openSet.contains(next))
 				{
