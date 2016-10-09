@@ -45,7 +45,12 @@ public class AStar extends Algorithm
 		//Get estimated number of "steps" to get from nextPath to all goalPositions		
 		ArrayList<Integer> costs = new ArrayList<Integer>();
 		
+		
+		//BE SURE TO AVOID ALREADY CLEANED GOAL NODES IN THE HEURISTIC
 		for(Position i : goalPositions){
+			if(nextPath.getCellsAlreadyCleaned().contains(i)){
+				continue;
+			}
 			costs.add(manhattanDistance(nextPath.roboClone.getPosition(), i));
 		}
 		
@@ -56,7 +61,7 @@ public class AStar extends Algorithm
 			}
 		}
 		
-		//Convert the resulting steps into a "plausible" set of actions (n moves + 1 suck) and return it
+		//Convert the resulting steps into a "plausible" cost estimation and return it
 		return (cost * Action.cost(Action.MOVE)) + Action.cost(Action.SUCK);
 	}
 	
@@ -66,12 +71,12 @@ public class AStar extends Algorithm
 		Robot firstRobot = this.grid.getRobot();
 		Path finalNode = null;
 		firstNode = new Path(firstRobot, 0);
-		LinkedHashMap<Path, Integer> realCost = new LinkedHashMap<Path, Integer>(); // g(n)
+		//LinkedHashMap<Path, Integer> realCost = new LinkedHashMap<Path, Integer>(); // g(n)
 		LinkedHashMap<Path, Integer> totalCost = new LinkedHashMap<Path, Integer>(); // g(n) + h(n)
-		HashSet<Path> openSet = new HashSet<Path>();
-		HashSet<Path> closedSet = new HashSet<Path>();
+		List<Path> openSet = new LinkedList<Path>();
+		List<Path> closedSet = new LinkedList<Path>();
 		
-		realCost.put(firstNode, 0);
+		//realCost.put(firstNode, 0);
 		totalCost.put(firstNode, heuristic(grid.getDirt(), firstNode));
 		
 		openSet.add(firstNode);
@@ -96,6 +101,7 @@ public class AStar extends Algorithm
 			
 			if(dirt.contains(current.roboClone.getPosition()) && current.action == Action.SUCK && current.getCellsAlreadyCleaned().size() == dirt.size() ){
 				finalNode = current;
+				break;
 			}
 			
 			openSet.remove(current);
@@ -108,7 +114,6 @@ public class AStar extends Algorithm
 			{
 				tempBot = new Robot(current.roboClone);
 				next = null;
-				int  new_cost;
 				
 				switch (action)
 				{
@@ -178,17 +183,15 @@ public class AStar extends Algorithm
 				
 				int tentativeRealCost = Integer.MAX_VALUE;
 				
-				if(realCost.containsKey(next)){
-					tentativeRealCost = realCost.get(next) + heuristic(dirt, current);
-				}
+					tentativeRealCost = current.cost + Action.cost(action);
 				
 				if(!openSet.contains(next)) {
 					openSet.add(next);
-				} else if (tentativeRealCost >= realCost.get(next)) {
+				} else if (tentativeRealCost >= next.cost) {
 					continue;
 				}
 				
-				realCost.put(next,tentativeRealCost);
+				next.cost = tentativeRealCost;
 				totalCost.put(next,tentativeRealCost + heuristic(dirt, next));
 			}
 		}
