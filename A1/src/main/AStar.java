@@ -1,7 +1,7 @@
 package main;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,7 +12,7 @@ public class AStar extends Algorithm
 	/**
 	 * List of open Nodes.
 	 */
-	//protected PriorityQueue<Path> frontier;
+	// protected PriorityQueue<Path> frontier;
 	protected Path firstNode;
 	protected List<Position> dirt;
 	
@@ -23,8 +23,10 @@ public class AStar extends Algorithm
 		//this.frontier = new PriorityQueue<Path>();
 		this.closedStates = new LinkedList<Path>();
 	}
+	
 	/**
 	 * Calculates an estimate of the cost to go from one position to another.
+	 * 
 	 * @param source The node to start from
 	 * @param destination The node we want to estimate the cost to get to.
 	 * @return The manhattanDistance(n) cost of such a traversal.
@@ -37,12 +39,12 @@ public class AStar extends Algorithm
 	
 	private int heuristic(List<Position> goalPositions, Path nextPath)
 	{
-//		Position start = startPath.roboClone.getPosition();
-//		Position goal = goalPath.roboClone.getPosition();
-//		
+		// Position start = startPath.roboClone.getPosition();
+		// Position goal = goalPath.roboClone.getPosition();
+		//
 		Integer cost = Integer.MAX_VALUE;
 		
-		//Get estimated number of "steps" to get from nextPath to all goalPositions		
+		// Get estimated number of "steps" to get from nextPath to all goalPositions
 		ArrayList<Integer> costs = new ArrayList<Integer>();
 		
 		
@@ -54,14 +56,14 @@ public class AStar extends Algorithm
 			costs.add(manhattanDistance(nextPath.roboClone.getPosition(), i));
 		}
 		
-		//Find the lowest cost among the results
-		for(Integer i : costs) {
-			if(i < cost) {
+		// Find the lowest cost among the results
+		for (Integer i : costs)
+		{
+			if (i < cost)
 				cost = i;
-			}
 		}
 		
-		//Convert the resulting steps into a "plausible" cost estimation and return it
+		// Convert the resulting steps into a "plausible" cost estimation and return it
 		return (cost * Action.cost(Action.MOVE)) + Action.cost(Action.SUCK);
 	}
 	
@@ -71,27 +73,29 @@ public class AStar extends Algorithm
 		Robot firstRobot = this.grid.getRobot();
 		Path finalNode = null;
 		firstNode = new Path(firstRobot, 0);
-		//LinkedHashMap<Path, Integer> realCost = new LinkedHashMap<Path, Integer>(); // g(n)
+		// LinkedHashMap<Path, Integer> realCost = new LinkedHashMap<Path, Integer>(); // g(n)
 		LinkedHashMap<Path, Integer> totalCost = new LinkedHashMap<Path, Integer>(); // g(n) + h(n)
 		List<Path> openSet = new LinkedList<Path>();
 		List<Path> closedSet = new LinkedList<Path>();
 		
-		//realCost.put(firstNode, 0);
+		// realCost.put(firstNode, 0);
 		totalCost.put(firstNode, heuristic(grid.getDirt(), firstNode));
 		
 		openSet.add(firstNode);
 		
 		while (!openSet.isEmpty() && finalNode == null)
-		{			
+		{
 			Path current = null;
 			int pathCost = Integer.MAX_VALUE;
 			
-			for(Path openPath : openSet) {
-				
-				//if exists, this is like having a path with is non-infinity cost
-				if( totalCost.containsKey(openPath) ) {
+			for (Path openPath : openSet)
+			{
+				// if exists, this is like having a path with is non-infinity cost
+				if (totalCost.containsKey(openPath))
+				{
 					int tempCost = totalCost.get(openPath);
-					if(tempCost < pathCost){
+					if (tempCost < pathCost)
+					{
 						current = openPath;
 						pathCost = tempCost;
 					}
@@ -99,7 +103,10 @@ public class AStar extends Algorithm
 				// else the path is of infinity cost
 			}
 			
-			if(dirt.contains(current.roboClone.getPosition()) && current.action == Action.SUCK && current.getCellsAlreadyCleaned().size() == dirt.size() ){
+			if (dirt.contains(current.roboClone.getPosition())
+					&& current.action == Action.SUCK
+					&& current.getCellsAlreadyCleaned().size() == dirt.size())
+			{
 				finalNode = current;
 				break;
 			}
@@ -117,20 +124,26 @@ public class AStar extends Algorithm
 				
 				switch (action)
 				{
-					case LEFT: case RIGHT:
-//						new_cost = cost_so_far.get(current) + Action.cost(action);
+					case LEFT:
+					case RIGHT:
+						// new_cost = cost_so_far.get(current) +
+						// Action.cost(action);
 						tempBot.turn(action);
-						next = new Path(current, tempBot, action, current.cost + Action.cost(action), current.getCellsAlreadyCleaned());
+						next = new Path(current, tempBot, action,
+								(current.cost + Action.cost(action)),
+								current.getCellsAlreadyCleaned());
 						
-//						if (cost_so_far.containsKey(next) || new_cost < cost_so_far.get(next))
-//						{
-//							cost_so_far.replace(next, new_cost);
-////					    	priority = new_cost + heuristic(goal, next)
-//							int priority = new_cost + heuristic(next);
-////					    	frontier.put(next, priority)
-////					    	came_from[next] = current
-//						}
+						// if (cost_so_far.containsKey(next) || new_cost <
+						// cost_so_far.get(next))
+						// {
+						// cost_so_far.replace(next, new_cost);
+						// // priority = new_cost + heuristic(goal, next)
+						// int priority = new_cost + heuristic(next);
+						// // frontier.put(next, priority)
+						// // came_from[next] = current
+						// }
 						break;
+						
 					case MOVE:
 						Position newPosition = tempBot.getCellInFrontOfRobot();
 						Cell cellInFront;
@@ -138,7 +151,9 @@ public class AStar extends Algorithm
 						{
 							cellInFront = grid.getCell(newPosition);
 							if (cellInFront.isObstructed())
+							{
 								continue;
+							}
 						}
 						catch (OutOfBoundsException e)
 						{
@@ -146,12 +161,13 @@ public class AStar extends Algorithm
 						}
 						
 						tempBot.setPosition(newPosition);
-						next = new Path(current, tempBot, action, current.cost + Action.cost(action), current.getCellsAlreadyCleaned());
+						next = new Path(current, tempBot, action, 
+								(current.cost + Action.cost(action)),
+								current.getCellsAlreadyCleaned());
 						break;
-					case SUCK:
-						// WE ARE NOT ACTUALLY IMPACTING THE GRID DURING A
-						// SEARCH
 						
+					case SUCK:
+						// WE ARE NOT ACTUALLY IMPACTING THE GRID DURING A SEARCH
 						Position cleanBotPosition = tempBot.getPosition();
 						
 						Cell cell = null;
@@ -170,14 +186,17 @@ public class AStar extends Algorithm
 						}
 						else
 						{
-							next = new Path(current, tempBot, action, current.cost + Action.cost(action), current.getCellsAlreadyCleaned());
-							//nodesWhichSucked.add(next);
+							next = new Path(current, tempBot, action,
+									current.cost + Action.cost(action),
+									current.getCellsAlreadyCleaned());
+							// nodesWhichSucked.add(next);
 							next.addCleanedCell(cell);
 						}
 						break;
 				}
 				
-				if(closedSet.contains(next)) {
+				if (closedSet.contains(next))
+				{
 					continue;
 				}
 				
@@ -185,14 +204,17 @@ public class AStar extends Algorithm
 				
 					tentativeRealCost = current.cost + Action.cost(action);
 				
-				if(!openSet.contains(next)) {
+				if (!openSet.contains(next))
+				{
 					openSet.add(next);
-				} else if (tentativeRealCost >= next.cost) {
+				}
+				else if (tentativeRealCost >= next.cost)
+				{
 					continue;
 				}
 				
 				next.cost = tentativeRealCost;
-				totalCost.put(next,tentativeRealCost + heuristic(dirt, next));
+				totalCost.put(next, tentativeRealCost + heuristic(dirt, next));
 			}
 		}
 		
