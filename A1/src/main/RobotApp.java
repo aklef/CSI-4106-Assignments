@@ -28,6 +28,7 @@ public class RobotApp
 		rng = new Random();
 		// TEMP
 		// Gen search type
+//		SearchType searchType =  randomEnum(SearchType.class);
 		SearchType searchType = SearchType.Astar;
 		
 		List<Position> obstacles = generateObstacles();
