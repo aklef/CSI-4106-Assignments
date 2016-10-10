@@ -34,10 +34,11 @@ public class BFS extends Algorithm
 		
 		while (!this.openStates.isEmpty() && finalNode == null)
 		{
-			Path node = this.openStates.poll();
-			this.closedStates.add(node);
+			Path current = this.openStates.poll();
+			this.closedStates.add(current);
 			
-			
+			// SUCCESSOR FUNCTION
+			this.computeSuccessors(current);
 		}
 		
 		Collections.sort(nodesWhichSucked, Path.Comparators.CellsAlreadyCleaned);

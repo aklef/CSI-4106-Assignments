@@ -36,9 +36,11 @@ public class DFS extends Algorithm {
 		
 		while (!this.openStates.isEmpty() && finalNode == null)
 		{
-			Path node = this.openStates.pop();
-			this.closedStates.add(node);
+			Path current = this.openStates.pop();
+			this.closedStates.add(current);
 			
+			// SUCCESSOR FUNCTION
+			this.computeSuccessors(current);
 		}
 		
 		Collections.sort(nodesWhichSucked, new Comparator<Path>()
