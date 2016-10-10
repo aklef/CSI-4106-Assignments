@@ -1,6 +1,8 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -80,13 +82,16 @@ public class AStar extends Algorithm
 	{
 		this.firstNode = new Path(this.grid.getRobot(), 0);
 		Path finalNode = null;
-		// LinkedHashMap<Path, Integer> realCost = new LinkedHashMap<Path, Integer>(); // g(n)
-		/**
+		
+		/* 
 		 * This stores the values of g(n) + h(n) for a given Path.
 		 */
 		Map<Path, Integer> costs_so_far = new LinkedHashMap<Path, Integer>();
 		List<Path> openSet = new LinkedList<Path>();
 		List<Path> closedSet = new LinkedList<Path>();
+		
+		//maintain list of paths which lead to cleaning. this way the "next best" solution is usable when there is a blocked dirt
+		List<Path> nodesWhichSucked = new ArrayList<Path>();
 		
 		// realCost.put(firstNode, 0);
 		costs_so_far.put(firstNode, heuristic(grid.getDirt(), firstNode));
@@ -198,7 +203,7 @@ public class AStar extends Algorithm
 							next = new Path(current, tempBot, action,
 									current.cost + Action.cost(action),
 									current.getCellsAlreadyCleaned());
-							// nodesWhichSucked.add(next);
+							nodesWhichSucked.add(next);
 							next.addCleanedCell(cell);
 						}
 						break;
@@ -226,8 +231,44 @@ public class AStar extends Algorithm
 		}
 		
 		LinkedList<Path> solution = new LinkedList<Path>();
-		while (finalNode != null)
-		{
+		
+		if(finalNode == null) {
+			if (nodesWhichSucked.size() > 0) {
+				Collections.sort(nodesWhichSucked, new Comparator<Path>()
+				{
+					public int compare(Path p1, Path p2)
+					{
+						return Integer.compare(p2.getCellsAlreadyCleaned().size(), p1.getCellsAlreadyCleaned().size());
+					}
+				});
+				
+				int highestCleanCount = nodesWhichSucked.get(0).getCellsAlreadyCleaned().size();
+				
+				List<Path> maxCleanedPaths = new ArrayList<Path>();
+				
+				for (Path sucker : nodesWhichSucked)
+				{
+					if (sucker.getCellsAlreadyCleaned().size() == highestCleanCount)
+						maxCleanedPaths.add(sucker);
+				}
+				
+				Collections.sort(maxCleanedPaths, new Comparator<Path>()
+				{
+					public int compare(Path p1, Path p2)
+					{
+						return Integer.compare(p1.cost, p2.cost);
+					}
+				});
+				
+				// Get the least expensive path
+				finalNode = maxCleanedPaths.get(0);				
+				
+			} else {
+				finalNode = firstNode;
+			}
+		}
+		
+		while (finalNode != null) {
 			solution.addFirst(finalNode);
 			finalNode = finalNode.parent;
 		}
