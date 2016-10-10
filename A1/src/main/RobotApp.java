@@ -16,7 +16,22 @@ public class RobotApp
 	
 	public enum SearchType
 	{
-		DFS, BFS, Astar
+		DFS, BFS, Astar;
+		
+		/**
+		 * Get an enum value based on its ordinal value.
+		 * @param n the ordinal of the enum vlaue desired
+		 * @return The correspoinding enum value
+		 */
+		public static SearchType valueOf(int n)
+		{
+			for (SearchType srch : SearchType.values())
+			{
+				if (srch.ordinal() == n)
+					return srch;
+			}
+			return null;
+		}
 	};
 	
 	//************************************** MAIN *****************************************//
@@ -199,6 +214,12 @@ public class RobotApp
 		newGrid.setDirt(dirt);
 		newGrid.setRobot(robot);
 		return newGrid;
+	}
+	
+	@SuppressWarnings("unused")
+	private static List<Path> search(Integer searchType, Long startTime)
+	{
+		return search(SearchType.valueOf(searchType), startTime);
 	}
 	
 	/**
