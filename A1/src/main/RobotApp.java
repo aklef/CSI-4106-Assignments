@@ -41,10 +41,8 @@ public class RobotApp
 		System.out.print("Generating random states...");
 		// Roll that rng
 		rng = new Random();
-		// TEMP
 		// Gen search type
-//		SearchType searchType =  randomEnum(SearchType.class);
-		SearchType searchType = SearchType.Astar;
+		SearchType searchType =  randomEnum(SearchType.class);
 		
 		List<Position> obstacles = generateObstacles();
 		List<Position> dirt = generateDirt(obstacles);
