@@ -1,10 +1,11 @@
 package main;
 
 import java.util.ArrayList;
-
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+
 import main.Robot.Action;
 
 public class AStar extends Algorithm
@@ -54,11 +55,13 @@ public class AStar extends Algorithm
 		
 		
 		//BE SURE TO AVOID ALREADY CLEANED GOAL NODES IN THE HEURISTIC
-		for(Position i : goalPositions){
-			if(nextPath.getCellsAlreadyCleaned().contains(i)){
+		for(Position gP : goalPositions)
+		{
+			if(nextPath.getCellsAlreadyCleaned().contains(gP))
+			{
 				continue;
 			}
-			costs.add(manhattanDistance(nextPath.roboClone.getPosition(), i));
+			costs.add(manhattanDistance(nextPath.roboClone.getPosition(), gP));
 		}
 		
 		// Find the lowest cost among the results
@@ -75,17 +78,18 @@ public class AStar extends Algorithm
 	@Override
 	protected List<Path> computeSolution()
 	{
-		Robot firstRobot = this.grid.getRobot();
+		this.firstNode = new Path(this.grid.getRobot(), 0);
 		Path finalNode = null;
-		firstNode = new Path(firstRobot, 0);
 		// LinkedHashMap<Path, Integer> realCost = new LinkedHashMap<Path, Integer>(); // g(n)
-		LinkedHashMap<Path, Integer> totalCost = new LinkedHashMap<Path, Integer>(); // g(n) + h(n)
+		/**
+		 * This stores the values of g(n) + h(n) for a given Path.
+		 */
+		Map<Path, Integer> costs_so_far = new LinkedHashMap<Path, Integer>();
 		List<Path> openSet = new LinkedList<Path>();
 		List<Path> closedSet = new LinkedList<Path>();
 		
 		// realCost.put(firstNode, 0);
-		totalCost.put(firstNode, heuristic(grid.getDirt(), firstNode));
-		
+		costs_so_far.put(firstNode, heuristic(grid.getDirt(), firstNode));
 		openSet.add(firstNode);
 		
 		while (!openSet.isEmpty() && finalNode == null)
@@ -96,13 +100,13 @@ public class AStar extends Algorithm
 			for (Path openPath : openSet)
 			{
 				// if exists, this is like having a path with is non-infinity cost
-				if (totalCost.containsKey(openPath))
+				if (costs_so_far.containsKey(openPath))
 				{
-					int tempCost = totalCost.get(openPath);
-					if (tempCost < pathCost)
+					int cost = costs_so_far.get(openPath);
+					if (cost < pathCost)
 					{
 						current = openPath;
-						pathCost = tempCost;
+						pathCost = cost;
 					}
 				}
 				// else the path is of infinity cost
@@ -217,7 +221,7 @@ public class AStar extends Algorithm
 				}
 				
 				next.cost = tentativeRealCost;
-				totalCost.put(next, tentativeRealCost + heuristic(dirt, next));
+				costs_so_far.put(next, tentativeRealCost + heuristic(dirt, next));
 			}
 		}
 		
