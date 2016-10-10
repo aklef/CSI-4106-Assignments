@@ -3,6 +3,9 @@ package main;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * This class is the representation of our problem grid of cells.
+ */
 public class Grid
 {
 	/**
