@@ -220,7 +220,7 @@ public class AStar extends Algorithm
 				{
 					openSet.add(next);
 				}
-				else if (tentativeRealCost >= next.cost)
+				else
 				{
 					continue;
 				}
