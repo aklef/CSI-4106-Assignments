@@ -235,13 +235,7 @@ public class AStar extends Algorithm
 		{
 			if (nodesWhichSucked.size() > 0)
 			{
-				Collections.sort(nodesWhichSucked, new Comparator<Path>()
-				{
-					public int compare(Path p1, Path p2)
-					{
-						return Integer.compare(p2.getCellsAlreadyCleaned().size(), p1.getCellsAlreadyCleaned().size());
-					}
-				});
+				Collections.sort(nodesWhichSucked);
 				
 				int highestCleanCount = nodesWhichSucked.get(0).getCellsAlreadyCleaned().size();
 				
@@ -253,13 +247,7 @@ public class AStar extends Algorithm
 						maxCleanedPaths.add(sucker);
 				}
 				
-				Collections.sort(maxCleanedPaths, new Comparator<Path>()
-				{
-					public int compare(Path p1, Path p2)
-					{
-						return Integer.compare(p1.cost, p2.cost);
-					}
-				});
+				Collections.sort(maxCleanedPaths, Path.Comparators.COST);
 				
 				// Get the least expensive path
 				finalNode = maxCleanedPaths.get(0);				
