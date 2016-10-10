@@ -6,13 +6,13 @@ Kaytar-LeFrançois, Andréas /6467076
 
 Purpose
 ---
-The	purpose	of this assignment is to allow us to experiment with various uninformed search algorithms by programming blind and informed search in the vacuum cleaner robot problem. It will include a representation of the world, an algorithm for search, and the	observation	of some metrics associated with the	search algorithms we used.
+The	purpose	of this assignment is to allow us to experiment with various uninformed search algorithms by programming blind and informed search in the Robot cleaner problem. It will include a representation of the world, an algorithm for search, and the	observation	of some metrics associated with the	search algorithms we used.
 
 Description
 ---
-The following undirected weighted graph represents the	 connectivity between various cities in Romania. Each edge means that there is a bidirectional path between the connecting nodes. The number on	the	edges represents the cost to travel from one city to another.
+The roomba appears in a randomly-generated room, represented by our Grid class, and must use a given search algorithm to clean all the dirt piles using a set of Actions with associated Action costs, while minimizing the total cost of the Path taken to achieve a valid solution.
 
 How to Run
 ---
-Build with "javac Assignment1.java" in Console.
-Run "java Assignment1" and follow onscreen instructions.
+Build with "javac RobotApp.java" in Console.
+Run "java RobotApp" and follow onscreen instructions.
