@@ -232,8 +232,11 @@ public class AStar extends Algorithm
 		
 		LinkedList<Path> solution = new LinkedList<Path>();
 		
-		if(finalNode == null) {
-			if (nodesWhichSucked.size() > 0) {
+		// Handle the case where there is some unreachable dirt
+		if(finalNode == null)
+		{
+			if (nodesWhichSucked.size() > 0)
+			{
 				Collections.sort(nodesWhichSucked, new Comparator<Path>()
 				{
 					public int compare(Path p1, Path p2)
@@ -263,14 +266,17 @@ public class AStar extends Algorithm
 				// Get the least expensive path
 				finalNode = maxCleanedPaths.get(0);				
 				
-			} else {
+			}
+			else
+			{
 				finalNode = firstNode;
 			}
 		}
 		
-		while (finalNode != null) {
-			solution.addFirst(finalNode);
-			finalNode = finalNode.parent;
+		while (finalNode != null)
+		{
+			solution.addFirst(finalNode); // always insert first = reverse the order
+			finalNode = finalNode.parent; 
 		}
 		
 		return solution;
