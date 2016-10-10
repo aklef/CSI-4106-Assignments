@@ -344,7 +344,7 @@ public class RobotApp
 		System.out.format("Depth: %s\n", depth);
 		String alt = "";
 		double time = elapsedTime/1000.0;
-		if (time > 1.5)
+		if (time >= 1.1)
 		{
 			alt = String.format(" = %.2f s", time);
 		}
