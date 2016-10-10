@@ -1,5 +1,6 @@
 package main;
 
+import java.util.Comparator;
 import java.util.HashSet;
 
 import main.Robot.Action;
@@ -10,7 +11,7 @@ import main.Robot.Action;
  * It is quite possible for two different nodes to contain the same state, if that state is generated via two different sequences
 of actions.
  */
-public class Path
+public class Path implements Comparable<Path>
 {
 	/**
 	 * The parent Node of this Path.
@@ -126,4 +127,33 @@ public class Path
 	{
 		this.cellsAlreadyCleaned.add(cellAlreadyCleaned);
 	}
+	
+	/**
+	 * Sets the Natural Ordering of path to be based on their cost.
+	 */
+	@Override
+    public int compareTo(Path p)
+	{
+        return Comparators.COST.compare(this, p);
+    }
+
+    public static class Comparators
+    {
+        public static Comparator<Path> CellsAlreadyCleaned = new Comparator<Path>()
+        {
+        	@Override
+        	public int compare(Path p1, Path p2)
+        	{
+        		return Integer.compare(p2.getCellsAlreadyCleaned().size(), p1.getCellsAlreadyCleaned().size());
+        	}
+        };
+        public static Comparator<Path> COST = new Comparator<Path>()
+        {
+            @Override
+            public int compare(Path p1, Path p2)
+			{
+				return Integer.compare(p1.cost, p2.cost);
+			}
+        };
+    }
 }
