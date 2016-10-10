@@ -28,7 +28,7 @@ public class AStar extends Algorithm
 	}
 	
 	/**
-	 * Calculates an estimate of the cost to go from one position to another.
+	 * Calculates an estimate of the cost to go from one point to another.
 	 * 
 	 * @param source The node to start from
 	 * @param destination The node we want to estimate the cost to get to.
@@ -47,34 +47,34 @@ public class AStar extends Algorithm
 	 */
 	private int heuristic(List<Position> goalPositions, Path nextPath)
 	{
-		// Position start = startPath.roboClone.getPosition();
-		// Position goal = goalPath.roboClone.getPosition();
-		//
+		// Start with cost being infinite
 		Integer cost = Integer.MAX_VALUE;
 		
 		// Get estimated number of "steps" to get from nextPath to all goalPositions
 		ArrayList<Integer> costs = new ArrayList<Integer>();
 		
-		
-		//BE SURE TO AVOID ALREADY CLEANED GOAL NODES IN THE HEURISTIC
 		for(Position gP : goalPositions)
 		{
+			// AVOID ALREADY CLEANED DIRTS
 			if(nextPath.getCellsAlreadyCleaned().contains(gP))
 			{
 				continue;
 			}
-			costs.add(manhattanDistance(nextPath.roboClone.getPosition(), gP));
+			// If dirt hasn't been cleaned
+			// add the distance from robot to dirt as cost
+			costs.add(manhattanDistance(nextPath.roboClone.getPosition(), gP) * Action.cost(Action.MOVE));
 		}
 		
-		// Find the lowest cost among the results
 		for (Integer i : costs)
 		{
+			// Find and save the lowest cost among the results
 			if (i < cost)
 				cost = i;
 		}
 		
-		// Convert the resulting steps into a "plausible" cost estimation and return it
-		return (cost * Action.cost(Action.MOVE)) + Action.cost(Action.SUCK);
+		// add the cost to suck dirt and return
+		cost +=  Action.cost(Action.SUCK);
+		return cost;
 	}
 	
 	@Override
@@ -104,7 +104,7 @@ public class AStar extends Algorithm
 			
 			for (Path openPath : openSet)
 			{
-				// if exists, this is like having a path with is non-infinity cost
+				// path has non-infinity cost
 				if (costs_so_far.containsKey(openPath))
 				{
 					int cost = costs_so_far.get(openPath);
