@@ -304,7 +304,7 @@ public class RobotApp
 		
 		if (solution.isEmpty())
 		{
-			System.out.println("No dirt found!");
+			throw new NullPointerException("Solution empty. BAD");
 		}
 		else
 		{
