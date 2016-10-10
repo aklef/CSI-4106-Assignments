@@ -13,7 +13,6 @@ public class RobotApp
 	private static Grid grid;
 	private static Random rng;
 	
-	
 	public enum SearchType
 	{
 		DFS, BFS, Astar;
@@ -55,34 +54,6 @@ public class RobotApp
 		
 		grid = generateGrid(order, obstacles, dirt, robot);
 		System.out.format("Robot is at %s facing %s\n", robot.getPosition(), robot.getOrientation());
-		
-		//SPECIAL TEST CASE 1 - PLEASE DELETE
-		
-//				Position teststartPos = new Position(1,0);
-				
-//				grid = null;
-//				grid = new Grid(2);
-//				Cell testcell = null;
-//				Cell testcell2 = null;
-//				Cell testcell3 = null;
-//				try {
-//					testcell = grid.getCell(new Position(1,1));
-//					testcell2 = grid.getCell(new Position(0,1));
-//					testcell3 = grid.getCell(new Position(0,0));
-//				} catch (OutOfBoundsException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//					return;
-//				}
-//				testcell.setDirty(true);
-//				testcell2.setObstructed(true);
-//				testcell3.setObstructed(true);
-//				robot = new Robot(teststartPos, Orientation.WEST);
-//				grid.setRobot(robot);
-//				grid.setDirt(new LinkedList<Position>(Arrays.asList(new Position(1,1))));
-				
-				//SPECIAL TEST CASE - PLEASE DELETE
-		
 		long startTime = System.currentTimeMillis();
 		List<Path> solution = search(searchType, startTime);
 		long stopTime = System.currentTimeMillis();
