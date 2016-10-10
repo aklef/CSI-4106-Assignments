@@ -40,6 +40,7 @@ public class AStar extends Algorithm
 	}
 	
 	/**
+	 * Our heuristic function. Estimates the cost to a goal state from our next Path node.
 	 * 
 	 * @param goalPositions The list of goals to reach. MUST BE VALID/REACHABLE POSITIONS.
 	 * @param nextPath The proposed positon to move to.
@@ -80,6 +81,7 @@ public class AStar extends Algorithm
 	@Override
 	protected List<Path> computeSolution()
 	{
+		// First node always has a cost of zero.
 		this.firstNode = new Path(this.grid.getRobot(), 0);
 		Path finalNode = null;
 		
@@ -160,10 +162,9 @@ public class AStar extends Algorithm
 						
 					case MOVE:
 						Position newPosition = tempBot.getCellInFrontOfRobot();
-						Cell cellInFront;
 						try
 						{
-							cellInFront = grid.getCell(newPosition);
+							Cell cellInFront = grid.getCell(newPosition);
 							if (cellInFront.isObstructed())
 							{
 								continue;
@@ -181,9 +182,7 @@ public class AStar extends Algorithm
 						break;
 						
 					case SUCK:
-						// WE ARE NOT ACTUALLY IMPACTING THE GRID DURING A SEARCH
 						Position cleanBotPosition = tempBot.getPosition();
-						
 						Cell cell = null;
 						try
 						{
@@ -208,14 +207,13 @@ public class AStar extends Algorithm
 						}
 						break;
 				}
-				
+				// check if we've already explored this Node
 				if (closedSet.contains(next))
 				{
-					continue;
+					continue; // skip it
 				}
-				
+				// Make a tentative total cost for this new Node
 				int tentativeRealCost = current.cost + Action.cost(action);
-				
 				if (!openSet.contains(next))
 				{
 					openSet.add(next);
@@ -226,7 +224,7 @@ public class AStar extends Algorithm
 				}
 				
 				next.cost = tentativeRealCost;
-				costs_so_far.put(next, tentativeRealCost + heuristic(dirt, next));
+				costs_so_far.put(next, next.cost + heuristic(dirt, next));
 			}
 		}
 		
