@@ -14,9 +14,6 @@ import main.Robot.Action;
  */
 public class BFS extends Algorithm
 {
-	// private MultiKeyMap stateMap = new MultiKeyMap(); // posx, posy,
-	// robotorientation,
-	
 	protected Queue<Path> openStates;
 	
 	public BFS(Grid grid)
@@ -144,26 +141,6 @@ public class BFS extends Algorithm
 		else
 		{
 			finalPath = nodesWhichSucked.get(0);
-//			highestCleanCount = finalPath.getCellsAlreadyCleaned().size();
-//			
-//			List<Path> maxCleanedPaths = new ArrayList<Path>();
-//			
-//			for (Path sucker : nodesWhichSucked)
-//			{
-//				if (sucker.getCellsAlreadyCleaned().size() == highestCleanCount)
-//					maxCleanedPaths.add(sucker);
-//			}
-//			
-//			Collections.sort(maxCleanedPaths, new Comparator<Path>()
-//			{
-//				public int compare(Path p1, Path p2)
-//				{
-//					return Integer.compare(p1.cost, p2.cost);
-//				}
-//			});
-//			
-//			// Re-get the least expensive node
-//			finalPath = maxCleanedPaths.get(0);
 		}
 		
 		LinkedList<Path> solution = new LinkedList<Path>();
