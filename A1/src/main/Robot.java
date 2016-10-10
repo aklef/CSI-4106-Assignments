@@ -6,7 +6,12 @@ public class Robot
 	public enum Orientation
 	{
 		NORTH, EAST, SOUTH, WEST;
-
+		
+		/**
+		 * Get an enum value based on its ordinal value.
+		 * @param n the ordinal of the enum vlaue desired
+		 * @return The correspoinding enum value
+		 */
 		public static Orientation valueOf(int n)
 		{
 			for (Orientation dir : Orientation.values())
@@ -29,7 +34,8 @@ public class Robot
 	 * Returns an associated action cost.
 	 * @return The cost of this action
 	 */
-	public enum Action {
+	public enum Action
+	{
 		SUCK, MOVE, LEFT, RIGHT;
 		/**
 		 * Returns the cost of this Action.
@@ -49,7 +55,6 @@ public class Robot
 			}
 		}
 		
-
 		@Override
 	    public String toString()
 		{
