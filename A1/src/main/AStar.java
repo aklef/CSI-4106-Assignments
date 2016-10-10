@@ -2,7 +2,6 @@ package main;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,21 +9,26 @@ import java.util.Map;
 
 import main.Robot.Action;
 
+/**
+ * Our implementation of the A* Search.
+ */
 public class AStar extends Algorithm
 {
-	/**
-	 * List of open Nodes.
+	protected LinkedList<Path> openStates;
+	protected List<Position> dirts;
+	/** 
+	 * This stores the values of g(n) + h(n) for a given Path.
 	 */
-	// protected PriorityQueue<Path> frontier;
-	protected Path firstNode;
-	protected List<Position> dirt;
+	Map<Path, Integer> costs_so_far;
 	
 	public AStar(Grid grid)
 	{
 		this.grid = grid;
-		this.dirt = grid.getDirt();
-		//this.frontier = new PriorityQueue<Path>();
+		this.dirts = grid.getDirt();
+		this.openStates = new LinkedList<Path>();
 		this.closedStates = new LinkedList<Path>();
+		this.nodesWhichSucked = new ArrayList<Path>();
+		this.costs_so_far = new LinkedHashMap<Path, Integer>();
 	}
 	
 	/**
@@ -79,153 +83,140 @@ public class AStar extends Algorithm
 	}
 	
 	@Override
+	protected void computeSuccessors(Path current)
+	{
+		Robot tempBot;
+		Path next;
+		
+		for (Action action : Action.values())
+		{
+			tempBot = new Robot(current.roboClone);
+			next = null;
+			
+			switch (action)
+			{
+				case LEFT:
+				case RIGHT:
+					tempBot.turn(action);
+					next = new Path(current, tempBot, action,
+							(current.cost + Action.cost(action)),
+							current.getCellsAlreadyCleaned());
+					break;
+					
+				case MOVE:
+					Position newPosition = tempBot.getCellInFrontOfRobot();
+					try
+					{
+						Cell cellInFront = this.grid.getCell(newPosition);
+						if (cellInFront.isObstructed())
+						{
+							continue; // skip invalid move
+						}
+					}
+					catch (OutOfBoundsException e)
+					{
+						continue;
+					}
+					
+					tempBot.setPosition(newPosition);
+					next = new Path(current, tempBot, action, 
+							(current.cost + Action.cost(action)),
+							current.getCellsAlreadyCleaned());
+					break;
+					
+				case SUCK:
+					Position cleanBotPosition = tempBot.getPosition();
+					Cell cell = null;
+					try
+					{
+						cell = this.grid.getCell(cleanBotPosition);
+					}
+					catch (OutOfBoundsException e)
+					{
+						continue;
+					}
+					
+					if (!cell.isDirty() || current.getCellsAlreadyCleaned().contains(cell))
+					{
+						continue; // can't suck if there's no dirt
+					}
+					else
+					{
+						next = new Path(current, tempBot, action,
+								(current.cost + Action.cost(action)),
+								current.getCellsAlreadyCleaned());
+						next.addCleanedCell(cell);
+						nodesWhichSucked.add(next);
+					}
+					break;
+			}
+			
+			// AT THIS POINT WE HAVE A VALID 'NEXT'
+			
+			// check if we've already explored this Node
+			if (closedStates.contains(next))
+			{
+				continue; // skip it
+			}
+			// and if the node is explored already
+			if (openStates.contains(next))
+			{
+				continue; // skip it
+			}
+			// otherwise
+			else
+			{
+				openStates.add(next); // open it
+			}
+			
+			costs_so_far.put(next, (next.cost + heuristic(this.dirts, next)));
+		}
+	}
+	
+	@Override
 	protected List<Path> computeSolution()
 	{
 		// First node always has a cost of zero.
-		this.firstNode = new Path(this.grid.getRobot(), 0);
+		Path firstNode = new Path(this.grid.getRobot(), 0);
 		Path finalNode = null;
 		
-		/* 
-		 * This stores the values of g(n) + h(n) for a given Path.
-		 */
-		Map<Path, Integer> costs_so_far = new LinkedHashMap<Path, Integer>();
-		List<Path> openSet = new LinkedList<Path>();
-		List<Path> closedSet = new LinkedList<Path>();
+		this.costs_so_far.put(firstNode, heuristic(this.grid.getDirt(), firstNode));
+		this.openStates.add(firstNode);
 		
-		//maintain list of paths which lead to cleaning. this way the "next best" solution is usable when there is a blocked dirt
-		List<Path> nodesWhichSucked = new ArrayList<Path>();
-		
-		// realCost.put(firstNode, 0);
-		costs_so_far.put(firstNode, heuristic(grid.getDirt(), firstNode));
-		openSet.add(firstNode);
-		
-		while (!openSet.isEmpty() && finalNode == null)
+		while (!this.openStates.isEmpty() && finalNode == null)
 		{
 			Path current = null;
-			int pathCost = Integer.MAX_VALUE;
 			
-			for (Path openPath : openSet)
+			int maxCost = Integer.MAX_VALUE;
+			for (Path openPath : openStates)
 			{
 				// path has non-infinity cost
 				if (costs_so_far.containsKey(openPath))
 				{
 					int cost = costs_so_far.get(openPath);
-					if (cost < pathCost)
+					if (cost < maxCost)
 					{
 						current = openPath;
-						pathCost = cost;
+						maxCost = cost;
 					}
 				}
 				// else the path is of infinity cost
 			}
 			
-			if (dirt.contains(current.roboClone.getPosition())
+			//  GOAL CONDITION
+			if (this.dirts.contains(current.roboClone.getPosition())
 					&& current.action == Action.SUCK
-					&& current.getCellsAlreadyCleaned().size() == dirt.size())
+					&& current.getCellsAlreadyCleaned().size() == this.dirts.size())
 			{
 				finalNode = current;
-				break;
+				break; // Make sure to exit!
 			}
 			
-			openSet.remove(current);
-			closedSet.add(current);
+			openStates.remove(current);
+			closedStates.add(current);
 			
-			Robot tempBot;
-			Path next;
-			
-			for (Action action : Action.values())
-			{
-				tempBot = new Robot(current.roboClone);
-				next = null;
-				
-				switch (action)
-				{
-					case LEFT:
-					case RIGHT:
-						// new_cost = cost_so_far.get(current) +
-						// Action.cost(action);
-						tempBot.turn(action);
-						next = new Path(current, tempBot, action,
-								(current.cost + Action.cost(action)),
-								current.getCellsAlreadyCleaned());
-						
-						// if (cost_so_far.containsKey(next) || new_cost <
-						// cost_so_far.get(next))
-						// {
-						// cost_so_far.replace(next, new_cost);
-						// // priority = new_cost + heuristic(goal, next)
-						// int priority = new_cost + heuristic(next);
-						// // frontier.put(next, priority)
-						// // came_from[next] = current
-						// }
-						break;
-						
-					case MOVE:
-						Position newPosition = tempBot.getCellInFrontOfRobot();
-						try
-						{
-							Cell cellInFront = grid.getCell(newPosition);
-							if (cellInFront.isObstructed())
-							{
-								continue;
-							}
-						}
-						catch (OutOfBoundsException e)
-						{
-							continue;
-						}
-						
-						tempBot.setPosition(newPosition);
-						next = new Path(current, tempBot, action, 
-								(current.cost + Action.cost(action)),
-								current.getCellsAlreadyCleaned());
-						break;
-						
-					case SUCK:
-						Position cleanBotPosition = tempBot.getPosition();
-						Cell cell = null;
-						try
-						{
-							cell = grid.getCell(cleanBotPosition);
-						}
-						catch (OutOfBoundsException e)
-						{
-							continue;
-						}
-						
-						if (!cell.isDirty() || current.getCellsAlreadyCleaned().contains(cell))
-						{
-							continue;
-						}
-						else
-						{
-							next = new Path(current, tempBot, action,
-									current.cost + Action.cost(action),
-									current.getCellsAlreadyCleaned());
-							nodesWhichSucked.add(next);
-							next.addCleanedCell(cell);
-						}
-						break;
-				}
-				// check if we've already explored this Node
-				if (closedSet.contains(next))
-				{
-					continue; // skip it
-				}
-				// Make a tentative total cost for this new Node
-				int tentativeRealCost = current.cost + Action.cost(action);
-				if (!openSet.contains(next))
-				{
-					openSet.add(next);
-				}
-				else
-				{
-					continue;
-				}
-				
-				next.cost = tentativeRealCost;
-				costs_so_far.put(next, next.cost + heuristic(dirt, next));
-			}
+			// SUCCESSOR FUNCTION
+			this.computeSuccessors(current);
 		}
 		
 		LinkedList<Path> solution = new LinkedList<Path>();

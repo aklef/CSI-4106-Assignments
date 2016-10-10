@@ -2,7 +2,6 @@ package main;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -21,6 +20,7 @@ public class BFS extends Algorithm
 		this.grid = grid;
 		this.openStates = new LinkedList<Path>();
 		this.closedStates = new LinkedList<Path>();
+		this.nodesWhichSucked = new ArrayList<Path>();
 	}
 	
 	@Override
@@ -29,7 +29,6 @@ public class BFS extends Algorithm
 		Robot firstRobot = this.grid.getRobot();
 		Path firstNode = new Path(firstRobot, 0);
 		Path finalNode = null;
-		List<Path> nodesWhichSucked = new ArrayList<Path>();
 		
 		this.openStates.add(firstNode);
 		
@@ -37,90 +36,8 @@ public class BFS extends Algorithm
 		{
 			Path node = this.openStates.poll();
 			this.closedStates.add(node);
-			Robot tempBot;
-			Path newPath;
 			
-			for (Action action : Action.values())
-			{
-				tempBot = new Robot(node.roboClone);
-				newPath = null;
-				
-				switch (action)
-				{
-					case LEFT: case RIGHT:
-						tempBot.turn(action);
-						newPath = new Path(node, tempBot, action, node.cost
-								+ Action.cost(action), node.getCellsAlreadyCleaned());
-						break;
-					
-					case MOVE:
-						Position newPosition = tempBot.getCellInFrontOfRobot();
-						Cell cellInFront;
-						try
-						{
-							cellInFront = grid.getCell(newPosition);
-							if (cellInFront.isObstructed())
-								continue;
-						}
-						catch (OutOfBoundsException e)
-						{
-							continue;
-						}
-						
-						tempBot.setPosition(newPosition);
-						newPath = new Path(node, tempBot, action, node.cost 
-								+ Action.cost(action), node.getCellsAlreadyCleaned());
-						break;
-					
-					case SUCK:
-						// WE ARE NOT ACTUALLY IMPACTING THE GRID DURING A
-						// SEARCH
-						
-						Position cleanBotPosition = tempBot.getPosition();
-						
-						// if
-						// (!node.remainingDirtyCells.contains(cleanBotPosition))
-						// {
-						// continue;
-						// }
-						//
-						// LinkedList<Position> newDirtyList = new
-						// LinkedList<Position>(node.remainingDirtyCells);
-						//
-						// if (!newDirtyList.remove(cleanBotPosition))
-						// {
-						// throw new
-						// RuntimeException("Tried to create a path in BFS.computeSolution() which had one less dirty tiles, but the tile to be removed was not in the dirty list");
-						// }
-						Cell cell = null;
-						try
-						{
-							cell = grid.getCell(cleanBotPosition);
-						}
-						catch (OutOfBoundsException e)
-						{
-							continue;
-						}
-						
-						if (!cell.isDirty() || node.getCellsAlreadyCleaned().contains(cell))
-						{
-							continue;
-						}
-						else
-						{
-							newPath = new Path(node, tempBot, action, node.cost
-									+ Action.cost(action), node.getCellsAlreadyCleaned());
-							nodesWhichSucked.add(newPath);
-							newPath.addCleanedCell(cell);
-						}
-						break;
-				}
-				
-				if (!(openStates.contains(newPath) || closedStates.contains(newPath)))
-				{
-					openStates.add(newPath);
-				}
-			}
+			
 		}
 		
 		Collections.sort(nodesWhichSucked, Path.Comparators.CellsAlreadyCleaned);
@@ -143,5 +60,77 @@ public class BFS extends Algorithm
 		}
 		
 		return solution;
+	}
+
+	@Override
+	protected void computeSuccessors(Path current)
+	{
+		Robot tempBot;
+		Path newPath;
+		
+		for (Action action : Action.values())
+		{
+			tempBot = new Robot(current.roboClone);
+			newPath = null;
+			
+			switch (action)
+			{
+				case LEFT: case RIGHT:
+					tempBot.turn(action);
+					newPath = new Path(current, tempBot, action, current.cost
+							+ Action.cost(action), current.getCellsAlreadyCleaned());
+					break;
+				
+				case MOVE:
+					Position newPosition = tempBot.getCellInFrontOfRobot();
+					Cell cellInFront;
+					try
+					{
+						cellInFront = grid.getCell(newPosition);
+						if (cellInFront.isObstructed())
+							continue;
+					}
+					catch (OutOfBoundsException e)
+					{
+						continue;
+					}
+					
+					tempBot.setPosition(newPosition);
+					newPath = new Path(current, tempBot, action, current.cost 
+							+ Action.cost(action), current.getCellsAlreadyCleaned());
+					break;
+				
+				case SUCK:
+					// WE ARE NOT ACTUALLY IMPACTING THE GRID DURING A SEARCH
+					Position cleanBotPosition = tempBot.getPosition();
+					Cell cell = null;
+					try
+					{
+						cell = grid.getCell(cleanBotPosition);
+					}
+					catch (OutOfBoundsException e)
+					{
+						continue;
+					}
+					
+					if (!cell.isDirty() || current.getCellsAlreadyCleaned().contains(cell))
+					{
+						continue;
+					}
+					else
+					{
+						newPath = new Path(current, tempBot, action, current.cost
+								+ Action.cost(action), current.getCellsAlreadyCleaned());
+						nodesWhichSucked.add(newPath);
+						newPath.addCleanedCell(cell);
+					}
+					break;
+			}
+			
+			if (!(openStates.contains(newPath) || closedStates.contains(newPath)))
+			{
+				this.openStates.add(newPath);
+			}
+		}
 	}
 }
