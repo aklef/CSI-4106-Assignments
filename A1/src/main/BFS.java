@@ -123,15 +123,7 @@ public class BFS extends Algorithm
 			}
 		}
 		
-		Collections.sort(nodesWhichSucked, new Comparator<Path>()
-		{
-			public int compare(Path p1, Path p2)
-			{
-				return Integer.compare(p2.getCellsAlreadyCleaned().size(), p1.getCellsAlreadyCleaned().size());
-			}
-		});
-		
-//		int highestCleanCount = 0;
+		Collections.sort(nodesWhichSucked, Path.Comparators.CellsAlreadyCleaned);
 		
 		Path finalPath = null;
 		if (nodesWhichSucked.isEmpty())
