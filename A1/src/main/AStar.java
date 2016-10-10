@@ -36,6 +36,12 @@ public class AStar extends Algorithm
 		return Math.abs(p1.row - p2.row) + Math.abs(p1.column - p2.column);
 	}
 	
+	/**
+	 * 
+	 * @param goalPositions The list of goals to reach. MUST BE VALID/REACHABLE POSITIONS.
+	 * @param nextPath The proposed positon to move to.
+	 * @return a cost being the estimate of the cost to the goal.
+	 */
 	private int heuristic(List<Position> goalPositions, Path nextPath)
 	{
 		// Position start = startPath.roboClone.getPosition();
