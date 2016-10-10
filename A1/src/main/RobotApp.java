@@ -220,10 +220,9 @@ public class RobotApp
 				search = new AStar(grid);
 				break;
 		}
-		
-		System.out.format("%s %s...\n", "Search running. Using", searchType);
-		System.out.println("pos(row, col), Dir, action");
+
 		System.out.println(visualize());
+		System.out.format("%s %s... ", "Search using", searchType);
 		
 		List<Path> solution = null;
 		if(search != null)
@@ -295,21 +294,29 @@ public class RobotApp
 	public static void printSolution(List<Path> solution, long elapsedTime)
 	{
 		if (solution == null)
-		{
-			throw new NullPointerException("Solution cannot be null.");
-		}
-		
+			throw new NullPointerException("Solution cannot be null!");
+
+		System.out.print("Done.\n");
 		Position pos;
 		Robot robot;
-		int cost = solution.get(solution.size()-1).cost;
+		int cost = 0;
 		int depth = 0;
 		
-		for (Path node : solution)
+		if (solution.isEmpty())
 		{
-			robot = node.roboClone;
-			pos = robot.getPosition();
-			System.out.format("%s, %s, %s\n", pos, robot.getOrientation(), depth == 0? "start": node.action);
-			depth++;
+			System.out.println("No dirt found!");
+		}
+		else
+		{
+			cost = solution.get(solution.size()-1).cost;
+			System.out.println("pos(row, col), Dir, action");
+			for (Path node : solution)
+			{
+				robot = node.roboClone;
+				pos = robot.getPosition();
+				System.out.format("%s, %s, %s\n", pos, robot.getOrientation(), depth == 0? "start": node.action);
+				depth++;
+			}
 		}
 		
 		System.out.format("total cost: %s\n", cost);
@@ -318,7 +325,7 @@ public class RobotApp
 		double time = elapsedTime/1000.0;
 		if (time > 1.5)
 		{
-			alt = String.format(" -> %.2f s", time);
+			alt = String.format(" = %.2f s", time);
 		}
 		System.out.format("Time : %s ms%s", elapsedTime, alt);
 	}
