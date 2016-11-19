@@ -36,8 +36,86 @@ identify:-
 identify:-
   write('I can''t identify that climate classification'),nl.
 
+%%% These predicates are required for satisfying the requirements of a higher climate group
+%%% They themselves are too broad for the Koppen climate system  
+  
+rootGroup(A):-
+rootGroup(B):-
+rootGroup(C):-
+rootGroup(D):-
+rootGroup(E):-
 
+subGroup(BW):-
 
+subGroup(Cs):-
+subGroup(Cw):-
+subGroup(Cf):-
+
+subGroup(Ds):-
+subGroup(Dw):-
+subGroup(Df):-
+
+%%% These predicates are the climate classifications themselves.
+%%% They depend on the above rootGroup and subGroup predicates above.
+
+climate(Af):-
+climate(Am):-
+climate(Aw):-
+
+climate(BWh):-
+climate(BWk):-
+climate(BS):-
+climate(BSk):-
+
+climate(Csa):-
+climate(Csb):-
+
+climate(Cwa):-
+climate(Cwb):-
+climate(Cwc):-
+
+climate(Cfa):-
+climate(Cfb):-
+climate(Cfc):-
+
+climate(Dsa):-
+climate(Dsb):-
+climate(Dsc):-
+climate(Dsd):-
+
+climate(Dwa):-
+climate(Dwb):-
+climate(Dwc):-
+climate(Dwd):-
+
+climate(Dfa):-
+climate(Dfb):-
+climate(Dfc):-
+climate(Dfd):-
+
+climate(ET):-
+climate(EF):-
+
+%%% Calculation only predicates
+
+precipitationThreshold():-
+% Pthreshold –
+% if 70% of precipitation is in winter half of year, 2 × MAT
+% if 70% of precipitation is in summer half of year, 2 × MAT + 28
+% else 2 × MAT + 14
+
+%%% Predicates requiring user input
+
+avgTempOfColdestMonth(X):- ask(avgTempOfColdestMonth,X).
+avgTempOfHottestMonth(X):- ask(avgTempOfHottestMonth,X).
+numMonthsWithAvgTempOver10C(X):- ask(numMonthsWithAvgTempOver10C,X).
+avgAnnualPrecipitation(X):- ask(avgAnnualPrecipitation,X).
+avgAnnualTemperature(X):- ask(avgAnnualTemperature,X).
+avgPrecipitationWettestMonthInSummerHalfOfYear(X):- ask(avgPrecipitationWettestMonthInSummerHalfOfYear,X).
+avgPrecipitationWettestMonthInWinterHalfOfYear(X):- ask(avgPrecipitationWettestMonthInWinterHalfOfYear,X).
+avgPrecipitationDriestMonthInSummerHalfOfYear(X):- ask(avgPrecipitationDriestMonthInSummerHalfOfYear,X).
+avgPrecipitationDriestMonthInWinterHalfOfYear(X):- ask(avgPrecipitationDriestMonthInWinterHalfOfYear,X).
+  
 % "ask" is responsible for getting information from the user, and remembering
 % the users response. If it doesn't already know the answer to a question
 % it will ask the user. It then asserts the answer. It recognizes two
