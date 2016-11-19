@@ -1,7 +1,7 @@
 % CLIMATES
 
 % This is a sample of a classification expert system for identification
-% of Koppen climate types. The rules are roughly based on the classifications
+% of Köppen–Geiger climate types. The rules are roughly based on the classifications
 % from https://en.wikipedia.org/wiki/K%C3%B6ppen_climate_classification
 
 % This type of expert system can easily use Prolog's built in inferencing
@@ -39,62 +39,70 @@ identify:-
 %%% These predicates are required for satisfying the requirements of a higher climate group
 %%% They themselves are too broad for the Koppen climate system  
   
-rootGroup(A):-
-rootGroup(B):-
-rootGroup(C):-
-rootGroup(D):-
-rootGroup(E):-
+rootGroup(A):- % avgTempOfColdestMonth >= 18 C
+rootGroup(B):- % avgAnnualPrecipitation < 10 * precipitationThreshold
 
-subGroup(BW):-
+rootGroupCommon(CD):- % avgTempOfHottestMonth > 10 C
 
-subGroup(Cs):-
-subGroup(Cw):-
-subGroup(Cf):-
+rootGroup(C):- % 0 C < avgTempOfColdestMonth < 18 C
+rootGroup(D):- % avgTempOfColdestMonth <= 0 C
+rootGroup(E):- % avgTempOfHottestMonth < 10 °C
 
-subGroup(Ds):-
-subGroup(Dw):-
-subGroup(Df):-
+subGroup(Af):- % rootGroup(A), minPrecipitationOfSlowestMonth >= 60mm
+subGroup(Am):- % rootGroup(A), minPrecipitationOfSlowestMonth < 60mm, (minPrecipitationOfSlowestMonth / totalAnnualPrecipitation) >= 0.04
+subGroup(Aw):- % rootGroup(A), minPrecipitationOfSlowestMonth < 60mm, (minPrecipitationOfSlowestMonth / totalAnnualPrecipitation) < 0.04
+
+subGroup(BW):- % rootGroup(B), avgAnnualPrecipitation < (5 * precipitationThreshold)
+subGroup(BS):- % rootGroup(B), avgAnnualPrecipitation >= (5 * precipitationThreshold)
+
+subGroup(Cs):- % rootGroup(C), avgPrecipitationDriestMonthInSummerHalfOfYear < 40mm && avgPrecipitationDriestMonthInSummerHalfOfYear < (avgPrecipitationWettestMonthInWinterHalfOfYear / 3)
+subGroup(Cw):- % rootGroup(C), avgPrecipitationDriestMonthInWinterHalfOfYear < avgPrecipitationWettestMonthInSummerHalfOfYear / 10
+% subGroup(Cf):- % ELIMINATING THIS ONE. This is captured by climate(Cxx) where xx is fa,fb,fc
+
+subGroup(Ds):- subGroup(Cs). % Same as subGroup(Cs)
+subGroup(Dw):- subGroup(Cw). % Same as subGroup(Cw)
+% subGroup(Df):- % % ELIMINATING THIS ONE. This is captured by climate(Dxx) where xx is fa,fb,fc,fd
 
 %%% These predicates are the climate classifications themselves.
 %%% They depend on the above rootGroup and subGroup predicates above.
 
-climate(Af):-
-climate(Am):-
-climate(Aw):-
+climate(Af):- subGroup(Af).
+climate(Am):- subGroup(Am).
+climate(Aw):- subGroup(Aw).
 
-climate(BWh):-
-climate(BWk):-
-climate(BS):-
-climate(BSk):-
+climate(BWh):- % subGroup(BW), avgAnnualTemperature >= 18C
+climate(BWk):- % subGroup(BW), avgAnnualTemperature < 18C
+climate(BS):- subGroup(BS).
+climate(BSk):- % subGroup(BS), avgAnnualTemperature < 18C
 
-climate(Csa):-
-climate(Csb):-
+climate(Csa):- % 
+climate(Csb):- % 
 
-climate(Cwa):-
-climate(Cwb):-
-climate(Cwc):-
+climate(Cwa):- % 
+climate(Cwb):- % 
+climate(Cwc):- % 
 
-climate(Cfa):-
-climate(Cfb):-
-climate(Cfc):-
+climate(Cfa):- % 
+climate(Cfb):- % 
+climate(Cfc):- % 
 
-climate(Dsa):-
-climate(Dsb):-
-climate(Dsc):-
-climate(Dsd):-
+climate(Dsa):- % 
+climate(Dsb):- % 
+climate(Dsc):- % 
+climate(Dsd):- % 
 
-climate(Dwa):-
-climate(Dwb):-
-climate(Dwc):-
-climate(Dwd):-
+climate(Dwa):- % 
+climate(Dwb):- % 
+climate(Dwc):- % 
+climate(Dwd):- % 
 
-climate(Dfa):-
-climate(Dfb):-
-climate(Dfc):-
-climate(Dfd):-
+climate(Dfa):- % 
+climate(Dfb):- % 
+climate(Dfc):- % 
+climate(Dfd):- % 
 
-climate(ET):-
-climate(EF):-
+climate(ET):- % 
+climate(EF):- % 
 
 %%% Calculation only predicates
 
@@ -106,6 +114,8 @@ precipitationThreshold():-
 
 %%% Predicates requiring user input
 
+minPrecipitationOfSlowestMonth(X):- ask(minPrecipitationOfSlowestMonth,X).
+totalAnnualPrecipitation(X):- ask(totalAnnualPrecipitation,X).
 avgTempOfColdestMonth(X):- ask(avgTempOfColdestMonth,X).
 avgTempOfHottestMonth(X):- ask(avgTempOfHottestMonth,X).
 numMonthsWithAvgTempOver10C(X):- ask(numMonthsWithAvgTempOver10C,X).
