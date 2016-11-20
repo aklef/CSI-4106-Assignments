@@ -26,7 +26,7 @@
 % to be asked for, and defines the predicate "ask" and "menuask"
 % which are used to get information from the user, and remember it.
 
-
+:- use_module(library(clpfd)).
 main :- identify.
 
 identify:-
@@ -41,16 +41,11 @@ identify:-
 
 rootGroup(a):-
 	averageTemperatureOfColdestMonth(ATCM),
-	ATCM #=> 18. %°C
+	ATCM #>= 18. %°C
 rootGroup(b):-
   averageAnnualPrecipitation(AAP),
   precipitationThreshold(PT),
   AAP #< (10 * PT). %mm
-
-rootGroupCommon(cd):-
-  averageTemperatureOfHottestMonth(ATHM),
-  ATHM #> 10. %°C
-
 rootGroup(c):-
   rootGroupCommon(cd),
   averageTemperatureOfColdestMonth(ATCM),
@@ -58,10 +53,13 @@ rootGroup(c):-
 rootGroup(d):-
   rootGroupCommon(cd),
   averageTemperatureOfColdestMonth(ATCM),
-  ATCM #<= 0. %°C
+  ATCM #=< 0. %°C
 rootGroup(e):-
   averageTemperatureOfHottestMonth(ATHM),
   ATHM #< 10. %°C
+rootGroupCommon(cd):-
+  averageTemperatureOfHottestMonth(ATHM),
+  ATHM #> 10. %°C
 
 subGroup(af):-
   rootGroup(a),
@@ -130,7 +128,7 @@ commonRules(cdc):-
   \+ commonRules(cdb),
   \+ commonRules(cdd),
   averageNumberOfMonthsWithAverageTemperatureOverTenDegreesCelcius(ANMATOTDC),
-  1 #<= (ANMATOTDC #< 4).
+  1 #=< (ANMATOTDC #< 4).
 commonRules(cdd):-
   averageTemperatureOfColdestMonth(ATCM),
   ATCM #< -38. %°C
@@ -266,17 +264,16 @@ climate(ef):-
 %%% Calculation only predicates
 
 precipitationThreshold(PT):-
-  averageAnnualTemperature(AAT)
-  (/* if 70% of precipitation is in winter half of year*/) ->
-    PT is (2 * AAT);
-    ((/* if 70% of precipitation is in summer half of year*/) ->
-      PT is (2 * AAT) + 28;
+  averageAnnualTemperature(AAT),
+  (   true -> PT is (2 * AAT);
+      false -> PT is (2 * AAT) + 28;
       PT is (2 * AAT) + 14).
-% PT will be the "returned" value
-% Pthreshold –
-% if 70% of precipitation is in winter half of year, 2 * MAT
-% if 70% of precipitation is in summer half of year, (2 * MAT) + 28
-% else 2 * MAT + 14
+
+/* PT will be the "returned" value
+Pthreshold –
+if 70% of precipitation is in winter half of year, 2 * MAT
+if 70% of precipitation is in summer half of year, (2 * MAT) + 28
+else 2 * MAT + 14 */
 
 
 %%% Predicates requiring user input
