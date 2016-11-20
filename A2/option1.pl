@@ -39,70 +39,78 @@ identify:-
 %%% These predicates are required for satisfying the requirements of a higher climate group
 %%% They themselves are too broad for the Koppen climate system  
   
-rootGroup(A):- % avgTempOfColdestMonth >= 18 C
-rootGroup(B):- % avgAnnualPrecipitation < 10 * precipitationThreshold
+rootGroup(a):- % avgTempOfColdestMonth >= 18 C
+rootGroup(b):- % avgAnnualPrecipitation < 10 * precipitationThreshold
 
-rootGroupCommon(CD):- % avgTempOfHottestMonth > 10 C
+rootGroupCommon(cd):- % avgTempOfHottestMonth > 10 C
 
-rootGroup(C):- % 0 C < avgTempOfColdestMonth < 18 C
-rootGroup(D):- % avgTempOfColdestMonth <= 0 C
-rootGroup(E):- % avgTempOfHottestMonth < 10 °C
+rootGroup(c):- % rootGroupCommon(cd), 0 C < avgTempOfColdestMonth < 18 C
+rootGroup(d):- % rootGroupCommon(cd), avgTempOfColdestMonth <= 0 C
+rootGroup(e):- % avgTempOfHottestMonth < 10 °C
 
-subGroup(Af):- % rootGroup(A), minPrecipitationOfSlowestMonth >= 60mm
-subGroup(Am):- % rootGroup(A), minPrecipitationOfSlowestMonth < 60mm, (minPrecipitationOfSlowestMonth / totalAnnualPrecipitation) >= 0.04
-subGroup(Aw):- % rootGroup(A), minPrecipitationOfSlowestMonth < 60mm, (minPrecipitationOfSlowestMonth / totalAnnualPrecipitation) < 0.04
+subGroup(af):- % rootGroup(a), minPrecipitationOfSlowestMonth >= 60mm
+subGroup(am):- % rootGroup(a), minPrecipitationOfSlowestMonth < 60mm, (minPrecipitationOfSlowestMonth / totalAnnualPrecipitation) >= 0.04
+subGroup(aw):- % rootGroup(a), minPrecipitationOfSlowestMonth < 60mm, (minPrecipitationOfSlowestMonth / totalAnnualPrecipitation) < 0.04
 
-subGroup(BW):- % rootGroup(B), avgAnnualPrecipitation < (5 * precipitationThreshold)
-subGroup(BS):- % rootGroup(B), avgAnnualPrecipitation >= (5 * precipitationThreshold)
+subGroup(bw):- % rootGroup(b), avgAnnualPrecipitation < (5 * precipitationThreshold)
+subGroup(bs):- % rootGroup(b), avgAnnualPrecipitation >= (5 * precipitationThreshold)
 
-subGroup(Cs):- % rootGroup(C), avgPrecipitationDriestMonthInSummerHalfOfYear < 40mm && avgPrecipitationDriestMonthInSummerHalfOfYear < (avgPrecipitationWettestMonthInWinterHalfOfYear / 3)
-subGroup(Cw):- % rootGroup(C), avgPrecipitationDriestMonthInWinterHalfOfYear < avgPrecipitationWettestMonthInSummerHalfOfYear / 10
+subGroup(cs):- % rootGroup(c), avgPrecipitationDriestMonthInSummerHalfOfYear < 40mm && avgPrecipitationDriestMonthInSummerHalfOfYear < (avgPrecipitationWettestMonthInWinterHalfOfYear / 3)
+subGroup(cw):- % rootGroup(c), avgPrecipitationDriestMonthInWinterHalfOfYear < avgPrecipitationWettestMonthInSummerHalfOfYear / 10
 % subGroup(Cf):- % ELIMINATING THIS ONE. This is captured by climate(Cxx) where xx is fa,fb,fc
 
-subGroup(Ds):- subGroup(Cs). % Same as subGroup(Cs)
-subGroup(Dw):- subGroup(Cw). % Same as subGroup(Cw)
+subGroup(ds):- subGroup(cs). % Same as subGroup(cs)
+subGroup(dw):- subGroup(cw). % Same as subGroup(cw)
 % subGroup(Df):- % % ELIMINATING THIS ONE. This is captured by climate(Dxx) where xx is fa,fb,fc,fd
+
+subGroup(et):- % rootGroup(e), avgTempOfHottestMonth >= 0C
+subGroup(ef):- % rootGroup(e), avgTempOfHottestMonth < 0C
+
+commonRules(cda):- % avgTempOfHottestMonth >= 22 C
+commonRules(cdb):- % NOT commonRules(cda), numMonthsWithAvgTempOver10C >= 4
+commonRules(cdc):- % NOT commonRules(cdb), NOT commonRules(cdd), 1 <= numMonthsWithAvgTempOver10C < 4
+commonRules(cdd):- % avgTempOfColdestMonth < -38C
 
 %%% These predicates are the climate classifications themselves.
 %%% They depend on the above rootGroup and subGroup predicates above.
 
-climate(Af):- subGroup(Af).
-climate(Am):- subGroup(Am).
-climate(Aw):- subGroup(Aw).
+climate(af):- subGroup(af).
+climate(am):- subGroup(am).
+climate(aw):- subGroup(aw).
 
-climate(BWh):- % subGroup(BW), avgAnnualTemperature >= 18C
-climate(BWk):- % subGroup(BW), avgAnnualTemperature < 18C
-climate(BS):- subGroup(BS).
-climate(BSk):- % subGroup(BS), avgAnnualTemperature < 18C
+climate(bwh):- % subGroup(bw), avgAnnualTemperature >= 18C
+climate(bwk):- % subGroup(bw), avgAnnualTemperature < 18C
+climate(bs):- subGroup(bs).
+climate(bsk):- % subGroup(bs), avgAnnualTemperature < 18C
 
-climate(Csa):- % 
-climate(Csb):- % 
+climate(csa):- % subGroup(cs), commonRules(cda).
+climate(csb):- % subGroup(cs), commonRules(cdb).
 
-climate(Cwa):- % 
-climate(Cwb):- % 
-climate(Cwc):- % 
+climate(cwa):- % subGroup(cw), commonRules(cda).
+climate(cwb):- % subGroup(cw), commonRules(cdb).
+climate(cwc):- % subGroup(cw), commonRules(cdc).
 
-climate(Cfa):- % 
-climate(Cfb):- % 
-climate(Cfc):- % 
+climate(cfa):- % (NOT subGroup(cs) && NOT subGroup(cw)), commonRules(cda).
+climate(cfb):- % (NOT subGroup(cs) && NOT subGroup(cw)), commonRules(cdb).
+climate(cfc):- % (NOT subGroup(cs) && NOT subGroup(cw)), commonRules(cdc).
 
-climate(Dsa):- % 
-climate(Dsb):- % 
-climate(Dsc):- % 
-climate(Dsd):- % 
+climate(dsa):- % subGroup(ds), commonRules(cda).
+climate(dsb):- % subGroup(ds), commonRules(cdb).
+climate(dsc):- % subGroup(ds), commonRules(cdc).
+climate(dsd):- % subGroup(ds), commonRules(cdd).
 
-climate(Dwa):- % 
-climate(Dwb):- % 
-climate(Dwc):- % 
-climate(Dwd):- % 
+climate(dwa):- % subGroup(dw), commonRules(cda).
+climate(dwb):- % subGroup(dw), commonRules(cdb).
+climate(dwc):- % subGroup(dw), commonRules(cdc).
+climate(dwd):- % subGroup(dw), commonRules(cdd).
 
-climate(Dfa):- % 
-climate(Dfb):- % 
-climate(Dfc):- % 
-climate(Dfd):- % 
+climate(dfa):- % (NOT subGroup(cs) && NOT subGroup(cw)), commonRules(cda).
+climate(dfb):- % (NOT subGroup(cs) && NOT subGroup(cw)), commonRules(cdb).
+climate(dfc):- % (NOT subGroup(cs) && NOT subGroup(cw)), commonRules(cdc).
+climate(dfd):- % (NOT subGroup(cs) && NOT subGroup(cw)), commonRules(cdd).
 
-climate(ET):- % 
-climate(EF):- % 
+climate(et):- % subGroup(et).
+climate(ef):- % subGroup(ef).
 
 %%% Calculation only predicates
 
