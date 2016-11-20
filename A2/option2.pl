@@ -39,7 +39,9 @@ identify:-
 %%% These predicates are required for satisfying the requirements of a higher climate group
 %%% They themselves are too broad for the Koppen climate system  
   
-rootGroup(a):- % averageTemperatureOfColdestMonth >= 18 C
+rootGroup(a):-
+	averageTemperatureOfColdestMonth(X),
+	X => 18.
 rootGroup(b):- % averageAnnualPrecipitation < 10 * precipitationThreshold
 
 rootGroupCommon(cd):- % averageTemperatureOfHottestMonth > 10 C
