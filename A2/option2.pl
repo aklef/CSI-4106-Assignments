@@ -146,13 +146,25 @@ climate(am):- subGroup(am).
 climate(aw):- subGroup(aw).
 
 % Hot desert
-climate(bwh):- % subGroup(bw), averageAnnualTemperature >= 18C
+climate(bwh):-
+  qsubGroup(bw),
+  averageAnnualTemperature(AAT),
+  AAT #>= 18. %°C
 % Cold desert
-climate(bwk):- % subGroup(bw), averageAnnualTemperature < 18C
+climate(bwk):-
+  subGroup(bw),
+  averageAnnualTemperature(AAT),
+  AAT #< 18. %°C
 % Hot steppe
-climate(bsh):- % subGroup(bs), averageAnnualTemperature >= 18C
+climate(bsh):-
+  subGroup(bs),
+  averageAnnualTemperature(AAT),
+  AAT #>= 18. %°C
 % Cold steppe
-climate(bsk):- % subGroup(bs), averageAnnualTemperature < 18C
+climate(bsk):-
+  subGroup(bs),
+  averageAnnualTemperature(AAT),
+  AAT #< 18. %°C
 
 % Hot-summer or Mediterranean climates
 climate(csa):-
@@ -181,11 +193,17 @@ climate(cwc):-
 	commonRules(cdc).
 
 % Humid subtropical climate
-climate(cfa):- % (\+ subGroup(cs), \+ subGroup(cw)), commonRules(cda).
+climate(cfa):-
+  (\+ subGroup(cs), \+ subGroup(cw)),
+  commonRules(cda).
 % Oceanic climate
-climate(cfb):- % (\+ subGroup(cs), \+ subGroup(cw)), commonRules(cdb).
+climate(cfb):-
+  (\+ subGroup(cs), \+ subGroup(cw)),
+  commonRules(cdb).
 % Subpolar oceanic climate
-climate(cfc):- % (\+ subGroup(cs), \+ subGroup(cw)), commonRules(cdc).
+climate(cfc):-
+  (\+ subGroup(cs), \+ subGroup(cw)),
+  commonRules(cdc).
 
 % Humid continental climate
 climate(dsa):-
@@ -222,13 +240,21 @@ climate(dwd):-
 	commonRules(cdd).
 
 % Humid continental climate
-climate(dfa):- % (\+ subGroup(cs), \+ subGroup(cw)), commonRules(cda).
+climate(dfa):-
+  (\+ subGroup(cs), \+ subGroup(cw)),
+  commonRules(cda).
 % Humid continental climate
-climate(dfb):- % (\+ subGroup(cs), \+ subGroup(cw)), commonRules(cdb).
+climate(dfb):-
+  (\+ subGroup(cs), \+ subGroup(cw)),
+  commonRules(cdb).
 % Subarctic climate
-climate(dfc):- % (\+ subGroup(cs), \+ subGroup(cw)), commonRules(cdc).
+climate(dfc):-
+  (\+ subGroup(cs), \+ subGroup(cw)),
+  commonRules(cdc).
 % Subarctic climate
-climate(dfd):- % (\+ subGroup(cs), \+ subGroup(cw)), commonRules(cdd).
+climate(dfd):-
+(\+ subGroup(cs), \+ subGroup(cw)),
+commonRules(cdd).
 
 % Tundra climate
 climate(et):-
@@ -239,11 +265,19 @@ climate(ef):-
 
 %%% Calculation only predicates
 
-precipitationThreshold(X):- % X will be the "returned" value
+precipitationThreshold(PT):-
+  averageAnnualTemperature(AAT)
+  (/* if 70% of precipitation is in winter half of year*/) ->
+    PT is (2 * AAT);
+    ((/* if 70% of precipitation is in summer half of year*/) ->
+      PT is (2 * AAT) + 28;
+      PT is (2 * AAT) + 14).
+% PT will be the "returned" value
 % Pthreshold –
-% if 70% of precipitation is in winter half of year, 2 × MAT
-% if 70% of precipitation is in summer half of year, 2 × MAT + 28
-% else 2 × MAT + 14
+% if 70% of precipitation is in winter half of year, 2 * MAT
+% if 70% of precipitation is in summer half of year, (2 * MAT) + 28
+% else 2 * MAT + 14
+
 
 %%% Predicates requiring user input
 
@@ -275,22 +309,23 @@ averagePrecipitationForTheDriestMonthInWinterHalfOfYear(X):- ask(averagePrecipit
 % yes value. any other response is considered a "no".
 
 ask(Attribute,Value):-
-  known(valueKnown,Attribute,Value),       % succeed if we know its true
+  known(valueKnown,Attribute,Value),% succeed if we know its true
   !.                                % and dont look any further
 ask(Attribute,Value):-
   known(_,Attribute,Value),         % fail if somehow there is another value besides 'known' or 'yes'
   !, fail.
 
 ask(Attribute,_):-
-  known(valueKnown,Attribute,_),           % fail if we know its some other value.
+  known(valueKnown,Attribute,_),    % fail if we know its some other value.
   !, fail.                          % the cut in clause #1 ensures that if
                                     % we get here the value is wrong.
 ask(A,V):-
-  write('please provide a value for '),write(A),                       % if we get here, we need to ask.
+  write('please provide a value for '),
+  write(A),                         % if we get here, we need to ask.
   write(': '),
   read(Y),                          % get the answer
-  asserta(known(valueKnown,A,V)),            % remember it so we dont ask again.
-  Y = valueKnown.                          % succeed or fail based on answer.
+  asserta(known(valueKnown,A,V)),   % remember it so we dont ask again.
+  Y = valueKnown.                   % succeed or fail based on answer.
 
 % "menuask" is like ask, only it gives the user a menu to to choose
 % from rather than a yes on no answer. In this case there is no
