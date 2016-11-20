@@ -37,47 +37,109 @@ identify:-
   write('I can''t identify that climate classification'),nl.
 
 %%% These predicates are required for satisfying the requirements of a higher climate group
-%%% They themselves are too broad for the Koppen climate system  
-  
+%%% They themselves are too broad for the Koppen climate system
+
 rootGroup(a):-
-	averageTemperatureOfColdestMonth(X),
-	X => 18.
-rootGroup(b):- % averageAnnualPrecipitation < 10 * precipitationThreshold
+	averageTemperatureOfColdestMonth(ATCM),
+	ATCM #=> 18. %°C
+rootGroup(b):-
+  averageAnnualPrecipitation(AAP),
+  precipitationThreshold(PT),
+  AAP #< (10 * PT). %mm
 
-rootGroupCommon(cd):- % averageTemperatureOfHottestMonth > 10 C
+rootGroupCommon(cd):-
+  averageTemperatureOfHottestMonth(ATHM),
+  ATHM #> 10. %°C
 
-rootGroup(c):- % rootGroupCommon(cd), 0 C < averageTemperatureOfColdestMonth < 18 C
-rootGroup(d):- % rootGroupCommon(cd), averageTemperatureOfColdestMonth <= 0 C
-rootGroup(e):- % averageTemperatureOfHottestMonth < 10 °C
+rootGroup(c):-
+  rootGroupCommon(cd),
+  averageTemperatureOfColdestMonth(ATCM),
+  0 #< (ATCM #< 18). %°C
+rootGroup(d):-
+  rootGroupCommon(cd),
+  averageTemperatureOfColdestMonth(ATCM),
+  ATCM #<= 0. %°C
+rootGroup(e):-
+  averageTemperatureOfHottestMonth(ATHM),
+  ATHM #< 10. %°C
 
-subGroup(af):- % rootGroup(a), averageMinimumPrecipitationOfSlowestMonth >= 60mm
-subGroup(am):- % rootGroup(a), averageMinimumPrecipitationOfSlowestMonth < 60mm, (averageMinimumPrecipitationOfSlowestMonth / averageTotalAnnualPrecipitation) >= 0.04
-subGroup(aw):- % rootGroup(a), averageMinimumPrecipitationOfSlowestMonth < 60mm, (averageMinimumPrecipitationOfSlowestMonth / averageTotalAnnualPrecipitation) < 0.04
+subGroup(af):-
+  rootGroup(a),
+  averageMinimumPrecipitationOfSlowestMonth(AMPSM),
+  AMPSM #>= 60. %mm
+subGroup(am):-
+  rootGroup(a),
+  averageMinimumPrecipitationOfSlowestMonth(AMPSM),
+  averageTotalAnnualPrecipitation(ATAP),
+  AMPSM #< 60, %mm
+  (AMPSM div ATAP) #>= '0.04'.
+subGroup(aw):-
+  rootGroup(a),
+  averageMinimumPrecipitationOfSlowestMonth(AMPSM),
+  averageTotalAnnualPrecipitation(ATAP),
+  AMPSM #< 60, %mm
+  (AMPSM div ATAP) #< '0.04'.
 
-subGroup(bw):- % rootGroup(b), averageAnnualPrecipitation < (5 * precipitationThreshold)
-subGroup(bs):- % rootGroup(b), averageAnnualPrecipitation >= (5 * precipitationThreshold)
+subGroup(bw):-
+  rootGroup(b),
+  averageTotalAnnualPrecipitation(ATAP),
+  precipitationThreshold(PT),
+  ATAP #< (5 * PT).
+subGroup(bs):-
+  rootGroup(b),
+  averageAnnualPrecipitation(AAP),
+  precipitationThreshold(PT),
+  AAP #>= (5 * PT).
 
-subGroup(cs):- % rootGroup(c), averagePrecipitationForTheDriestMonthInSummerHalfOfYear < 40mm && averagePrecipitationForTheDriestMonthInSummerHalfOfYear < (averagePrecipitationForTheWettestMonthInWinterHalfOfYear / 3)
-subGroup(cw):- % rootGroup(c), averagePrecipitationForTheDriestMonthInWinterHalfOfYear < averagePrecipitationForTheWettestMonthInSummerHalfOfYear / 10
+subGroup(cs):-
+  rootGroup(c),
+  averagePrecipitationForTheDriestMonthInSummerHalfOfYear(APDMS),
+  averagePrecipitationForTheWettestMonthInWinterHalfOfYear(APWMW),
+  APDMS #< 40,
+  APDMS #< (APWMW div 3).
+subGroup(cw):-
+  rootGroup(c),
+  averagePrecipitationForTheDriestMonthInWinterHalfOfYear(APDMW),
+  averagePrecipitationForTheWettestMonthInSummerHalfOfYear(APWMS),
+  APDMW #< (APWMS div 10).
 % subGroup(Cf):- % ELIMINATING THIS ONE. This is captured by climate(Cxx) where xx is fa,fb,fc
 
-subGroup(ds):- subGroup(cs). % Same as subGroup(cs)
-subGroup(dw):- subGroup(cw). % Same as subGroup(cw)
+subGroup(ds):-
+  subGroup(cs). % Same as subGroup(cs)
+subGroup(dw):-
+  subGroup(cw). % Same as subGroup(cw)
 % subGroup(Df):- % % ELIMINATING THIS ONE. This is captured by climate(Dxx) where xx is fa,fb,fc,fd
 
-subGroup(et):- % rootGroup(e), averageTemperatureOfHottestMonth >= 0C
-subGroup(ef):- % rootGroup(e), averageTemperatureOfHottestMonth < 0C
+subGroup(et):-
+rootGroup(e),
+  averageTemperatureOfHottestMonth(ATHM),
+  ATHM #>= 0. %°C
+subGroup(ef):-
+  rootGroup(e),
+  averageTemperatureOfHottestMonth(ATHM),
+  ATHM #< 0. %°C
 
-commonRules(cda):- % averageTemperatureOfHottestMonth >= 22 C
-commonRules(cdb):- % NOT commonRules(cda), averageNumberOfMonthsWithAverageTemperatureOver10C >= 4
-commonRules(cdc):- % NOT commonRules(cdb), NOT commonRules(cdd), 1 <= averageNumberOfMonthsWithAverageTemperatureOver10C < 4
-commonRules(cdd):- % averageTemperatureOfColdestMonth < -38C
+commonRules(cda):-
+  averageTemperatureOfHottestMonth(ATHM),
+  ATHM #>= 22. %°C
+commonRules(cdb):-
+  \+ commonRules(cda),
+  averageNumberOfMonthsWithAverageTemperatureOverTenDegreesCelcius(ANMATOTDC),
+  ANMATOTDC #>= 4.
+commonRules(cdc):-
+  \+ commonRules(cdb),
+  \+ commonRules(cdd),
+  averageNumberOfMonthsWithAverageTemperatureOverTenDegreesCelcius(ANMATOTDC),
+  1 #<= (ANMATOTDC #< 4).
+commonRules(cdd):-
+  averageTemperatureOfColdestMonth(ATCM),
+  ATCM #< -38. %°C
 
 %%% These predicates are the climate classifications themselves.
 %%% They depend on the above rootGroup and subGroup predicates above.
 
 % Tropical rainforest climate
-climate(af):- subGroup(af). 
+climate(af):- subGroup(af).
 % Tropical monsoon climate
 climate(am):- subGroup(am).
 % Tropical wet and dry or savanna climate
@@ -119,11 +181,11 @@ climate(cwc):-
 	commonRules(cdc).
 
 % Humid subtropical climate
-climate(cfa):- % (NOT subGroup(cs) && NOT subGroup(cw)), commonRules(cda).
+climate(cfa):- % (\+ subGroup(cs), \+ subGroup(cw)), commonRules(cda).
 % Oceanic climate
-climate(cfb):- % (NOT subGroup(cs) && NOT subGroup(cw)), commonRules(cdb).
+climate(cfb):- % (\+ subGroup(cs), \+ subGroup(cw)), commonRules(cdb).
 % Subpolar oceanic climate
-climate(cfc):- % (NOT subGroup(cs) && NOT subGroup(cw)), commonRules(cdc).
+climate(cfc):- % (\+ subGroup(cs), \+ subGroup(cw)), commonRules(cdc).
 
 % Humid continental climate
 climate(dsa):-
@@ -160,13 +222,13 @@ climate(dwd):-
 	commonRules(cdd).
 
 % Humid continental climate
-climate(dfa):- % (NOT subGroup(cs) && NOT subGroup(cw)), commonRules(cda).
+climate(dfa):- % (\+ subGroup(cs), \+ subGroup(cw)), commonRules(cda).
 % Humid continental climate
-climate(dfb):- % (NOT subGroup(cs) && NOT subGroup(cw)), commonRules(cdb).
+climate(dfb):- % (\+ subGroup(cs), \+ subGroup(cw)), commonRules(cdb).
 % Subarctic climate
-climate(dfc):- % (NOT subGroup(cs) && NOT subGroup(cw)), commonRules(cdc).
+climate(dfc):- % (\+ subGroup(cs), \+ subGroup(cw)), commonRules(cdc).
 % Subarctic climate
-climate(dfd):- % (NOT subGroup(cs) && NOT subGroup(cw)), commonRules(cdd).
+climate(dfd):- % (\+ subGroup(cs), \+ subGroup(cw)), commonRules(cdd).
 
 % Tundra climate
 climate(et):-
@@ -189,14 +251,14 @@ averageMinimumPrecipitationOfSlowestMonth(X):- ask(averageMinimumPrecipitationOf
 averageTotalAnnualPrecipitation(X):- ask(averageTotalAnnualPrecipitation,X).
 averageTemperatureOfColdestMonth(X):- ask(averageTemperatureOfColdestMonth,X).
 averageTemperatureOfHottestMonth(X):- ask(averageTemperatureOfHottestMonth,X).
-averageNumberOfMonthsWithAverageTemperatureOver10C(X):- ask(averageNumberOfMonthsWithAverageTemperatureOver10C,X).
+averageNumberOfMonthsWithAverageTemperatureOverTenDegreesCelcius(X):- ask(averageNumberOfMonthsWithAverageTemperatureOverTenDegreesCelcius,X).
 averageAnnualPrecipitation(X):- ask(averageAnnualPrecipitation,X).
 averageAnnualTemperature(X):- ask(averageAnnualTemperature,X).
 averagePrecipitationForTheWettestMonthInSummerHalfOfYear(X):- ask(averagePrecipitationForTheWettestMonthInSummerHalfOfYear,X).
 averagePrecipitationForTheWettestMonthInWinterHalfOfYear(X):- ask(averagePrecipitationForTheWettestMonthInWinterHalfOfYear,X).
 averagePrecipitationForTheDriestMonthInSummerHalfOfYear(X):- ask(averagePrecipitationForTheDriestMonthInSummerHalfOfYear,X).
 averagePrecipitationForTheDriestMonthInWinterHalfOfYear(X):- ask(averagePrecipitationForTheDriestMonthInWinterHalfOfYear,X).
-  
+
 % "ask" is responsible for getting information from the user, and remembering
 % the users response. If it doesn't already know the answer to a question
 % it will ask the user. It then asserts the answer. It recognizes two
