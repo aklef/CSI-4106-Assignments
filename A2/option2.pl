@@ -2,7 +2,7 @@
 
 % This is a sample of a classification expert system for identification
 % of Köppen–Geiger climate types. The rules are roughly based on the classifications
-% from https://en.wikipedia.org/wiki/K%C3%B6ppen_climate_classification
+% from https://en.wikipedia.org/wiki/Köppen_climate_classification
 
 % This type of expert system can easily use Prolog's built in inferencing
 % system. While trying to satisfy the goal "cat" it tries to satisfy
