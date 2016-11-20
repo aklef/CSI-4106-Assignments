@@ -91,18 +91,30 @@ climate(bsh):- % subGroup(bs), averageAnnualTemperature >= 18C
 climate(bsk):- % subGroup(bs), averageAnnualTemperature < 18C
 
 % Hot-summer or Mediterranean climates
-climate(csa):- % subGroup(cs), commonRules(cda).
+climate(csa):-
+	subGroup(cs),
+	commonRules(cda).
 % Warm-summer or Mediterranean climates
-climate(csb):- % subGroup(cs), commonRules(cdb).
+climate(csb):-
+	subGroup(cs),
+	commonRules(cdb).
 % Cold-summer or Mediterranean climates
-climate(csc):- % subGroup(cs), commonRules(cdc).
+climate(csc):-
+	subGroup(cs),
+	commonRules(cdc).
 
 % Humid subtropical climate
-climate(cwa):- % subGroup(cw), commonRules(cda).
+climate(cwa):-
+	subGroup(cw),
+	commonRules(cda).
 % Subtropical highland climate
-climate(cwb):- % subGroup(cw), commonRules(cdb).
+climate(cwb):-
+	subGroup(cw),
+	commonRules(cdb).
 % Subtropical highland climate
-climate(cwc):- % subGroup(cw), commonRules(cdc).
+climate(cwc):-
+	subGroup(cw),
+	commonRules(cdc).
 
 % Humid subtropical climate
 climate(cfa):- % (NOT subGroup(cs) && NOT subGroup(cw)), commonRules(cda).
@@ -112,22 +124,38 @@ climate(cfb):- % (NOT subGroup(cs) && NOT subGroup(cw)), commonRules(cdb).
 climate(cfc):- % (NOT subGroup(cs) && NOT subGroup(cw)), commonRules(cdc).
 
 % Humid continental climate
-climate(dsa):- % subGroup(ds), commonRules(cda).
+climate(dsa):-
+	subGroup(ds),
+	commonRules(cda).
 % Humid continental climate
-climate(dsb):- % subGroup(ds), commonRules(cdb).
+climate(dsb):-
+	subGroup(ds),
+	commonRules(cdb).
 % Subarctic climate
-climate(dsc):- % subGroup(ds), commonRules(cdc).
+climate(dsc):-
+	subGroup(ds),
+	commonRules(cdc).
 % Subarctic climate
-climate(dsd):- % subGroup(ds), commonRules(cdd).
+climate(dsd):-
+	subGroup(ds),
+	commonRules(cdd).
 
 % Humid continental climate
-climate(dwa):- % subGroup(dw), commonRules(cda).
+climate(dwa):-
+	subGroup(dw),
+	commonRules(cda).
 % Humid continental climate
-climate(dwb):- % subGroup(dw), commonRules(cdb).
+climate(dwb):-
+	subGroup(dw),
+	commonRules(cdb).
 % Subarctic climate
-climate(dwc):- % subGroup(dw), commonRules(cdc).
+climate(dwc):-
+	subGroup(dw),
+	commonRules(cdc).
 % Subarctic climate
-climate(dwd):- % subGroup(dw), commonRules(cdd).
+climate(dwd):-
+	subGroup(dw),
+	commonRules(cdd).
 
 % Humid continental climate
 climate(dfa):- % (NOT subGroup(cs) && NOT subGroup(cw)), commonRules(cda).
@@ -139,9 +167,11 @@ climate(dfc):- % (NOT subGroup(cs) && NOT subGroup(cw)), commonRules(cdc).
 climate(dfd):- % (NOT subGroup(cs) && NOT subGroup(cw)), commonRules(cdd).
 
 % Tundra climate
-climate(et):- % subGroup(et).
+climate(et):-
+	subGroup(et).
 % Ice cap climate
-climate(ef):- % subGroup(ef).
+climate(ef):-
+	subGroup(ef).
 
 %%% Calculation only predicates
 
