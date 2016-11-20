@@ -114,7 +114,7 @@ climate(ef):- % subGroup(ef).
 
 %%% Calculation only predicates
 
-precipitationThreshold():-
+precipitationThreshold(X):-
 % Pthreshold –
 % if 70% of precipitation is in winter half of year, 2 × MAT
 % if 70% of precipitation is in summer half of year, 2 × MAT + 28
