@@ -265,9 +265,9 @@ climate(ef):-
 
 precipitationThreshold(PT):-
   averageAnnualTemperature(AAT),
-  (   true -> PT is (2 * AAT);
-      false -> PT is (2 * AAT) + 28;
-      PT is (2 * AAT) + 14).
+  ( true -> PT is (2 * AAT);
+    false -> PT is (2 * AAT) + 28;
+    PT is (2 * AAT) + 14).
 
 /* PT will be the "returned" value
 Pthreshold –
