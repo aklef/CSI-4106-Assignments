@@ -80,11 +80,12 @@ climate(aw):- subGroup(aw).
 
 climate(bwh):- % subGroup(bw), avgAnnualTemperature >= 18C
 climate(bwk):- % subGroup(bw), avgAnnualTemperature < 18C
-climate(bs):- subGroup(bs).
+climate(bsh):- % subGroup(bs), avgAnnualTemperature >= 18C
 climate(bsk):- % subGroup(bs), avgAnnualTemperature < 18C
 
 climate(csa):- % subGroup(cs), commonRules(cda).
 climate(csb):- % subGroup(cs), commonRules(cdb).
+climate(csc):- % subGroup(cs), commonRules(cdc).
 
 climate(cwa):- % subGroup(cw), commonRules(cda).
 climate(cwb):- % subGroup(cw), commonRules(cdb).
@@ -114,7 +115,7 @@ climate(ef):- % subGroup(ef).
 
 %%% Calculation only predicates
 
-precipitationThreshold(X):-
+precipitationThreshold(X):- % X will be the "returned" value
 % Pthreshold –
 % if 70% of precipitation is in winter half of year, 2 × MAT
 % if 70% of precipitation is in summer half of year, 2 × MAT + 28
