@@ -31,7 +31,7 @@ main :- identify.
 
 identify:-
   retractall(known(_,_,_)),         % clear stored information
-  cat(X),
+  climate(X),
   write('The climate classification is '),write(X),nl.
 identify:-
   write('I can''t identify that climate classification'),nl.
