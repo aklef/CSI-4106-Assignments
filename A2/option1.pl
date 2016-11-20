@@ -39,37 +39,37 @@ identify:-
 %%% These predicates are required for satisfying the requirements of a higher climate group
 %%% They themselves are too broad for the Koppen climate system  
   
-rootGroup(a):- % avgTempOfColdestMonth >= 18 C
-rootGroup(b):- % avgAnnualPrecipitation < 10 * precipitationThreshold
+rootGroup(a):- % averageTemperatureOfColdestMonth >= 18 C
+rootGroup(b):- % averageAnnualPrecipitation < 10 * precipitationThreshold
 
-rootGroupCommon(cd):- % avgTempOfHottestMonth > 10 C
+rootGroupCommon(cd):- % averageTemperatureOfHottestMonth > 10 C
 
-rootGroup(c):- % rootGroupCommon(cd), 0 C < avgTempOfColdestMonth < 18 C
-rootGroup(d):- % rootGroupCommon(cd), avgTempOfColdestMonth <= 0 C
-rootGroup(e):- % avgTempOfHottestMonth < 10 °C
+rootGroup(c):- % rootGroupCommon(cd), 0 C < averageTemperatureOfColdestMonth < 18 C
+rootGroup(d):- % rootGroupCommon(cd), averageTemperatureOfColdestMonth <= 0 C
+rootGroup(e):- % averageTemperatureOfHottestMonth < 10 °C
 
-subGroup(af):- % rootGroup(a), minPrecipitationOfSlowestMonth >= 60mm
-subGroup(am):- % rootGroup(a), minPrecipitationOfSlowestMonth < 60mm, (minPrecipitationOfSlowestMonth / totalAnnualPrecipitation) >= 0.04
-subGroup(aw):- % rootGroup(a), minPrecipitationOfSlowestMonth < 60mm, (minPrecipitationOfSlowestMonth / totalAnnualPrecipitation) < 0.04
+subGroup(af):- % rootGroup(a), averageMinimumPrecipitationOfSlowestMonth >= 60mm
+subGroup(am):- % rootGroup(a), averageMinimumPrecipitationOfSlowestMonth < 60mm, (averageMinimumPrecipitationOfSlowestMonth / averageTotalAnnualPrecipitation) >= 0.04
+subGroup(aw):- % rootGroup(a), averageMinimumPrecipitationOfSlowestMonth < 60mm, (averageMinimumPrecipitationOfSlowestMonth / averageTotalAnnualPrecipitation) < 0.04
 
-subGroup(bw):- % rootGroup(b), avgAnnualPrecipitation < (5 * precipitationThreshold)
-subGroup(bs):- % rootGroup(b), avgAnnualPrecipitation >= (5 * precipitationThreshold)
+subGroup(bw):- % rootGroup(b), averageAnnualPrecipitation < (5 * precipitationThreshold)
+subGroup(bs):- % rootGroup(b), averageAnnualPrecipitation >= (5 * precipitationThreshold)
 
-subGroup(cs):- % rootGroup(c), avgPrecipitationDriestMonthInSummerHalfOfYear < 40mm && avgPrecipitationDriestMonthInSummerHalfOfYear < (avgPrecipitationWettestMonthInWinterHalfOfYear / 3)
-subGroup(cw):- % rootGroup(c), avgPrecipitationDriestMonthInWinterHalfOfYear < avgPrecipitationWettestMonthInSummerHalfOfYear / 10
+subGroup(cs):- % rootGroup(c), averagePrecipitationForTheDriestMonthInSummerHalfOfYear < 40mm && averagePrecipitationForTheDriestMonthInSummerHalfOfYear < (averagePrecipitationForTheWettestMonthInWinterHalfOfYear / 3)
+subGroup(cw):- % rootGroup(c), averagePrecipitationForTheDriestMonthInWinterHalfOfYear < averagePrecipitationForTheWettestMonthInSummerHalfOfYear / 10
 % subGroup(Cf):- % ELIMINATING THIS ONE. This is captured by climate(Cxx) where xx is fa,fb,fc
 
 subGroup(ds):- subGroup(cs). % Same as subGroup(cs)
 subGroup(dw):- subGroup(cw). % Same as subGroup(cw)
 % subGroup(Df):- % % ELIMINATING THIS ONE. This is captured by climate(Dxx) where xx is fa,fb,fc,fd
 
-subGroup(et):- % rootGroup(e), avgTempOfHottestMonth >= 0C
-subGroup(ef):- % rootGroup(e), avgTempOfHottestMonth < 0C
+subGroup(et):- % rootGroup(e), averageTemperatureOfHottestMonth >= 0C
+subGroup(ef):- % rootGroup(e), averageTemperatureOfHottestMonth < 0C
 
-commonRules(cda):- % avgTempOfHottestMonth >= 22 C
-commonRules(cdb):- % NOT commonRules(cda), numMonthsWithAvgTempOver10C >= 4
-commonRules(cdc):- % NOT commonRules(cdb), NOT commonRules(cdd), 1 <= numMonthsWithAvgTempOver10C < 4
-commonRules(cdd):- % avgTempOfColdestMonth < -38C
+commonRules(cda):- % averageTemperatureOfHottestMonth >= 22 C
+commonRules(cdb):- % NOT commonRules(cda), averageNumberOfMonthsWithAverageTemperatureOver10C >= 4
+commonRules(cdc):- % NOT commonRules(cdb), NOT commonRules(cdd), 1 <= averageNumberOfMonthsWithAverageTemperatureOver10C < 4
+commonRules(cdd):- % averageTemperatureOfColdestMonth < -38C
 
 %%% These predicates are the climate classifications themselves.
 %%% They depend on the above rootGroup and subGroup predicates above.
@@ -82,13 +82,13 @@ climate(am):- subGroup(am).
 climate(aw):- subGroup(aw).
 
 % Hot desert
-climate(bwh):- % subGroup(bw), avgAnnualTemperature >= 18C
+climate(bwh):- % subGroup(bw), averageAnnualTemperature >= 18C
 % Cold desert
-climate(bwk):- % subGroup(bw), avgAnnualTemperature < 18C
+climate(bwk):- % subGroup(bw), averageAnnualTemperature < 18C
 % Hot steppe
-climate(bsh):- % subGroup(bs), avgAnnualTemperature >= 18C
+climate(bsh):- % subGroup(bs), averageAnnualTemperature >= 18C
 % Cold steppe
-climate(bsk):- % subGroup(bs), avgAnnualTemperature < 18C
+climate(bsk):- % subGroup(bs), averageAnnualTemperature < 18C
 
 % Hot-summer or Mediterranean climates
 climate(csa):- % subGroup(cs), commonRules(cda).
@@ -153,23 +153,22 @@ precipitationThreshold(X):- % X will be the "returned" value
 
 %%% Predicates requiring user input
 
-minPrecipitationOfSlowestMonth(X):- ask(minPrecipitationOfSlowestMonth,X).
-totalAnnualPrecipitation(X):- ask(totalAnnualPrecipitation,X).
-avgTempOfColdestMonth(X):- ask(avgTempOfColdestMonth,X).
-avgTempOfHottestMonth(X):- ask(avgTempOfHottestMonth,X).
-numMonthsWithAvgTempOver10C(X):- ask(numMonthsWithAvgTempOver10C,X).
-avgAnnualPrecipitation(X):- ask(avgAnnualPrecipitation,X).
-avgAnnualTemperature(X):- ask(avgAnnualTemperature,X).
-avgPrecipitationWettestMonthInSummerHalfOfYear(X):- ask(avgPrecipitationWettestMonthInSummerHalfOfYear,X).
-avgPrecipitationWettestMonthInWinterHalfOfYear(X):- ask(avgPrecipitationWettestMonthInWinterHalfOfYear,X).
-avgPrecipitationDriestMonthInSummerHalfOfYear(X):- ask(avgPrecipitationDriestMonthInSummerHalfOfYear,X).
-avgPrecipitationDriestMonthInWinterHalfOfYear(X):- ask(avgPrecipitationDriestMonthInWinterHalfOfYear,X).
+averageMinimumPrecipitationOfSlowestMonth(X):- ask(averageMinimumPrecipitationOfSlowestMonth,X).
+averageTotalAnnualPrecipitation(X):- ask(averageTotalAnnualPrecipitation,X).
+averageTemperatureOfColdestMonth(X):- ask(averageTemperatureOfColdestMonth,X).
+averageTemperatureOfHottestMonth(X):- ask(averageTemperatureOfHottestMonth,X).
+averageNumberOfMonthsWithAverageTemperatureOver10C(X):- ask(averageNumberOfMonthsWithAverageTemperatureOver10C,X).
+averageAnnualPrecipitation(X):- ask(averageAnnualPrecipitation,X).
+averageAnnualTemperature(X):- ask(averageAnnualTemperature,X).
+averagePrecipitationForTheWettestMonthInSummerHalfOfYear(X):- ask(averagePrecipitationForTheWettestMonthInSummerHalfOfYear,X).
+averagePrecipitationForTheWettestMonthInWinterHalfOfYear(X):- ask(averagePrecipitationForTheWettestMonthInWinterHalfOfYear,X).
+averagePrecipitationForTheDriestMonthInSummerHalfOfYear(X):- ask(averagePrecipitationForTheDriestMonthInSummerHalfOfYear,X).
+averagePrecipitationForTheDriestMonthInWinterHalfOfYear(X):- ask(averagePrecipitationForTheDriestMonthInWinterHalfOfYear,X).
   
 % "ask" is responsible for getting information from the user, and remembering
 % the users response. If it doesn't already know the answer to a question
 % it will ask the user. It then asserts the answer. It recognizes two
-% cases of knowledge: 1) the attribute-value is known to be true,
-% 2) the attribute-value is known to be false.
+% cases of knowledge: 1) the attribute-value is either known, or it isnt.
 
 % This means an attribute might have multiple values. A third test to
 % see if the attribute has another value could be used to enforce
@@ -182,22 +181,22 @@ avgPrecipitationDriestMonthInWinterHalfOfYear(X):- ask(avgPrecipitationDriestMon
 % yes value. any other response is considered a "no".
 
 ask(Attribute,Value):-
-  known(yes,Attribute,Value),       % succeed if we know its true
+  known(valueKnown,Attribute,Value),       % succeed if we know its true
   !.                                % and dont look any further
 ask(Attribute,Value):-
-  known(_,Attribute,Value),         % fail if we know its false
+  known(_,Attribute,Value),         % fail if somehow there is another value besides 'known' or 'yes'
   !, fail.
 
 ask(Attribute,_):-
-  known(yes,Attribute,_),           % fail if we know its some other value.
+  known(valueKnown,Attribute,_),           % fail if we know its some other value.
   !, fail.                          % the cut in clause #1 ensures that if
                                     % we get here the value is wrong.
 ask(A,V):-
-  write(A:V),                       % if we get here, we need to ask.
-  write('? (yes or no): '),
+  write('please provide a value for '),write(A),                       % if we get here, we need to ask.
+  write(': '),
   read(Y),                          % get the answer
-  asserta(known(Y,A,V)),            % remember it so we dont ask again.
-  Y = yes.                          % succeed or fail based on answer.
+  asserta(known(valueKnown,A,V)),            % remember it so we dont ask again.
+  Y = valueKnown.                          % succeed or fail based on answer.
 
 % "menuask" is like ask, only it gives the user a menu to to choose
 % from rather than a yes on no answer. In this case there is no
