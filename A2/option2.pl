@@ -6,7 +6,6 @@ info:-
   write('\n The predicate "known/3" is used to remember answers to questions, \n so it is cleared at the beginning of the run. \n\n The rules of identification are the bulk of the code. They break up \n the problem into identifying process and ingredients and tools \n before identifying the actual climates. \n\n The end of the code lists those attribute-value pairs which need to be asked for, \n and defines the predicate "ask" and "menuask" which are \n used to get information from the user, and remember it.'),nl,nl.
 
 % Code that runs automatically on load time:
-:- use_module(library(clpfd)). % for integer arithmetic
 :- info.
 
 main :- identify.
