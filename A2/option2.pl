@@ -16,6 +16,9 @@ identify:-
   write('The climate classification is '),write(X),nl.
 identify:-
   write('I can''t identify that climate classification'),nl.
+  
+reset:- % resets attribute database after each question
+	retractall(known(_,_,_)).
 
 %%% These predicates are required for satisfying the requirements of a higher climate group
 %%% They themselves are too broad for the Koppen climate system
