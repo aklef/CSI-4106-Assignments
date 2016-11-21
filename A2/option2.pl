@@ -88,9 +88,8 @@ subGroup(ds):-
 subGroup(dw):-
   subGroup(cw). % Same as subGroup(cw)
 % subGroup(Df):- % % ELIMINATING THIS ONE. This is captured by climate(Dxx) where xx is fa,fb,fc,fd
-
 subGroup(et):-
-rootGroup(e),
+  rootGroup(e),
   averageTemperatureOfHottestMonth(ATHM),
   ATHM >= 0. %°C
 subGroup(ef):-
@@ -232,8 +231,8 @@ climate(dfc):-
   commonRules(cdc).
 % Subarctic climate
 climate(dfd):-
-(\+ subGroup(cs), \+ subGroup(cw)),
-commonRules(cdd).
+  (\+ subGroup(cs), \+ subGroup(cw)),
+  commonRules(cdd).
 
 % Tundra climate
 climate(et):-
