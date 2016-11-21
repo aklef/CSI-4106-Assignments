@@ -104,12 +104,12 @@ commonRules(cda):-
   ATHM #>= 22. %°C
 commonRules(cdb):-
   \+ commonRules(cda),
-  averageNumberOfMonthsWithAverageTemperatureOverTenDegreesCelcius(ANMATOTDC),
+  averageNumOfMonthsWithAvgTempOverTenDegCelcius(ANMATOTDC),
   ANMATOTDC #>= 4.
 commonRules(cdc):-
   \+ commonRules(cdb),
   \+ commonRules(cdd),
-  averageNumberOfMonthsWithAverageTemperatureOverTenDegreesCelcius(ANMATOTDC),
+  averageNumOfMonthsWithAvgTempOverTenDegCelcius(ANMATOTDC),
   1 #=< (ANMATOTDC #< 4).
 commonRules(cdd):-
   averageTemperatureOfColdestMonth(ATCM),
@@ -247,10 +247,10 @@ climate(ef):-
 
 precipitationThreshold(PT):-
   averageAnnualTemperature(AAT),
-  percentageOfTotalAnnualPrecipitationOccuringInWinterMonths(POTAPOIWM),
-  (   POTAPOIWM >= 0.7 -> PT is (2 * AAT);
-      POTAPOIWM =< 0.3 -> PT is (2 * AAT) + 28;
-      PT is (2 * AAT) + 14).
+  percentageOfAnnualPrecipitationInWinterMonths(PAPWM),
+  ( PAPWM >= 0.7 -> PT is (2 * AAT);
+    PAPWM =< 0.3 -> PT is (2 * AAT) + 28;
+    PT is (2 * AAT) + 14).
 
 /* PT will be the "returned" value
 Pthreshold –
@@ -261,11 +261,11 @@ else 2 * MAT + 14 */
 
 %%% Predicates requiring user input
 
-percentageOfTotalAnnualPrecipitationOccuringInWinterMonths(X):- ask(percentageOfTotalAnnualPrecipitationOccuringInWinterMonths,X).
+percentageOfAnnualPrecipitationInWinterMonths(X):- ask(percentageOfAnnualPrecipitationInWinterMonths,X).
 averageMinimumPrecipitationOfSlowestMonth(X):- ask(averageMinimumPrecipitationOfSlowestMonth,X).
 averageTemperatureOfColdestMonth(X):- ask(averageTemperatureOfColdestMonth,X).
 averageTemperatureOfHottestMonth(X):- ask(averageTemperatureOfHottestMonth,X).
-averageNumberOfMonthsWithAverageTemperatureOverTenDegreesCelcius(X):- ask(averageNumberOfMonthsWithAverageTemperatureOverTenDegreesCelcius,X).
+averageNumOfMonthsWithAvgTempOverTenDegCelcius(X):- ask(averageNumOfMonthsWithAvgTempOverTenDegCelcius,X).
 averageAnnualPrecipitation(X):- ask(averageAnnualPrecipitation,X).
 averageAnnualTemperature(X):- ask(averageAnnualTemperature,X).
 averagePrecipitationForTheWettestMonthInSummerHalfOfYear(X):- ask(averagePrecipitationForTheWettestMonthInSummerHalfOfYear,X).
