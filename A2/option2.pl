@@ -52,13 +52,13 @@ subGroup(am):-
   averageMinimumPrecipitationOfSlowestMonth(AMPSM),
   averageAnnualPrecipitation(AAP),
   AMPSM #< 60, %mm
-  (AMPSM div AAP) >= 0.04.
+  (AMPSM / AAP) >= 0.04.
 subGroup(aw):-
   rootGroup(a),
   averageMinimumPrecipitationOfSlowestMonth(AMPSM),
   averageAnnualPrecipitation(AAP),
   AMPSM #< 60, %mm
-  (AMPSM div AAP) < 0.04.
+  (AMPSM / AAP) < 0.04.
 
 subGroup(bw):-
   rootGroup(b),
@@ -76,12 +76,12 @@ subGroup(cs):-
   averagePrecipitationForTheDriestMonthInSummerHalfOfYear(APDMS),
   averagePrecipitationForTheWettestMonthInWinterHalfOfYear(APWMW),
   APDMS #< 40,
-  APDMS #< (APWMW div 3).
+  APDMS #< (APWMW / 3).
 subGroup(cw):-
   rootGroup(c),
   averagePrecipitationForTheDriestMonthInWinterHalfOfYear(APDMW),
   averagePrecipitationForTheWettestMonthInSummerHalfOfYear(APWMS),
-  APDMW #< (APWMS div 10).
+  APDMW #< (APWMS / 10).
 % subGroup(Cf):- % ELIMINATING THIS ONE. This is captured by climate(Cxx) where xx is fa,fb,fc
 
 subGroup(ds):-
