@@ -23,53 +23,53 @@ identify:-
 
 rootGroup(a):-
 	averageTemperatureOfColdestMonth(ATCM),
-	ATCM #>= 18. %°C
+	ATCM >= 18. %°C
 rootGroup(b):-
   averageAnnualPrecipitation(AAP),
   precipitationThreshold(PT),
-  AAP #< (10 * PT). %mm
+  AAP < (10 * PT). %mm
 rootGroup(c):-
   rootGroupCommon(cd),
   averageTemperatureOfColdestMonth(ATCM),
-  0 #< ATCM, ATCM #< 18. %°C
+  0 < ATCM, ATCM < 18. %°C
 rootGroup(d):-
   rootGroupCommon(cd),
   averageTemperatureOfColdestMonth(ATCM),
-  ATCM #=< 0. %°C
+  ATCM =< 0. %°C
 rootGroup(e):-
   averageTemperatureOfHottestMonth(ATHM),
-  ATHM #< 10. %°C
+  ATHM < 10. %°C
 rootGroupCommon(cd):-
   averageTemperatureOfHottestMonth(ATHM),
-  ATHM #> 10. %°C
+  ATHM > 10. %°C
 
 subGroup(af):-
   rootGroup(a),
   averageMinimumPrecipitationOfSlowestMonth(AMPSM),
-  AMPSM #>= 60. %mm
+  AMPSM >= 60. %mm
 subGroup(am):-
   rootGroup(a),
   averageMinimumPrecipitationOfSlowestMonth(AMPSM),
   averageAnnualPrecipitation(AAP),
-  AMPSM #< 60, %mm
+  AMPSM < 60, %mm
   (AMPSM / AAP) >= 0.04.
 subGroup(aw):-
   rootGroup(a),
   averageMinimumPrecipitationOfSlowestMonth(AMPSM),
   averageAnnualPrecipitation(AAP),
-  AMPSM #< 60, %mm
+  AMPSM < 60, %mm
   (AMPSM / AAP) < 0.04.
 
 subGroup(bw):-
   rootGroup(b),
   averageAnnualPrecipitation(AAP),
   precipitationThreshold(PT),
-  AAP #< (5 * PT).
+  AAP < (5 * PT).
 subGroup(bs):-
   rootGroup(b),
   averageAnnualPrecipitation(AAP),
   precipitationThreshold(PT),
-  AAP #>= (5 * PT).
+  AAP >= (5 * PT).
 
 subGroup(cs):-
   rootGroup(c),
@@ -81,7 +81,7 @@ subGroup(cw):-
   rootGroup(c),
   averagePrecipitationForTheDriestMonthInWinterHalfOfYear(APDMW),
   averagePrecipitationForTheWettestMonthInSummerHalfOfYear(APWMS),
-  APDMW #< (APWMS / 10).
+  APDMW < (APWMS / 10).
 % subGroup(Cf):- % ELIMINATING THIS ONE. This is captured by climate(Cxx) where xx is fa,fb,fc
 
 subGroup(ds):-
@@ -93,27 +93,27 @@ subGroup(dw):-
 subGroup(et):-
 rootGroup(e),
   averageTemperatureOfHottestMonth(ATHM),
-  ATHM #>= 0. %°C
+  ATHM >= 0. %°C
 subGroup(ef):-
   rootGroup(e),
   averageTemperatureOfHottestMonth(ATHM),
-  ATHM #< 0. %°C
+  ATHM < 0. %°C
 
 commonRules(cda):-
   averageTemperatureOfHottestMonth(ATHM),
-  ATHM #>= 22. %°C
+  ATHM >= 22. %°C
 commonRules(cdb):-
   \+ commonRules(cda),
   averageNumOfMonthsWithAvgTempOverTenDegCelcius(ANMATOTDC),
-  ANMATOTDC #>= 4.
+  ANMATOTDC >= 4.
 commonRules(cdc):-
   \+ commonRules(cdb),
   \+ commonRules(cdd),
   averageNumOfMonthsWithAvgTempOverTenDegCelcius(ANMATOTDC),
-  1 #=< (ANMATOTDC #< 4).
+  1 =< (ANMATOTDC < 4).
 commonRules(cdd):-
   averageTemperatureOfColdestMonth(ATCM),
-  ATCM #< -38. %°C
+  ATCM < -38. %°C
 
 %%% These predicates are the climate classifications themselves.
 %%% They depend on the above rootGroup and subGroup predicates above.
@@ -129,22 +129,22 @@ climate(aw):- subGroup(aw).
 climate(bwh):-
   subGroup(bw),
   averageAnnualTemperature(AAT),
-  AAT #>= 18. %°C
+  AAT >= 18. %°C
 % Cold desert
 climate(bwk):-
   subGroup(bw),
   averageAnnualTemperature(AAT),
-  AAT #< 18. %°C
+  AAT < 18. %°C
 % Hot steppe
 climate(bsh):-
   subGroup(bs),
   averageAnnualTemperature(AAT),
-  AAT #>= 18. %°C
+  AAT >= 18. %°C
 % Cold steppe
 climate(bsk):-
   subGroup(bs),
   averageAnnualTemperature(AAT),
-  AAT #< 18. %°C
+  AAT < 18. %°C
 
 % Hot-summer or Mediterranean climates
 climate(csa):-
