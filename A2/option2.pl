@@ -50,21 +50,21 @@ subGroup(af):-
 subGroup(am):-
   rootGroup(a),
   averageMinimumPrecipitationOfSlowestMonth(AMPSM),
-  averageTotalAnnualPrecipitation(ATAP),
+  averageAnnualPrecipitation(AAP),
   AMPSM #< 60, %mm
-  (AMPSM div ATAP) #>= '0.04'.
+  (AMPSM div AAP) #>= '0.04'.
 subGroup(aw):-
   rootGroup(a),
   averageMinimumPrecipitationOfSlowestMonth(AMPSM),
-  averageTotalAnnualPrecipitation(ATAP),
+  averageAnnualPrecipitation(AAP),
   AMPSM #< 60, %mm
-  (AMPSM div ATAP) #< '0.04'.
+  (AMPSM div AAP) #< '0.04'.
 
 subGroup(bw):-
   rootGroup(b),
-  averageTotalAnnualPrecipitation(ATAP),
+  averageAnnualPrecipitation(AAP),
   precipitationThreshold(PT),
-  ATAP #< (5 * PT).
+  AAP #< (5 * PT).
 subGroup(bs):-
   rootGroup(b),
   averageAnnualPrecipitation(AAP),
@@ -127,7 +127,7 @@ climate(aw):- subGroup(aw).
 
 % Hot desert
 climate(bwh):-
-  qsubGroup(bw),
+  subGroup(bw),
   averageAnnualTemperature(AAT),
   AAT #>= 18. %°C
 % Cold desert
@@ -247,9 +247,10 @@ climate(ef):-
 
 precipitationThreshold(PT):-
   averageAnnualTemperature(AAT),
-  ( true -> PT is (2 * AAT);
-    false -> PT is (2 * AAT) + 28;
-    PT is (2 * AAT) + 14).
+  percentageOfTotalAnnualPrecipitationOccuringInWinterMonths(POTAPOIWM),
+  (   POTAPOIWM >= 0.7 -> PT is (2 * AAT);
+      POTAPOIWM =< 0.3 -> PT is (2 * AAT) + 28;
+      PT is (2 * AAT) + 14).
 
 /* PT will be the "returned" value
 Pthreshold –
@@ -260,8 +261,8 @@ else 2 * MAT + 14 */
 
 %%% Predicates requiring user input
 
+percentageOfTotalAnnualPrecipitationOccuringInWinterMonths(X):- ask(percentageOfTotalAnnualPrecipitationOccuringInWinterMonths,X).
 averageMinimumPrecipitationOfSlowestMonth(X):- ask(averageMinimumPrecipitationOfSlowestMonth,X).
-averageTotalAnnualPrecipitation(X):- ask(averageTotalAnnualPrecipitation,X).
 averageTemperatureOfColdestMonth(X):- ask(averageTemperatureOfColdestMonth,X).
 averageTemperatureOfHottestMonth(X):- ask(averageTemperatureOfHottestMonth,X).
 averageNumberOfMonthsWithAverageTemperatureOverTenDegreesCelcius(X):- ask(averageNumberOfMonthsWithAverageTemperatureOverTenDegreesCelcius,X).
