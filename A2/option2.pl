@@ -108,7 +108,7 @@ commonRules(cdc):-
   \+ commonRules(cdb),
   \+ commonRules(cdd),
   averageNumOfMonthsWithAvgTempOverTenDegCelcius(ANMATOTDC),
-  1 =< (ANMATOTDC < 4).
+  1 =< ANMATOTDC, ANMATOTDC < 4.
 commonRules(cdd):-
   averageTemperatureOfColdestMonth(ATCM),
   ATCM < -38. %°C
