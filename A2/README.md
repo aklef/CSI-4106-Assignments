@@ -6,16 +6,14 @@ Kaytar-LeFrançois, Andréas /6467076
 
 Purpose
 ---
-The	purpose	of this assignment is to allow us to experiment with various uninformed search algorithms by programming blind and informed search in the Robot cleaner problem. It will include a representation of the world, an algorithm for search, and the	observation	of some metrics associated with the	search algorithms we used.
+This assignment consists in implementing a knowledge base in Prolog in a particular domain of our choice. This knowledge base includes rules and facts. An example
+knowledge base about birds `birds.pl` and about mammals `mammals.pl` was distributed with the assignment and used ad a starting point for our Climate classification system. 
 
-Description
----
-The roomba appears in a randomly-generated room, represented by our Grid class, and must use a given search algorithm to clean all the dirt piles using a set of Actions with associated Action costs, while minimizing the total cost of the Path taken to achieve a valid solution.
 
 How to Run
 ---
-Build with "javac RobotApp.java" in Console.
-Run "java RobotApp" and follow onscreen instructions.
+Launch the SWI-Prolog console and do `consult(option2).` or `File->Consult...`. 
 
-Examples
+Description
 ---
+Please read the output from the above command in the Prolog interpreter.
