@@ -31,7 +31,7 @@ rootGroup(b):-
 rootGroup(c):-
   rootGroupCommon(cd),
   averageTemperatureOfColdestMonth(ATCM),
-  0 #< (ATCM #< 18). %°C
+  0 #< ATCM, ATCM #< 18. %°C
 rootGroup(d):-
   rootGroupCommon(cd),
   averageTemperatureOfColdestMonth(ATCM),
@@ -75,8 +75,8 @@ subGroup(cs):-
   rootGroup(c),
   averagePrecipitationForTheDriestMonthInSummerHalfOfYear(APDMS),
   averagePrecipitationForTheWettestMonthInWinterHalfOfYear(APWMW),
-  APDMS #< 40,
-  APDMS #< (APWMW / 3).
+  APDMS < 40,
+  APDMS < (APWMW / 3).
 subGroup(cw):-
   rootGroup(c),
   averagePrecipitationForTheDriestMonthInWinterHalfOfYear(APDMW),
