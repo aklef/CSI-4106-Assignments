@@ -13,12 +13,25 @@ main :- identify.
 identify:-
   retractall(known(_,_,_)),         % clear stored information
   climate(X),
-  write('The climate classification is '),write(X),nl.
+  write('The climate classification is '),climateColor(X,C),ansi_format([bold,fg(C)], '~w', [X]),nl.
 identify:-
   write('I can''t identify that climate classification'),nl.
   
 reset:- % resets attribute database after each question
 	retractall(known(_,_,_)).
+
+% Color-code output
+rootGroupColor(b,red).
+rootGroupColor(d,magenta).
+rootGroupColor(e, black).
+climateColor(Climate,Color) :-
+   atom_chars(Climate, Group),
+   Group = [RootGroup|[SubGroup|_]],
+   (rootGroupColor(RootGroup, Color);
+    member(RootGroup, [a,d]) -> Color = cyan;
+   (RootGroup == c, subGroupColor(SubGroup,Color),!)).
+subGroupColor(s,yellow).
+subGroupColor(_,green).
 
 %%% These predicates are required for satisfying the requirements of a higher climate group
 %%% They themselves are too broad for the Koppen climate system
