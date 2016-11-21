@@ -52,13 +52,13 @@ subGroup(am):-
   averageMinimumPrecipitationOfSlowestMonth(AMPSM),
   averageAnnualPrecipitation(AAP),
   AMPSM #< 60, %mm
-  (AMPSM div AAP) #>= '0.04'.
+  (AMPSM div AAP) >= 0.04.
 subGroup(aw):-
   rootGroup(a),
   averageMinimumPrecipitationOfSlowestMonth(AMPSM),
   averageAnnualPrecipitation(AAP),
   AMPSM #< 60, %mm
-  (AMPSM div AAP) #< '0.04'.
+  (AMPSM div AAP) < 0.04.
 
 subGroup(bw):-
   rootGroup(b),
@@ -288,6 +288,8 @@ averagePrecipitationForTheDriestMonthInWinterHalfOfYear(X):- ask(averagePrecipit
 % "ask" only deals with simple yes or no answers. a "yes" is the only
 % yes value. any other response is considered a "no".
 
+:- dynamic known/3.
+
 ask(Attribute,Value):-
   known(valueKnown,Attribute,Value),% succeed if we know its true
   !.                                % and dont look any further
@@ -303,9 +305,9 @@ ask(A,V):-
   write('please provide a value for '),
   write(A),                         % if we get here, we need to ask.
   write(': '),
-  read(Y),                          % get the answer
-  asserta(known(valueKnown,A,V)),   % remember it so we dont ask again.
-  Y = valueKnown.                   % succeed or fail based on answer.
+  read(V),                          % get the answer
+  asserta(known(valueKnown,A,V)).   % remember it so we dont ask again.
+  %Y = .                   % succeed or fail based on answer.
 
 % "menuask" is like ask, only it gives the user a menu to to choose
 % from rather than a yes on no answer. In this case there is no
