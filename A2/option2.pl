@@ -1,32 +1,16 @@
 % CLIMATES
+info:-
+  write(
+    'If on Windows, do "Settings" -> "User init file...", add ":- set_prolog_flag(encoding, utf8)."\n\n This is a sample of a classification expert system for identification \n of Köppen-Geiger climate types. The rules are roughly based on the classifications from \n\n https://en.wikipedia.org/wiki/Köppen_climate_classification \n'),
+  write("\n This type of expert system can easily use Prolog's built-in inferencing system."),
+  write(
+    '\n While trying to satisfy the goal "cat", it tries to satisfy various subgoals \n some of which require user input. That information is all stored as attribute-value pairs. \n The attribute is represented as a predicate, and the value as the argument to the predicate. \n\n For example, the attribute-value pair "color-brown" is stored "color(brown)".\n The "identify" predicate is the high level goal that starts the program.'),nl,
+  write('\n The predicate "known/3" is used to remember answers to questions, \n so it is cleared at the beginning of the run. \n\n The rules of identification are the bulk of the code. They break up \n the problem into identifying process and ingredients and tools \n before identifying the actual climates. \n\n The end of the code lists those attribute-value pairs which need to be asked for, \n and defines the predicate "ask" and "menuask" which are \n used to get information from the user, and remember it.'),nl,nl.
 
-% This is a sample of a classification expert system for identification
-% of Köppen–Geiger climate types. The rules are roughly based on the classifications
-% from https://en.wikipedia.org/wiki/Köppen_climate_classification
+% Code that runs automatically on load time:
+:- use_module(library(clpfd)). % for integer arithmetic
+:- info.
 
-% This type of expert system can easily use Prolog's built in inferencing
-% system. While trying to satisfy the goal "cat" it tries to satisfy
-% various subgoals, some of which will ask for information from the
-% user.
-
-% The information is all stored as attribute-value pairs. The attribute
-% is represented as a predicate, and the value as the argument to the
-% predicate. For example, the attribute-value pair "color-brown" is
-% stored "color(brown)".
-
-% "identify" is the high level goal that starts the program. The
-% predicate "known/3" is used to remember answers to questions, so it
-% is cleared at the beginning of the run.
-
-% The rules of identification are the bulk of the code. They break up
-% the problem into identifying process and ingredients and tools before identifying
-% the actual climates.
-
-% The end of the code lists those attribute-value pairs which need
-% to be asked for, and defines the predicate "ask" and "menuask"
-% which are used to get information from the user, and remember it.
-
-:- use_module(library(clpfd)).
 main :- identify.
 
 identify:-
